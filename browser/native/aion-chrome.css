@@ -1,0 +1,23 @@
+/* SPDX-License-Identifier: MPL-2.0 */
+@font-face {
+  font-family: OpenDyslexic;
+  src: url('chrome://browser/content/aion-fonts/OpenDyslexic-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: OpenDyslexic;
+  src: url('chrome://browser/content/aion-fonts/OpenDyslexic-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: Lexend;
+  src: url('chrome://browser/content/aion-fonts/Lexend.ttf') format('truetype');
+  font-weight: 100 900;
+  font-display: swap;
+}
+:root[data-aion-font],
+:root[data-aion-font] :is(toolbarbutton, button, label, description, menu, menuitem, menulist, input, select, textarea, .tab-text, .urlbar-input, .searchbar-textbox) {
+  font-family: var(--aion-ui-font) !important;
+}

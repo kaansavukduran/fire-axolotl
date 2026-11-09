@@ -19,9 +19,20 @@ Hedef, özellikleri tarayıcıyla birlikte sunmaktır. Marka adları yalnızca k
 
 Ekrandaki önerilen eklentiler kurulu listeye dahil sayılmadı. / Recommended add-ons in the screenshot are not treated as installed requirements.
 
+## Firefox temeli, diller ve hesap / Firefox base, languages and account
+
+Tam Firefox kaynağı temel alınır; geçmiş, yer imleri, parola yönetimi, okuyucu görünümü, geliştirici araçları ve hesap/Sync gibi yerleşik işlevlerin kaldırılması hedeflenmez. Telemetri, sponsorlu öneriler ve reklam ilişkilendirme kapatılır. Hesap ve güvenlik bağlantıları ayrı tutulur. / Preserve the native browser feature set while disabling telemetry, sponsorship and ad attribution, with optional account/Sync and security connections kept separate.
+
+Kullanıcının hedefi Firefox'un yayımladığı bütün diller ve istediği zaman dil değiştirmedir. Firefox'un mevcut dil yönetimi kaynaktan korunur; yalnızca iki dilli bir tarayıcı olarak sınırlandırılmaz. Bununla birlikte yeni Aion metinleri şu anda Türkçe/İngilizcedir. Bütün Firefox dillerinde yeni metinlerin çevirisi ve bağımsız ürün dil paketlerinin yükleme/değiştirme testi henüz tamamlanmadı. / Target all Firefox languages and runtime language switching. Native language management is preserved; new Aion strings currently cover Turkish/English, with complete language expansion and independent-product language-pack validation pending.
+
+Mozilla hesabı ayarı ve Sync kaynakta korunur. Test, hesap özelliğinin gizlilik ilkeleri tarafından kapatılmadığını doğrular; gerçek bir kullanıcı hesabıyla giriş veya eşitleme yapmaz. / Source account/Sync support is preserved and policy capability is tested, but no real account has been used for login/sync validation.
+
 ## Ek istekler / Additional requests
 
 - Sekmeler üstte, solda veya sağda: kaynak katmanında yerel tercih arayüzü. / Native top/left/right tab-layout controls.
+- Üst çubuk: mevcut Firefox sürükle-bırak düzenleyicisine kolay erişim; düğme, ayrı arama kutusu ve boşlukları ekleme/çıkarma/taşıma ve varsayılana dönme korunur. Sade/dengeli/ayrıntılı hazır düzenler henüz eklenmedi. / Native toolbar editor and reset preserved; additional layout presets pending.
+- Varsayılan koyu tarayıcı; web sitelerinin CSS'i ve kendi kayıtlı tercihleri korunur. Yalnızca `prefers-color-scheme` tercihine uyan siteler tarayıcıdaki koyu tercihi kullanır. / Default dark chrome with independent color-scheme preference, without forced site CSS changes.
+- Yerel araç çubuğu ve sekme fontu: sistem, OpenDyslexic, Lexend, Arial/Helvetica veya Georgia. Web sayfasının fontu değişmez. Aion yüzeyleri ayrıca ayarlanabilir. / Native chrome fonts are independent of website fonts; companion surfaces have their own settings.
 - Video tercihi: otomatik, 720p, 1080p, 1440p, 2160p, sunulan en yüksek kalite. Tercih videonun gerçekten o kalitede oynadığının kanıtı değildir. / Saved preference does not prove actual playback resolution.
 - Çift altyazı: yerel VTT/SRT zaman damgalarına göre oynatma. Tüm videolarda canlı ses tanıma ve otomatik altyazı çevirisi sonraki aşama. / Local dual captions implemented; universal transcription/translation pending.
   Katman, normal belge ve kapsayıcı tam ekran düzenleri içindir. Video öğesinin doğrudan yerel tam ekranı ve başka kaynaktan iframe oynatıcıları ayrıca uyarlanmalıdır. / The overlay targets normal documents and container fullscreen; native video-element fullscreen and cross-origin iframe players need further adaptation.

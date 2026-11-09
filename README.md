@@ -12,6 +12,8 @@ Free browser project based on Firefox ESR source, with an Aion companion. Fire A
 
 Bu depo; doğrulanmış Firefox kaynağını indiren derleme katmanını, özgün markalamayı, yerleşik Aion modülünü ve sekme konumu için yerel ayarları içerir. Motorun tüm geçmişini bu küçük depoya kopyalamak yerine kaynak sürümü ve SHA-512 özeti `upstream.json` içinde sabitlenir. Gömülü modül tarayıcı derlenirken paketlenir; son kullanıcının ayrı eklenti kurması hedeflenmez. Geliştirme sırasında aynı modül geçici eklenti olarak denenebilir.
 
+Firefox'un yerleşik özellikleri, dil yönetimi ve isteğe bağlı Mozilla hesabı/Sync temel alınır. Telemetri, çalışmalar, sponsorlu öneriler ve reklam ilişkilendirmesi yerel ilkelerle kapatılır; güvenlik bağlantıları korunur. Aion'un yeni metinleri şu an Türkçe/İngilizcedir; tüm Firefox dillerine genişletilmesi ve gerçek hesapla Sync doğrulaması henüz tamamlanmadı.
+
 This repository contains a pinned Firefox source build overlay, original branding, the built-in Aion module, and native tab-layout settings. The upstream version and SHA-512 are locked in `upstream.json`; the complete engine history is not duplicated here. The companion is embedded at browser build time. A temporary add-on package is available for development, not as a browser installer.
 
 ## Bu aşamada eklenenler / Implemented in this stage
@@ -21,9 +23,11 @@ This repository contains a pinned Firefox source build overlay, original brandin
 - YouTube için deneysel kalite isteği; her sitede ve her abonelikte kalite garantisi değildir. / Experimental YouTube quality requests; no universal resolution guarantee.
 - Yerel VTT/SRT dosyalarından çift altyazı, mevcut altyazı satırını alma. / Dual local VTT/SRT captions and current cue capture.
 - Açık kullanıcı eylemiyle seçili metin çevirisi; isteğe bağlı, kullanıcının seçtiği HTTPS hizmeti. / Explicit selected-text translation through an optional user-chosen HTTPS service.
-- Türkçe/İngilizce Aion arayüzü, dört tema, %80–%200 arayüz ölçeği, bağımsız yazı boyutu ve Lexend. / Turkish/English Aion UI, four themes, 80%–200% interface scale, independent text size and Lexend.
+- Varsayılan koyu görünüm, Türkçe/İngilizce Aion arayüzü, dört tema, %80–%200 arayüz ölçeği, bağımsız yazı boyutu, OpenDyslexic ve Lexend. / Default dark appearance, Turkish/English Aion UI, four themes, 80%–200% interface scale, independent text size, OpenDyslexic and Lexend.
 - JSON yedekleme/geri yükleme, isteğe bağlı üç gerçek eyleme dayalı keşif ilerlemesi. / JSON backup/restore and optional milestones based on three real actions.
-- Kaynak katmanında üst/sol/sağ sekme konumu seçimi. / Native top/left/right tab layout in the source overlay.
+- Kaynak katmanında üst/sol/sağ sekmeler, Firefox araç çubuğu düzenleyicisi, bağımsız site renk tercihi ve yerel arayüz yazı tipi. / Native tab layout, toolbar customization, independent website color preference and native interface fonts.
+
+Varsayılan tarayıcı koyudur. Sitelerin kendi tasarımı ve kaydettiğin tema seçimi korunur; yalnızca tarayıcı renk tercihini takip eden siteler koyu tercihi alır. Sayfalar zorla karartılmaz. Tarayıcı arayüzü için font seçmek web sitelerinin fontunu değiştirmez. / The browser defaults to dark. Site design and saved site choices stay intact; sites following browser preference receive dark. There is no forced recoloring, and native interface font changes do not override website fonts.
 
 İstenen eklentilerin tek tek kapsamı ve eksikleri: [Özellik eşlemesi / Feature map](docs/FEATURES.md).
 

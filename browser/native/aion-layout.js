@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: MPL-2.0 */
 (() => {
   'use strict';
-  const prefs = ['sidebar.verticalTabs', 'sidebar.position_start'];
+  const prefs = ['sidebar.verticalTabs', 'sidebar.position_start', 'layout.css.prefers-color-scheme.content-override', 'fireaxolotl.ui.font'];
   let initialized = false;
   async function initialize() {
     const group = document.getElementById('aionLayoutGroup');
@@ -18,6 +18,8 @@
       const start = Services.prefs.getBoolPref(prefs[1], true);
       const rtl = Services.locale.isAppLocaleRTL;
       select.value = !vertical ? 'top' : start !== rtl ? 'left' : 'right';
+      document.getElementById('aion-website-theme').value = Services.prefs.getIntPref(prefs[2], 2);
+      document.getElementById('aion-browser-font').value = Services.prefs.getStringPref(prefs[3], 'system');
     }
     select.addEventListener('change', () => {
       if (!['top', 'left', 'right'].includes(select.value)) return;
@@ -27,6 +29,18 @@
       }
       Services.prefs.setBoolPref(prefs[0], select.value !== 'top');
       document.getElementById('aion-layout-status').textContent = messages.saved.message;
+    });
+    document.getElementById('aion-website-theme').addEventListener('change', event => {
+      const value = Number(event.target.value);
+      if ([0, 1, 2].includes(value)) Services.prefs.setIntPref(prefs[2], value);
+      document.getElementById('aion-layout-status').textContent = messages.saved.message;
+    });
+    document.getElementById('aion-browser-font').addEventListener('change', event => {
+      if (['system', 'opendyslexic', 'lexend', 'sans', 'serif'].includes(event.target.value)) Services.prefs.setStringPref(prefs[3], event.target.value);
+      document.getElementById('aion-layout-status').textContent = messages.saved.message;
+    });
+    document.getElementById('aion-customize-toolbar').addEventListener('click', () => {
+      Services.wm.getMostRecentWindow('navigator:browser')?.gCustomizeMode.enter();
     });
     const observer = {observe: sync};
     prefs.forEach(pref => Services.prefs.addObserver(pref, observer));

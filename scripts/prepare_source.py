@@ -3,6 +3,7 @@
 import argparse
 import hashlib
 import json
+import re
 from pathlib import Path
 import shutil
 import sys
@@ -20,6 +21,25 @@ def replace_once(path, old, new):
     if text.count(old) != 1:
         raise ValueError(f'Upstream changed: expected exactly one anchor in {path}')
     path.write_text(text.replace(old, new, 1))
+
+
+def replace_preferences_block(path, markup):
+    begin = '<!-- Fire Axolotl preferences begin -->'
+    end = '<!-- Fire Axolotl preferences end -->'
+    text = path.read_text()
+    block = begin + '\n' + markup.rstrip() + '\n' + end
+    if begin in text:
+        if text.count(begin) != 1 or text.count(end) != 1:
+            raise ValueError('Duplicate or incomplete Aion preferences markers')
+        before, rest = text.split(begin, 1)
+        _, after = rest.split(end, 1)
+        path.write_text(before + block + after)
+        return
+    # Migrate the initial overlay so adding controls never creates duplicate IDs.
+    text, count = re.subn(r'<groupbox id="aionLayoutGroup"[\s\S]*?</groupbox>\s*', '', text)
+    if count > 1 or text.count('<!-- Browser layout -->') != 1:
+        raise ValueError('Unexpected native preferences structure')
+    path.write_text(text.replace('<!-- Browser layout -->', block + '\n<!-- Browser layout -->', 1))
 
 
 def prepare(source):
@@ -90,11 +110,27 @@ def prepare(source):
     for locale in ['tr', 'en']:
         shutil.copyfile(ROOT / f'browser/extension/_locales/{locale}/messages.json', prefs / f'aion-{locale}.json')
     replace_once(prefs / 'jar.mn', '   content/browser/preferences/main.js\n', '   content/browser/preferences/main.js\n   content/browser/preferences/aion-layout.js\n   content/browser/preferences/aion-en.json\n   content/browser/preferences/aion-tr.json\n')
-    replace_once(prefs / 'main.inc.xhtml', '<!-- Browser layout -->', (ROOT / 'browser/native/aion-layout.inc.xhtml').read_text() + '\n<!-- Browser layout -->')
+    replace_preferences_block(prefs / 'main.inc.xhtml', (ROOT / 'browser/native/aion-layout.inc.xhtml').read_text())
     replace_once(prefs / 'preferences.xhtml', '  <script src="chrome://browser/content/preferences/preferences.js"/>', '  <script src="chrome://browser/content/preferences/preferences.js"/>\n  <script src="chrome://browser/content/preferences/aion-layout.js"/>')
+    base = source / 'browser/base'
+    for filename in ['aion-chrome.js', 'aion-chrome.css']:
+        shutil.copyfile(ROOT / 'browser/native' / filename, base / 'content' / filename)
+    shutil.copytree(ROOT / 'browser/extension/fonts', base / 'content/aion-fonts', dirs_exist_ok=True)
+    entries = '\n'.join(['        content/browser/aion-chrome.js (content/aion-chrome.js)', '        content/browser/aion-chrome.css (content/aion-chrome.css)', '        content/browser/aion-fonts/ (content/aion-fonts/**)'])
+    replace_once(base / 'jar.mn', 'browser.jar:\n', 'browser.jar:\n' + entries + '\n')
+    chrome_assets = '  <link rel="stylesheet" href="chrome://browser/content/aion-chrome.css"/>\n  <script src="chrome://browser/content/aion-chrome.js"/>\n'
+    replace_once(base / 'content/browser.xhtml', '</head>', chrome_assets + '</head>')
+    replace_once(prefs / 'preferences.xhtml', '</head>', chrome_assets + '</head>')
     nsi = branding / 'branding.nsi'
     nsi.write_text(nsi.read_text().replace('Mozilla Developer Preview', 'Fire Axolotl').replace('"mozilla.org"', '"Fire Axolotl"'))
     (source / '.mozconfig').write_text((ROOT / 'browser/mozconfig').read_text())
+    distribution = source / 'browser/app/distribution'
+    shutil.copyfile(ROOT / 'browser/policies.json', distribution / 'policies.json')
+    policy_rule = '\n# Fire Axolotl privacy defaults\nFINAL_TARGET_FILES.distribution += ["policies.json"]\n'
+    build_file = distribution / 'moz.build'
+    text = build_file.read_text()
+    if policy_rule not in text:
+        build_file.write_text(text + policy_rule)
     receipt = {'upstream': pinned, 'companion_sha256': hashlib.sha256((extension_dir / 'aion@fire-axolotl.browser.xpi').read_bytes()).hexdigest(), 'status': 'source-prepared-not-built'}
     (source / 'fire-axolotl-build.json').write_text(json.dumps(receipt, indent=2) + '\n')
     print(f'Prepared {source}; this is not a compiled browser')

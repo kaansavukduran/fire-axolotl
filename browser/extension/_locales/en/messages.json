@@ -153,7 +153,7 @@
     "message": "System font"
   },
   "fontHelp": {
-    "message": "Lexend is an alternative designed for easier reading, with Turkish character support. Choose the font that works best for you."
+    "message": "OpenDyslexic and Lexend offer alternatives for different reading preferences, with Turkish character support. Choose whichever feels most comfortable."
   },
   "advanced": {
     "message": "Advanced text settings"
@@ -174,7 +174,7 @@
     "message": "Example button"
   },
   "appearanceScope": {
-    "message": "These settings apply to Aion surfaces. Web pages and browser toolbars use their own zoom and accessibility settings."
+    "message": "These settings apply to Aion surfaces. Use the browser’s Settings → General for native fonts and tab/toolbar layout. Website designs are preserved."
   },
   "translationSettings": {
     "message": "Translation"
@@ -409,5 +409,26 @@
   },
   "unsupportedSpeed": {
     "message": "This video source does not accept speed changes. Live media streams may have a fixed playback rate."
+  },
+  "customizeToolbar": {
+    "message": "Customize the toolbar"
+  },
+  "customizationHelp": {
+    "message": "Drag buttons, the search box and spacers in the built-in editor to add, remove or rearrange them. Restore the default layout from that editor."
+  },
+  "websiteTheme": {
+    "message": "Color preference exposed to websites"
+  },
+  "websiteThemeAuto": {
+    "message": "Follow browser theme · preserve site design"
+  },
+  "websiteThemeHelp": {
+    "message": "Site colors and your saved site theme are left untouched. Only sites that ask for your browser color preference use this choice. The default dark browser reports a dark preference. Pages are not forcibly recolored."
+  },
+  "browserFont": {
+    "message": "Browser interface font"
+  },
+  "browserFontHelp": {
+    "message": "Applies to toolbars, tab labels and native settings. Website fonts are preserved. Aion panel text settings can be adjusted separately."
   }
 }

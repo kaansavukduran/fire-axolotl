@@ -2,7 +2,7 @@
 ((root) => {
   'use strict';
   const defaults = Object.freeze({
-    schema: 1, language: '', theme: 'system', scale: 100, textSize: 100,
+    schema: 1, language: '', theme: 'dark', scale: 100, textSize: 100,
     font: 'system', lineHeight: 1.5, letterSpacing: 0,
     progress: true, animations: true, sounds: false,
     targetLanguage: 'tr', endpoint: '', vocabulary: [], milestones: [], quality: 'auto'
@@ -11,7 +11,7 @@
   function normalize(input = {}) {
     const out = {...defaults, vocabulary: [], milestones: []};
     for (const key of ['progress', 'animations', 'sounds']) if (typeof input[key] === 'boolean') out[key] = input[key];
-    for (const [key, values] of Object.entries({language: ['', 'tr', 'en'], theme: ['system', 'light', 'dark', 'contrast'], font: ['system', 'sans', 'serif', 'dyslexic'], quality: ['auto', 'best', 'hd720', 'hd1080', 'hd1440', 'hd2160']})) {
+    for (const [key, values] of Object.entries({language: ['', 'tr', 'en'], theme: ['system', 'light', 'dark', 'contrast'], font: ['system', 'sans', 'serif', 'dyslexic', 'opendyslexic'], quality: ['auto', 'best', 'hd720', 'hd1080', 'hd1440', 'hd2160']})) {
       if (values.includes(input[key])) out[key] = input[key];
     }
     out.scale = Math.round(clamp(input.scale ?? 100, 80, 200, 100));

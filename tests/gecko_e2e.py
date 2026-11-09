@@ -2,6 +2,8 @@
 """Run with selenium, AION_FIREFOX_BINARY and AION_GECKODRIVER; never disable the browser sandbox."""
 import json
 import os
+import base64
+import shutil
 from pathlib import Path
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from threading import Thread
@@ -16,7 +18,13 @@ ROOT = Path(__file__).resolve().parents[1]
 ARTIFACTS = ROOT / 'work/test-artifacts'
 ARTIFACTS.mkdir(parents=True, exist_ok=True)
 options = Options()
-options.binary_location = os.environ['AION_FIREFOX_BINARY']
+runtime_copy = ROOT / 'work/policy-test-runtime'
+original_binary = Path(os.environ['AION_FIREFOX_BINARY']).resolve()
+if not (runtime_copy / original_binary.name).is_file():
+    shutil.copytree(original_binary.parent, runtime_copy, dirs_exist_ok=True)
+(runtime_copy / 'distribution').mkdir(exist_ok=True)
+shutil.copyfile(ROOT / 'browser/policies.json', runtime_copy / 'distribution/policies.json')
+options.binary_location = str(runtime_copy / original_binary.name)
 options.add_argument('-headless')
 options.accept_insecure_certs = False
 options.set_preference('browser.shell.checkDefaultBrowser', False)
@@ -63,17 +71,29 @@ try:
     package = ROOT / 'dist/fire-axolotl-0.1.0-developer-addon.xpi'
     addon_id = driver.install_addon(str(package), temporary=True)
     driver.set_context('chrome')
+    assert driver.execute_script("return Services.policies.getActivePolicies().DisableTelemetry") is True
+    assert driver.execute_script("return Services.prefs.getBoolPref('datareporting.healthreport.uploadEnabled')") is False
+    assert driver.execute_script("return Services.prefs.prefIsLocked('datareporting.healthreport.uploadEnabled')") is True
+    assert driver.execute_script("return Services.prefs.getBoolPref('identity.fxaccounts.enabled')") is True
+    assert driver.execute_script("return Services.policies.isAllowed('fxaccounts')") is True
+    assert driver.execute_script("return Services.prefs.getBoolPref('browser.newtabpage.activity-stream.showSponsored')") is False
+    record('Shipped privacy policy disables telemetry and sponsored content while preserving Mozilla account capability')
     uuid = driver.execute_script("return JSON.parse(Services.prefs.getStringPref('extensions.webextensions.uuids'))[arguments[0]]", addon_id)
     driver.set_context('content')
     base = f'moz-extension://{uuid}/'
     driver.get(base + 'settings.html')
     wait.until(lambda d: d.execute_script('return typeof UI !== "undefined" && !!UI.settings'))
+    assert driver.execute_script('return UI.settings.theme') == 'dark'
+    record('New companion profile defaults to dark')
     Select(driver.find_element(By.ID, 'language')).select_by_value('tr')
     wait.until(lambda d: d.find_element(By.TAG_NAME, 'html').get_attribute('lang') == 'tr')
     assert driver.find_element(By.TAG_NAME, 'h1').text == 'Ayarlar'
     record('Turkish UI through normal settings controls')
     Select(driver.find_element(By.ID, 'theme')).select_by_value('contrast'); saved('theme', 'contrast')
     Select(driver.find_element(By.ID, 'font')).select_by_value('dyslexic'); saved('font', 'dyslexic')
+    Select(driver.find_element(By.ID, 'font')).select_by_value('opendyslexic'); saved('font', 'opendyslexic')
+    assert driver.execute_async_script("document.fonts.load('16px OpenDyslexic').then(fonts=>arguments[0](fonts.length));") > 0
+    record('Bundled OpenDyslexic loads without a network font request')
     value('textSize-number', 150); saved('textSize', 150)
     value('scale-number', 135); saved('scale', 135)
     assert driver.execute_script('return parseFloat(getComputedStyle(document.documentElement).fontSize)') == 21.6
@@ -197,6 +217,44 @@ try:
             wait.until(lambda d: physical_side(d) == side)
         driver.set_context('content')
         record(f'Native {side} tab position through the injected source control and real Firefox layout')
+    preferences_handle = driver.current_window_handle
+    driver.set_context('chrome')
+    chrome_css = (ROOT / 'browser/native/aion-chrome.css').read_text()
+    for font_name in ['OpenDyslexic-Regular.otf', 'OpenDyslexic-Bold.otf', 'Lexend.ttf']:
+        encoded = base64.b64encode((ROOT / 'browser/extension/fonts' / font_name).read_bytes()).decode()
+        chrome_css = chrome_css.replace('chrome://browser/content/aion-fonts/' + font_name, 'data:font/otf;base64,' + encoded)
+    driver.execute_script("const style=document.createElementNS('http://www.w3.org/1999/xhtml','style');style.textContent=arguments[0];document.head.append(style);" + (ROOT / 'browser/native/aion-chrome.js').read_text(), chrome_css)
+    driver.set_context('content')
+    Select(driver.find_element(By.ID, 'aion-browser-font')).select_by_value('opendyslexic')
+    driver.set_context('chrome')
+    wait.until(lambda d: d.execute_script('return document.documentElement.dataset.aionFont') == 'opendyslexic')
+    assert 'OpenDyslexic' in driver.execute_script('return getComputedStyle(gURLBar.inputField).fontFamily')
+    assert driver.execute_async_script("document.fonts.load('16px OpenDyslexic').then(fonts=>arguments[0](fonts.length));") > 0
+    record('Native toolbar and address field use OpenDyslexic through the saved preference')
+    driver.set_context('content')
+    for mode, expects_dark in [('0', True), ('1', False)]:
+        Select(driver.find_element(By.ID, 'aion-website-theme')).select_by_value(mode)
+        driver.switch_to.new_window('tab')
+        driver.get(f'http://127.0.0.1:{server.server_port}/')
+        assert driver.execute_script("return matchMedia('(prefers-color-scheme:dark)').matches") == expects_dark
+        assert driver.execute_script('return getComputedStyle(document.body).backgroundColor') == 'rgb(238, 244, 255)'
+        assert driver.execute_script('return getComputedStyle(document.body).fontFamily') == 'system-ui'
+        driver.close(); driver.switch_to.window(preferences_handle)
+    record('Independent site color preference changes media queries while preserving site CSS and fonts')
+    Select(driver.find_element(By.ID, 'aion-website-theme')).select_by_value('2')
+    driver.set_context('chrome')
+    driver.execute_async_script("ChromeUtils.importESModule('resource://gre/modules/AddonManager.sys.mjs').AddonManager.getAddonByID('firefox-compact-dark@mozilla.org').then(theme=>theme.enable()).then(()=>arguments[0](true));")
+    driver.set_context('content')
+    driver.switch_to.new_window('tab'); driver.get(f'http://127.0.0.1:{server.server_port}/')
+    wait.until(lambda d: d.execute_script("return matchMedia('(prefers-color-scheme:dark)').matches"))
+    assert driver.execute_script('return getComputedStyle(document.body).backgroundColor') == 'rgb(238, 244, 255)'
+    driver.close(); driver.switch_to.window(preferences_handle)
+    record('Automatic website preference follows dark browser theme without forced site recoloring')
+    driver.find_element(By.ID, 'aion-customize-toolbar').click()
+    driver.set_context('chrome')
+    wait.until(lambda d: d.execute_script('return document.documentElement.hasAttribute("customizing")'))
+    driver.execute_script('gCustomizeMode.exit()')
+    record('Native toolbar editor opens from the new preferences control')
 finally:
     (ARTIFACTS / 'results.json').write_text(json.dumps({'passed': results}, ensure_ascii=False, indent=2) + '\n')
     driver.quit()

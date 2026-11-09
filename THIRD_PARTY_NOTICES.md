@@ -14,6 +14,12 @@ Source: https://github.com/google/fonts/tree/main/ofl/lexend
 
 Copyright 2018 The Lexend Project Authors. SIL Open Font License 1.1, including its reserved-font-name provisions. Original font file and full license are included in `browser/extension/fonts/`. The font was not renamed or modified. Turkish glyph support was verified from the font's cmap table.
 
+## OpenDyslexic
+
+Unmodified OpenDyslexic Regular and Bold font files from author repository snapshot `1824da5c0e41dc3e13ffc7f3a636dcaf695d61b7`: https://github.com/antijingoist/opendyslexic/tree/1824da5c0e41dc3e13ffc7f3a636dcaf695d61b7
+
+Copyright Abbie Gonzalez, Reserved Font Name OpenDyslexic. SIL Open Font License 1.1; the full notice is included as `browser/extension/fonts/OpenDyslexic-OFL.txt`. The author's current project home is https://opendyslexic.org/ and source host is https://forge.hackers.town/antijingoist/opendyslexic. This project uses the recorded author-published snapshot, not a claim to the newest font release. Both included font files were verified for Çç Ğğ Iı İi Öö Şş Üü. File hashes are in `fonts/SOURCES.json`. No medical efficacy claim is made.
+
 ## Aion artwork
 
 The project owner confirmed that the Aion character reference sheets were generated with ChatGPT. The Fire Axolotl icon was generated from those user-supplied references in this development session, rather than downloaded from a third-party asset library. Generated output may be non-exclusive and copyright protection varies by jurisdiction. No guarantee of exclusivity, trademark registration or non-infringement is made.

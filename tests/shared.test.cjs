@@ -15,6 +15,11 @@ test('fresh profiles and resets never share mutable default progress or vocabula
   const second = Aion.normalize();
   assert.deepEqual(second.milestones, []); assert.deepEqual(second.vocabulary, []);
 });
+test('new profiles start dark and OpenDyslexic remains a supported independent choice', () => {
+  assert.equal(Aion.normalize().theme, 'dark');
+  assert.equal(Aion.normalize({theme: 'light', font: 'opendyslexic'}).theme, 'light');
+  assert.equal(Aion.normalize({font: 'opendyslexic'}).font, 'opendyslexic');
+});
 test('supported device language is used, unsupported languages fall back to Turkish', () => {
   assert.equal(Aion.language({}, 'en-GB'), 'en'); assert.equal(Aion.language({}, 'tr-TR'), 'tr');
   assert.equal(Aion.language({}, 'de-DE'), 'tr'); assert.equal(Aion.language({language: 'en'}, 'tr'), 'en');

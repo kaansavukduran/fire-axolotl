@@ -5,6 +5,7 @@ Fire Axolotl şu anda geliştirici önizlemesidir. Bağımsız kurulum, güvenli
 ## Korunan sınırlar / Preserved boundaries
 
 - Firefox kaynak motoru, işlem yalıtımı, site yalıtımı, TLS sertifika doğrulaması, izleyici koruması ve indirme korumaları temel alınır. Motor güvenlik korumalarını kapatan bir tercih eklenmez. / Preserve upstream process/site isolation, TLS verification, tracking and download protections.
+- Telemetri/sponsor kapatma ilkeleri hesapları, Sync'i veya zararlı site listelerini kapatmaz. Yerel ilke dosyası gerçek Firefox üzerinde yüklenip kontrol edildi; hesap özelliğinin kullanılabilir kaldığı doğrulandı. Gerçek kullanıcı hesabıyla giriş/eşitleme henüz test edilmedi. / Privacy policy preserves account capability and security services; real account login/sync remains untested.
 - Üçüncü taraf eklenti ve dil paketi imza doğrulaması açık kalır. Aion, derleme içindeki kaynaklardan yerleşik modül olarak yüklenir. / Third-party extension and language-pack signature checks remain enabled; Aion is a packaged built-in.
 - Aion, başlangıçta bütün siteleri okuma izni istemez. Video ve seçim araçları açık kullanıcı eylemiyle etkin sekmede çalışır. / No mandatory all-sites read permission; page access requires an explicit action on the active tab.
 - Konteyner, depolama ve ağ işlemleri yalnızca Aion'un kendi panel/ayar sayfalarından gelen mesajları kabul eder. Web sayfasından gelen içerik mesajları bu yetkileri kazanamaz. / Privileged actions accept messages only from the companion UI, not content scripts or pages.

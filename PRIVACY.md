@@ -1,6 +1,10 @@
 # Veri akışları / Data flows
 
-Bu belge mevcut Aion modülünü anlatır; tüm Firefox ağ trafiğinin denetlendiği iddiasını taşımaz. / This describes the current Aion companion, not an audit of all upstream browser traffic.
+Bu belge mevcut Aion modülünü ve kaynak katmanındaki gizlilik ilkelerini anlatır; tüm Firefox ağ trafiğinin bağımsız denetimi tamamlanmış değildir. / This describes the companion and source-layer privacy policies; it is not a completed independent audit of all browser traffic.
+
+`browser/policies.json` ve varsayılan tercihler, kullanım telemetrisi, Firefox çalışmaları, sponsorlu öneriler, özel reklam ilişkilendirmesi ve otomatik çökme raporu gönderimini kapatır. Temel telemetri ve sponsorlu içerik tercihleri kilitlenir. Paket, ilkeleri normal `distribution/policies.json` yolundan yükler. Firefox'un ayarlarda yönetim ilkesi gösterebilmesi bu projenin yerel gizlilik yapılandırmasından kaynaklanır; uzaktaki bir kuruluşla bağlantı kurulması anlamına gelmez. / The shipped local policy disables telemetry, studies, sponsored recommendations, private ad attribution and automatic crash submissions. The native policy indicator reflects local configuration, not a remote organization connection.
+
+Mozilla hesabı ve Sync korunur ve isteğe bağlıdır. Kullanıcı giriş/eşitleme başlattığında kimlik doğrulama ve seçilen eşitleme verileri Mozilla hizmetlerine iletilir; sunucular bağlantı metaverilerini görebilir. Güvenlik listeleri, dil paketi/model indirmeleri ve güncellemeler de ağ bağlantıları gerektirebilir. Telemetriyi kapatmak, bu seçilen işlevlerin hiçbir sunucuyla konuşmadığı anlamına gelmez. / Optional account/Sync, security services, language downloads and updates still need network connections and expose normal connection metadata. They are separate from telemetry and advertising collection.
 
 | Eylem / Action | Veri / Data | Hedef / Destination |
 | --- | --- | --- |

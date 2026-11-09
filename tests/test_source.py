@@ -38,6 +38,18 @@ class SourceSafetyTests(unittest.TestCase):
             second = build(Path(directory) / 'b.xpi')
             self.assertEqual(hashlib.sha256(first.read_bytes()).digest(), hashlib.sha256(second.read_bytes()).digest())
 
+    def test_preferences_upgrade_replaces_existing_controls_without_duplicate_ids(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / 'main.inc.xhtml'
+            path.write_text('<groupbox id="aionLayoutGroup"><label>old</label></groupbox>\n<!-- Browser layout -->')
+            prepare = load('prepare_source').replace_preferences_block
+            prepare(path, '<groupbox id="aionLayoutGroup"><label>new</label></groupbox>')
+            prepare(path, '<groupbox id="aionLayoutGroup"><label>updated</label></groupbox>')
+            text = path.read_text()
+            self.assertEqual(text.count('id="aionLayoutGroup"'), 1)
+            self.assertIn('updated', text)
+            self.assertNotIn('>new<', text)
+
 
 if __name__ == '__main__':
     unittest.main()

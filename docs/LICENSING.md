@@ -32,3 +32,4 @@ Bu aşamada ekran görüntüsündeki üçüncü taraf eklentiler paketlenmedi. Y
 - [Mozilla Distribution Policy](https://www.mozilla.org/en-US/foundation/trademarks/distribution-policy/).
 - [OpenAI Terms of Use](https://openai.com/policies/terms-of-use/), çıktı hakları ve benzerlik / output ownership and similarity.
 - [Lexend OFL](../browser/extension/fonts/OFL.txt).
+- [OpenDyslexic OFL](../browser/extension/fonts/OpenDyslexic-OFL.txt), değiştirilmemiş yazar sürümü ve kayıtlı kaynak özetiyle / unmodified author-published snapshot with recorded hashes.

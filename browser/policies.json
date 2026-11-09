@@ -1,0 +1,36 @@
+{
+  "policies": {
+    "DisableTelemetry": true,
+    "DisableFirefoxStudies": true,
+    "FirefoxSuggest": {
+      "SponsoredSuggestions": false,
+      "ImproveSuggest": false,
+      "OnlineEnabled": false,
+      "Locked": true
+    },
+    "FirefoxHome": {
+      "SponsoredTopSites": false,
+      "SponsoredPocket": false,
+      "SponsoredStories": false,
+      "Snippets": false
+    },
+    "UserMessaging": {
+      "ExtensionRecommendations": false,
+      "FeatureRecommendations": false,
+      "MoreFromMozilla": false,
+      "Locked": true
+    },
+    "Preferences": {
+      "datareporting.policy.dataSubmissionEnabled": {"Value": false, "Status": "locked"},
+      "dom.private-attribution.submission.enabled": {"Value": false, "Status": "locked"},
+      "browser.ping-centre.telemetry": {"Value": false, "Status": "locked"},
+      "browser.newtabpage.activity-stream.telemetry": {"Value": false, "Status": "locked"},
+      "browser.newtabpage.activity-stream.feeds.telemetry": {"Value": false, "Status": "locked"},
+      "browser.newtabpage.activity-stream.telemetry.privatePing.enabled": {"Value": false, "Status": "locked"},
+      "browser.newtabpage.activity-stream.showSponsored": {"Value": false, "Status": "locked"},
+      "browser.newtabpage.activity-stream.showSponsoredTopSites": {"Value": false, "Status": "locked"},
+      "browser.crashReports.unsubmittedCheck.autoSubmit2": {"Value": false, "Status": "locked"},
+      "browser.tabs.crashReporting.sendReport": {"Value": false, "Status": "locked"}
+    }
+  }
+}

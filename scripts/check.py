@@ -4,6 +4,7 @@ from pathlib import Path
 import json
 import re
 import subprocess
+import hashlib
 
 ROOT = Path(__file__).resolve().parents[1]
 EXT = ROOT / 'browser/extension'
@@ -29,4 +30,6 @@ assert manifest['version'] == json.loads((ROOT / 'package.json').read_text())['v
 assert not any('*' in p or p == '<all_urls>' for p in manifest['permissions']), 'Broad mandatory host access'
 assert not manifest.get('content_scripts'), 'No automatic page injection is permitted'
 assert json.loads((ROOT / 'upstream.json').read_text())['version'] in json.loads((ROOT / 'tests/gecko-runtime.json').read_text())['firefox']['url'], 'Test runtime must match the source pin'
+for name, record in json.loads((EXT / 'fonts/SOURCES.json').read_text()).items():
+    assert hashlib.sha256((EXT / 'fonts' / name).read_bytes()).hexdigest() == record['sha256'], f'Font provenance mismatch: {name}'
 print(f'Checked JavaScript, manifests, permissions and {len(keys)} UI translation keys in both languages')

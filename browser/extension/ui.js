@@ -30,7 +30,7 @@ globalThis.UI = {
     root.style.setProperty('--text', settings.textSize / 100);
     root.style.setProperty('--leading', settings.lineHeight);
     root.style.setProperty('--spacing', settings.letterSpacing + 'em');
-    root.style.setProperty('--font', {system: 'system-ui,sans-serif', sans: 'Arial,Helvetica,sans-serif', serif: 'Georgia,serif', dyslexic: 'Lexend,system-ui,sans-serif'}[settings.font]);
+    root.style.setProperty('--font', {system: 'system-ui,sans-serif', sans: 'Arial,Helvetica,sans-serif', serif: 'Georgia,serif', dyslexic: 'Lexend,system-ui,sans-serif', opendyslexic: 'OpenDyslexic,system-ui,sans-serif'}[settings.font]);
     root.classList.toggle('no-motion', !settings.animations);
     document.querySelectorAll('[data-i18n]').forEach(el => {el.textContent = this.t(el.dataset.i18n);});
     document.querySelectorAll('[data-label]').forEach(el => {el.setAttribute('aria-label', this.t(el.dataset.label));});

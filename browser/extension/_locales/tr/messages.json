@@ -153,7 +153,7 @@
     "message": "Sistem yazı tipi"
   },
   "fontHelp": {
-    "message": "Lexend, okumayı kolaylaştırmak için tasarlanmış bir alternatiftir ve Türkçe karakterleri destekler. Tercihine en uygun yazı tipini seç."
+    "message": "OpenDyslexic ve Lexend, farklı okuma tercihlerine yönelik alternatiflerdir. Türkçe karakterleri desteklerler. Sana en rahat gelen yazı tipini seç."
   },
   "advanced": {
     "message": "Gelişmiş yazı ayarları"
@@ -174,7 +174,7 @@
     "message": "Örnek düğme"
   },
   "appearanceScope": {
-    "message": "Bu ayarlar Aion yüzeylerine uygulanır. Web sayfaları ve tarayıcı araç çubukları kendi yakınlaştırma ve erişilebilirlik ayarlarını kullanır."
+    "message": "Bu ayarlar Aion yüzeylerine uygulanır. Genel tarayıcı yazı tipi ve sekme/araç yerleşimi için tarayıcının Ayarlar → Genel bölümünü kullan. Site tasarımları korunur."
   },
   "translationSettings": {
     "message": "Çeviri"
@@ -409,5 +409,26 @@
   },
   "unsupportedSpeed": {
     "message": "Bu video kaynağı hız değişikliğini kabul etmiyor. Canlı medya akışları sabit hızda olabilir."
+  },
+  "customizeToolbar": {
+    "message": "Araç çubuğunu özelleştir"
+  },
+  "customizationHelp": {
+    "message": "Düğmeleri, arama kutusunu ve boşlukları Firefox’un yerleşik düzenleyicisinde sürükleyerek ekle, çıkar veya taşı. Düzenleyicide varsayılan düzeni geri yükleyebilirsin."
+  },
+  "websiteTheme": {
+    "message": "Sitelerin alacağı renk tercihi"
+  },
+  "websiteThemeAuto": {
+    "message": "Tarayıcı temasını takip et · site tasarımı korunur"
+  },
+  "websiteThemeHelp": {
+    "message": "Sitelerin kendi renklerine veya kaydettiğin tema seçimine müdahale edilmez. Yalnızca tarayıcının renk tercihini soran siteler bu seçimi alır. Varsayılan koyu tarayıcıda bu tercih koyudur. Sayfalar zorla karartılmaz."
+  },
+  "browserFont": {
+    "message": "Tarayıcı arayüzü yazı tipi"
+  },
+  "browserFontHelp": {
+    "message": "Araç çubukları, sekme yazıları ve yerel ayarlara uygulanır. Sitelerin yazı tipi korunur. Aion panelinin yazı ayarları ayrıca değiştirilebilir."
   }
 }
