@@ -5,6 +5,7 @@ pref("startup.homepage_welcome_url.additional", "");
 pref("extensions.activeThemeID", "firefox-compact-dark@mozilla.org");
 pref("layout.css.prefers-color-scheme.content-override", 2);
 pref("fireaxolotl.ui.font", "system");
+pref("sidebar.verticalTabs", false);
 pref("identity.fxaccounts.enabled", true);
 pref("datareporting.policy.dataSubmissionEnabled", false);
 pref("datareporting.healthreport.uploadEnabled", false);

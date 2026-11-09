@@ -4,17 +4,19 @@
   const defaults = Object.freeze({
     schema: 1, language: '', theme: 'dark', scale: 100, textSize: 100,
     font: 'system', lineHeight: 1.5, letterSpacing: 0,
-    progress: true, animations: true, sounds: false,
-    targetLanguage: 'tr', endpoint: '', vocabulary: [], milestones: [], quality: 'auto'
+    progress: true, animations: true, sounds: false, imageSearch: true,
+    targetLanguage: 'tr', endpoint: '', vocabulary: [], milestones: [], quality: 'auto', character: 'aion', characterActivity: 'idle'
   });
   const clamp = (v, lo, hi, fallback) => Number.isFinite(Number(v)) ? Math.min(hi, Math.max(lo, Number(v))) : fallback;
   function normalize(input = {}) {
     const out = {...defaults, vocabulary: [], milestones: []};
-    for (const key of ['progress', 'animations', 'sounds']) if (typeof input[key] === 'boolean') out[key] = input[key];
+    for (const key of ['progress', 'animations', 'sounds', 'imageSearch']) if (typeof input[key] === 'boolean') out[key] = input[key];
     for (const [key, values] of Object.entries({language: ['', 'tr', 'en'], theme: ['system', 'light', 'dark', 'contrast'], font: ['system', 'sans', 'serif', 'dyslexic', 'opendyslexic'], quality: ['auto', 'best', 'hd720', 'hd1080', 'hd1440', 'hd2160']})) {
       if (values.includes(input[key])) out[key] = input[key];
     }
     out.scale = Math.round(clamp(input.scale ?? 100, 80, 200, 100));
+    if (typeof input.character === 'string' && (/^(aion|sheep|wolf|owl)$/.test(input.character) || /^custom-[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/.test(input.character))) out.character = input.character;
+    if (['idle', 'read', 'work'].includes(input.characterActivity)) out.characterActivity = input.characterActivity;
     out.textSize = Math.round(clamp(input.textSize ?? 100, 80, 200, 100));
     out.lineHeight = clamp(input.lineHeight ?? 1.5, 1, 2.5, 1.5);
     out.letterSpacing = clamp(input.letterSpacing ?? 0, 0, 0.2, 0);
@@ -37,6 +39,23 @@
     if (u.hostname === 'localhost' || !u.hostname.includes('.') || /^[\d.]+$/.test(u.hostname) || u.hostname.includes(':') || /\.(local|internal)$/.test(u.hostname)) throw new Error('invalidEndpoint');
     return {url: u.href, origin: u.origin + '/*'};
   }
+  function imageSearchURL(provider, value) {
+    const image = webURL(value);
+    if (!image || image.length > 8192) return null;
+    const providers = {
+      google: ['https://lens.google.com/uploadbyurl', 'url'],
+      bing: ['https://www.bing.com/images/searchbyimage', 'imgurl'],
+      tineye: ['https://tineye.com/search', 'url'],
+      yandex: ['https://yandex.com/images/search', 'url']
+    };
+    if (!Object.hasOwn(providers, provider)) return null;
+    const [endpoint, parameter] = providers[provider];
+    const target = new URL(endpoint);
+    target.searchParams.set(parameter, image);
+    if (provider === 'bing') target.searchParams.set('cbir', 'sbi');
+    if (provider === 'yandex') target.searchParams.set('rpt', 'imageview');
+    return target.href;
+  }
   function parseVTT(raw) {
     const text = String(raw).replace(/^\uFEFF/, '').replace(/\r/g, '');
     const stamp = v => {
@@ -58,7 +77,7 @@
     }
     return cues.sort((a, b) => a.start - b.start);
   }
-  const api = {defaults, normalize, language, clamp, webURL, translationEndpoint, parseVTT};
+  const api = {defaults, normalize, language, clamp, webURL, translationEndpoint, imageSearchURL, parseVTT};
   root.Aion = api;
   if (typeof module !== 'undefined') module.exports = api;
 })(globalThis);

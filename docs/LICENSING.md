@@ -22,7 +22,7 @@ Proje sahibi Aion referanslarının ChatGPT ile üretildiğini doğruladı. Yeni
 
 Sevilen özellikler için özgün kod yazılabilir. Başka eklentilerin kodu, görseli, filtre listesi veya modeli alınacaksa her biri kendi lisansıyla değerlendirilir. Kapalı kaynak bir eklentinin ücretsiz olması kodunu kullanma hakkı vermez. DeepL, Netflix ve benzeri hizmetlerin kullanım şartları ve teknik izinleri ayrıca geçerlidir. / Reuse requires component-level review; free download is not a source license, and service terms still apply.
 
-Bu aşamada ekran görüntüsündeki üçüncü taraf eklentiler paketlenmedi. Yeni bağımlılık eklendiğinde kaynak, sürüm, özet ve lisans envantere eklenmelidir. / No screenshot-listed third-party extension is bundled at this stage; future dependencies require provenance and license inventory.
+uBlock Origin 1.76.0, değiştirilmemiş ayrı bir GPL-3.0-or-later bileşeni olarak kaynak katmanına eklendi. Tam ilgili kaynaklar ve korunmuş lisanslar tarayıcı paketine dahil edilir; yeniden üretme kontrolü vardır. Ayrıntı ve ağ/izin sınırları [bileşen envanterindedir](COMPONENTS.md). Diğer ekran görüntüsü eklentileri alınmış sayılmaz. / uBlock Origin is now a separately licensed, unmodified component in the source overlay, with corresponding source and preserved notices shipped alongside the browser. Other listed extensions are not implied to be bundled.
 
 ## Resmi kaynaklar / Primary references
 

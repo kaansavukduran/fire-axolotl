@@ -32,4 +32,11 @@ assert not manifest.get('content_scripts'), 'No automatic page injection is perm
 assert json.loads((ROOT / 'upstream.json').read_text())['version'] in json.loads((ROOT / 'tests/gecko-runtime.json').read_text())['firefox']['url'], 'Test runtime must match the source pin'
 for name, record in json.loads((EXT / 'fonts/SOURCES.json').read_text()).items():
     assert hashlib.sha256((EXT / 'fonts' / name).read_bytes()).hexdigest() == record['sha256'], f'Font provenance mismatch: {name}'
+assert manifest['sidebar_action']['open_at_install'] is False, 'Companion sidebar must be opt-in'
+for name, record in json.loads((EXT / 'characters/PROVENANCE.json').read_text())['sources'].items():
+    assert hashlib.sha256((EXT / 'characters' / name).read_bytes()).hexdigest() == record['packaged_sha256'], f'Character provenance mismatch: {name}'
+for character in json.loads((EXT / 'characters/catalog.json').read_text()):
+    assert character['path'].startswith('characters/') and '..' not in character['path']
+    for frames in character['clips'].values():
+        assert frames and all(x >= 0 and y >= 0 and w > 0 and h > 0 and x+w <= character['width'] and y+h <= character['height'] for x,y,w,h in frames), 'Character frame out of bounds'
 print(f'Checked JavaScript, manifests, permissions and {len(keys)} UI translation keys in both languages')

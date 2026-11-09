@@ -11,6 +11,7 @@ async function writeSettings(patch) {
   return serial(async () => {
     const settings = Aion.normalize({...await readSettings(), ...patch});
     await browser.storage.local.set({settings});
+    if (patch && (Object.hasOwn(patch, 'imageSearch') || Object.hasOwn(patch, 'language'))) await globalThis.AionImageMenus?.synchronize();
     return settings;
   });
 }
@@ -30,7 +31,7 @@ async function activeTab() {
 }
 async function onMessage(message, sender) {
   // Content scripts and websites cannot invoke privileged container/storage/network actions.
-  const allowedPages = ['popup.html', 'settings.html'].map(page => browser.runtime.getURL(page));
+  const allowedPages = ['popup.html', 'settings.html', 'characters.html'].map(page => browser.runtime.getURL(page));
   if (sender.id !== browser.runtime.id || !allowedPages.includes(sender.url)) throw new Error('unauthorized');
   switch (message.type) {
     case 'settings': return readSettings();

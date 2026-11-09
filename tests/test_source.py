@@ -16,6 +16,17 @@ def load(name):
 
 
 class SourceSafetyTests(unittest.TestCase):
+    def test_independent_app_identity_keeps_desktop_startup_registration(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / 'BrowserComponents.manifest'
+            path.write_text('#   browser:        {ec8030f7-c20a-464f-9b0e-13a3a9e97384}\ncategory app-startup nsBrowserGlue @mozilla.org/browser/browserglue;1 application={ec8030f7-c20a-464f-9b0e-13a3a9e97384} application={aa3c5121-dab2-40e2-81ca-7ea25febc110}\n')
+            patch = load('prepare_source').replace_app_startup_identity
+            patch(path); patch(path)
+            registration = path.read_text().splitlines()[1]
+            self.assertIn('application={75450dd9-387d-4289-8b23-7ad6609fa530}', registration)
+            self.assertIn('application={aa3c5121-dab2-40e2-81ca-7ea25febc110}', registration)
+            self.assertNotIn('application={ec8030f7-', registration)
+
     def test_corrupted_source_is_rejected(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / 'source.tar.xz'
@@ -49,6 +60,18 @@ class SourceSafetyTests(unittest.TestCase):
             self.assertEqual(text.count('id="aionLayoutGroup"'), 1)
             self.assertIn('updated', text)
             self.assertNotIn('>new<', text)
+
+    def test_legacy_preferences_move_outside_inert_general_template(self):
+        with tempfile.TemporaryDirectory() as directory:
+            source = load('prepare_source')
+            legacy = Path(directory) / 'main.inc.xhtml'
+            legacy.write_text('<html:template id="template-paneGeneral">\n<!-- Fire Axolotl preferences begin -->\n<groupbox id="aionLayoutGroup"/>\n<!-- Fire Axolotl preferences end -->\n<!-- Browser layout -->\n</html:template>')
+            source.remove_legacy_preferences(legacy)
+            target = Path(directory) / 'preferences.xhtml'
+            target.write_text('<vbox id="mainPrefPane">\n#include main.inc.xhtml\n</vbox>')
+            source.replace_preferences_block(target, '<groupbox id="aionLayoutGroup"/>', '#include main.inc.xhtml')
+            self.assertNotIn('aionLayoutGroup', legacy.read_text())
+            self.assertEqual(target.read_text().count('aionLayoutGroup'), 1)
 
 
 if __name__ == '__main__':

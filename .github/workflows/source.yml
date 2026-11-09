@@ -17,3 +17,5 @@ jobs:
         run: |
           python3 scripts/prepare_source.py work/upstream/firefox-153.6.0
           python3 scripts/prepare_source.py work/upstream/firefox-153.6.0
+      - name: Rebuild distributed uBlock source and compare package contents
+        run: python3 scripts/verify_component_source.py

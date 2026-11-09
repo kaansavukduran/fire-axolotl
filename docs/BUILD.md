@@ -11,10 +11,20 @@ The source fetcher verifies SHA-512 and refuses non-empty destinations. Review s
 `scripts/prepare_source.py`:
 
 1. Beklenen `version_display.txt` sürümünü doğrular. / Verifies the expected version.
-2. Aion modülünü Firefox'un `builtin-addons` kaynaklarına ekler. / Adds Aion through the native built-in add-on resource registry.
+2. Aion ve doğrulanmış uBlock Origin modüllerini `builtin-addons` kaynaklarına ekler; uBO'nun tam ilgili kaynaklarını dağıtım dizinine koyar. / Adds Aion and verified uBO through the native registry and ships uBO's corresponding source.
 3. Unofficial markalamadan bağımsız Fire Axolotl varlıklarını üretir; Mozilla kaynak telif bildirimlerini korur. / Creates independent branding while retaining upstream source notices.
 4. Ayrı uygulama kimliği, adı, profil yolu ve uzak süreç adı kullanır. / Uses a separate app identity, profile path and remoting name.
-5. Ayarlar → Genel bölümüne üst/sol/sağ sekme seçimini ekler. / Adds top/left/right tabs to Settings → General.
+5. Yeni ayarlar düzeninde Ayarlar → Görünüm, eski düzende Genel bölümüne sekme, font, site rengi ve araç çubuğu kontrollerini ekler. / Adds controls to Appearance in redesigned settings, General in legacy settings.
+6. Etkin ilkelerle proxy kaynağı okunurken oluşan upstream sözlük/dizi hatasını düzeltir. / Fixes upstream policy-dictionary handling in ServiceRequest proxy-source detection.
+7. BrowserGlue başlangıç kaydını yeni uygulama kimliğine bağlar; uzaktan otomasyonun tarayıcı ailesi denetiminin kendi kimliğimizi tanımasını sağlar. Başka Gecko uygulamalarına ait kontroller korunur. / Updates BrowserGlue's app-startup guard and remote browser-family recognition for the independent application ID.
+
+`Native Linux developer build (not a stable release)` adlı elle başlatılan Actions akışı; tam kaynak derlemesi, ayrı profilde `tests/native_smoke.py`, gerçek paket denetimi ve bütün uygulanmış motor kaynaklarının arşivlenmesini birleştirir. Yerel test geçmezse tarayıcı paketi yüklemez. Akışın depoda bulunması, başarılı bir derleme veya yayımlanmış sürüm anlamına gelmez. / The manual native workflow builds, tests and packages the actual fork with full applied source. A workflow definition is not evidence of a successful build.
+
+```sh
+AION_NATIVE_BINARY=/path/to/obj-fire-axolotl/dist/bin/fire-axolotl AION_GECKODRIVER=/path/to/geckodriver python3 tests/native_smoke.py
+python3 scripts/verify_native_package.py /path/to/fire-axolotl-version.en-US.linux-x86_64.tar.xz
+python3 scripts/archive_applied_source.py /path/to/prepared-source dist/fire-axolotl-applied-source.tar.zst
+```
 
 Standart `mach bootstrap`, `mach build`, `mach run` ve `mach package` girişleri kullanılır. `--disable-updater`, imzalama anahtarları ve gerçek güncelleme hizmeti hazır olmadığı için geliştirme yapılandırmasındadır. Bu yapılandırmayla üretilen dosya kararlı günlük kullanım paketi olarak yayımlanmamalıdır. / The development config disables the updater until independent signing and update hosting exist; do not publish that build as a stable daily-use browser.
 
@@ -23,7 +33,7 @@ Standart `mach bootstrap`, `mach build`, `mach run` ve `mach package` girişleri
 | Platform | Hedef / Target | Durum / Status |
 | --- | --- | --- |
 | Windows x64 / ARM64 | İmzalı Setup.exe / signed Setup.exe | Henüz derlenmedi, temiz kurulum ve imzalama bekliyor. / Build, signing and clean-install validation pending. |
-| Linux x64 / ARM64 | AppImage, mümkünse .deb / AppImage and preferably .deb | Kaynak yapılandırması üzerinde çalışılıyor; AppImage/.deb henüz üretilmedi. / Source configuration in progress; installers not produced. |
+| Linux x64 / ARM64 | AppImage, mümkünse .deb / AppImage and preferably .deb | x64 tam kaynak derlemesi, `.tar.xz` ve arşivden açılış geçti. AppImage/.deb ve ARM64 henüz üretilmedi. / x64 source build, tar package and extracted-package startup passed; AppImage/.deb and ARM64 pending. |
 | macOS Apple Silicon / Intel | Developer ID imzalı ve notarized .dmg / signed, notarized .dmg | macOS derleyici ve Apple imzalama hesabı gerekli. / macOS build host and Apple signing required. |
 | Android | Ayrı kimlik ve kalıcı imzayla APK / separate identity and stable signing | GeckoView tabanlı mobil ön yüz henüz oluşturulmadı. / GeckoView mobile front end pending. |
 | iPhone | App Store / TestFlight | iOS ön yüz, uygun motor/dağıtım koşulları, Apple hesabı ve inceleme gerekli. Masaüstü kaynağı doğrudan iPhone paketi değildir. / Requires an iOS front end, applicable engine/distribution terms, Apple account and review. |

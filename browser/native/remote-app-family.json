@@ -1,0 +1,5 @@
+{
+  "file": "remote/shared/AppInfo.sys.mjs",
+  "old": "return Services.appinfo.ID == ID_FIREFOX;",
+  "new": "return Services.appinfo.ID == ID_FIREFOX || Services.appinfo.ID == \"{75450dd9-387d-4289-8b23-7ad6609fa530}\";"
+}

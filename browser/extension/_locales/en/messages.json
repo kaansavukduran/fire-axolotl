@@ -430,5 +430,119 @@
   },
   "browserFontHelp": {
     "message": "Applies to toolbars, tab labels and native settings. Website fonts are preserved. Aion panel text settings can be adjusted separately."
+  },
+  "imageSearch": {
+    "message": "Search by image"
+  },
+  "enableImageSearch": {
+    "message": "Show the image context menu"
+  },
+  "imageSearchHelp": {
+    "message": "Right-click an image and choose Google Lens, Bing, TinEye or Yandex. The image URL is sent to your chosen search service only when you select it."
+  },
+  "characterTitle": {
+    "message": "Companions"
+  },
+  "characterScope": {
+    "message": "An optional local sidebar. It does not add characters to webpages or send character files to a server."
+  },
+  "characterOpen": {
+    "message": "Open companion sidebar"
+  },
+  "characterChoose": {
+    "message": "Choose character"
+  },
+  "characterActivity": {
+    "message": "Animation"
+  },
+  "characterPreview": {
+    "message": "Frame animation of the selected character"
+  },
+  "characterPause": {
+    "message": "Pause animation"
+  },
+  "characterPlay": {
+    "message": "Play animation"
+  },
+  "characterWave": {
+    "message": "Wave"
+  },
+  "characterReduced": {
+    "message": "Reduced motion is enabled; the character stays still."
+  },
+  "characterActivity-idle": {
+    "message": "Resting"
+  },
+  "characterActivity-read": {
+    "message": "Reading"
+  },
+  "characterActivity-work": {
+    "message": "Working"
+  },
+  "characterActivity-wave": {
+    "message": "Waving"
+  },
+  "characterAdd": {
+    "message": "Add your own character"
+  },
+  "characterImportHelp": {
+    "message": "Choose a PNG image or an exported character file. Up to 8 custom characters stay in this profile. Use the separate export button to back up a character."
+  },
+  "characterName": {
+    "message": "Character name"
+  },
+  "characterFile": {
+    "message": "Choose file"
+  },
+  "characterGrid": {
+    "message": "Sprite animation settings"
+  },
+  "characterGridHelp": {
+    "message": "For a still image, leave columns and rows at 1. For a sprite sheet, enter its columns/rows, the row to play and its frame count. PNG files can be up to 6 MB."
+  },
+  "characterColumns": {
+    "message": "Columns"
+  },
+  "characterRows": {
+    "message": "Rows"
+  },
+  "characterRow": {
+    "message": "Row to play"
+  },
+  "characterFrames": {
+    "message": "Frame count"
+  },
+  "characterFps": {
+    "message": "Speed (frames/second)"
+  },
+  "characterImport": {
+    "message": "Save and select character"
+  },
+  "characterExport": {
+    "message": "Export character"
+  },
+  "characterDelete": {
+    "message": "Remove this character"
+  },
+  "characterDeleteConfirm": {
+    "message": "Remove this custom character from this profile?"
+  },
+  "characterTooLarge": {
+    "message": "Choose a smaller PNG: up to 6 MB, 8192 pixels per side and 16 million pixels total."
+  },
+  "characterInvalid": {
+    "message": "Choose a valid PNG or Fire Axolotl character backup."
+  },
+  "characterAnimatedPNG": {
+    "message": "This file is APNG. Use a regular PNG sprite sheet so animation can be paused."
+  },
+  "characterGridInvalid": {
+    "message": "Check the sprite grid: use 1–16 columns/rows, no more frames than columns, and equally divisible image dimensions."
+  },
+  "characterStorageFailed": {
+    "message": "The character could not be loaded or saved. Reopen the panel and try again."
+  },
+  "characterLibraryFull": {
+    "message": "The 8-character limit is reached. Export and remove one before adding another."
   }
 }

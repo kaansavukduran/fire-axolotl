@@ -1,55 +1,52 @@
 # Fire Axolotl devir noktası / Handoff
 
-- Depo / Repository: https://github.com/kaansavukduran/fire-axolotl
-- Dal / Branch: `main`
-- Doğrulanan kod kaydı / Validated code commit: `3b3282293224446e38c5f4c5fc484f978499cd6a`
-- Tarih / Date: 2026-11-09, Europe/Istanbul
-- Ürün aşaması / Product stage: geliştirici önizlemesi; kararlı tarayıcı veya kurulum dosyası henüz yayımlanmadı. / Developer preview; no stable browser or installers published.
+- Depo: https://github.com/kaansavukduran/fire-axolotl
+- Dal: `main`
+- Tarih: 2026-11-09, Europe/Istanbul
+- Aşama: gerçek bağımsız Linux x64 geliştirici derlemesi açılıyor; günlük kullanım için kararlı sürüm yok.
+- Bu dosyayı içeren commit, ilgili kaynak kaydıdır. Güncel kullanıcı isteği sırası [docs/ROADMAP.md](docs/ROADMAP.md) içinde.
 
-## Kapsam / Scope
+## Kapsam
 
-Kullanıcı, ücretsiz dağıtılacak gerçek bir Firefox forku istiyor. Aion aksolotl karakterli özgün marka, Türkçe/İngilizce, seçilebilir üst/sol/sağ sekmeler, sevdiği eklentilerin kurulum gerektirmeyen karşılıkları ve Firefox benzeri güvenli güncelleme temel hedefler. Tam eklenti eşlemesi `docs/FEATURES.md` içinde. Aion referanslarının ChatGPT ile üretildiği kullanıcı tarafından doğrulandı. / Free Firefox fork, independent Aion identity, bilingual UI, selectable tab placement, built-in equivalents of the requested tools and secure browser updates.
+Ücretsiz gerçek Firefox forku; Aion markası, gömülü araçlar, koyu tarayıcı, kullanıcı seçimine bağlı üst/sol/sağ sekmeler, bağımsız site tercihi ve fontlar, diller/Sync, güvenli güncelleme. Yeni profilde sekmeler **üstte** olmalı. Seçilmiş sol/sağ düzen başlangıçta sıfırlanmaz.
 
-## Yapılanlar ve doğrulama / Implemented and validated
+Yanlışlıkla başka uygulamaya ait spor/beslenme/RPG menüsü istekleri durduruldu; o projede kod değişikliği veya push yapılmadı. Kullanıcı yalnızca uygun karakter fikrinin tarayıcıya alınmasını istedi.
 
-Firefox ESR `153.6.0esr` kaynak/hash pini, kaynak indirme ve hazırlama betikleri; Aion yerleşik modülü; kalıcı/geçici konteynerler; hız ve çözünürlük; yerel çift altyazı; açık eylemle isteğe bağlı HTTPS çeviri; kelime defteri; görünüm/erişilebilirlik; yedek; isteğe bağlı ilerleme; yerel sekme konumu kontrolü; araç çubuğu düzenleyicisi; OpenDyslexic; varsayılan koyu tema; site CSS’ine müdahale etmeyen bağımsız renk tercihi; telemetri/sponsor kapatma ilkeleri; CI, gerçek Firefox test akışı ve günlük ESR tazelik kontrolü.
+## Uygulanan ve doğrulanan
 
-`npm run check`, 16 birim/gerileme testi, 21 gerçek Firefox arayüz/entegrasyon senaryosu ve `mach configure` geçti. Ayrıntılı kanıt ve sınırlar `docs/VALIDATION.md` içinde. Testler süreç güvenliğini veya TLS doğrulamasını kapatmadı. / Checks, 16 unit/regression tests, 21 real-Gecko interface/integration scenarios and native configure passed; see the validation document for limits.
+Firefox ESR 153.6.0esr tam kaynak derlemesi tamamlandı. Ayrı `FireAxolotl` kimliği, BrowserGlue başlangıç kaydı ve WebDriver tarayıcı ailesi tanıması düzeltildi. Etkin ilke sözlüğünü dizi sayan upstream ServiceRequest hatası düzeltildi. Yerel ayarlar Görünüm'e yerleştirildi; Hesap/Sync'e taşmıyor.
 
-## Çalışma alanındaki tam derleme / Long native build in the workspace
+Aion ve resmî uBlock Origin 1.76.0 native yerleşik olarak otomatik yükleniyor. uBO sürüm/hash/Git alt kaynakları sabit, GPL tam ilgili kaynak arşivi mevcut; yeniden üretimde 665 dosya eşleşti. Konteynerler, video hızı/çözünürlüğü, VTT/SRT çift altyazı ve video öğesinin kendi tam ekranında çizim, seçili metin çeviri akışı, görsel sağ tık araması, kelime defteri, görünüm/font/ölçek, isteğe bağlı ilerleme/yedek var.
 
-Bu devir notu yazılırken tam derleme devam ediyordu. / Full source compilation was still running when this note was written.
+İsteğe bağlı karakter yan panelinde Aion/kuzu/kurt/baykuş bütün gövde resim dizileri var. Kullanıcı yerel PNG kare şeridi ekleyebilir, durdurabilir, silebilir ve ayrı karakter yedeğini geri alabilir. İşletim sisteminin hareket azaltma tercihi korunur. ChatGPT Pet koleksiyonundaki kullanıcıya ait Aion yalnızca okundu; koleksiyon değiştirilmedi.
 
-Arayüz gösterimi sırasında yeniden kontrol edildi: bağımsız çalıştırılabilir dosya henüz oluşmamıştı ve derleme devam ediyordu. `docs/UI_PREVIEW.md` içindeki yeni ekranlar, geçici Aion modülü ve yerel kaynak kontrolü test düzeneğinden alınmıştır; tamamlanmış ürün olarak gösterilmemelidir. / Rechecked during UI preview capture: no independent executable yet; screenshots document the working test preview, not a finished product.
+Kontroller: `npm run check`; 19 Node + 9 Python testi; gerçek derlenmiş forkta 11 native smoke + 34 entegrasyon + 4 süreç yeniden başlatma senaryosu; ayrıca upstream test düzeneğinde 34 senaryo geçti. Ayrıntılar [docs/VALIDATION.md](docs/VALIDATION.md). Otomasyonun güvenlik hizmetlerini kapatan toplu tercihleri uygulanmaz; yalnızca dosya girdisi için gereken Marionette tercihi ayrı test profillerinde açılır.
 
-- Kaynak / Source: `/workspace/work/upstream-source/firefox-153.6.0`
-- Log: `/workspace/work/mach-build.log`
-- Configure log: `/workspace/work/mach-configure.log`
-- Araçlar / Toolchains: `/workspace/work/mozbuild`, `/workspace/work/cargo`, `/workspace/work/rustup`
-- İlk build komut oturumu / initial command session: `86227`
-- Derleme, Aion modülünün son küçük düzeltmelerinden önce hazırlanmış kopyayla başladı. Tam derleme bittiğinde **güncel kaynak katmanını yeniden uygula ve artımlı derle**. / The initial prepared tree predates the last companion fixes. Refresh the overlay and rebuild incrementally before validating or packaging.
+## Çalışma alanı
 
-```sh
-cd /workspace/fire-axolotl
-python3 scripts/prepare_source.py /workspace/work/upstream-source/firefox-153.6.0
-cd /workspace/work/upstream-source/firefox-153.6.0
-PATH=/workspace/work/cargo/bin:$PATH CARGO_HOME=/workspace/work/cargo RUSTUP_HOME=/workspace/work/rustup MOZBUILD_STATE_PATH=/workspace/work/mozbuild XDG_CACHE_HOME=/workspace/work/cache python3 mach build
-```
+- Kaynak: `/workspace/work/upstream-source/firefox-153.6.0`
+- Native ikili: `obj-fire-axolotl/dist/bin/fire-axolotl`
+- İlk tam derleme logu: `/workspace/work/mach-build.log` (175m57s, başarılı)
+- Son native derleme logu: `/workspace/work/mach-remote-family-build.log`
+- Paket logu: `/workspace/work/mach-package-with-policy.log`
+- Native raporlar: depo `work/native-test-artifacts/`, `work/native-e2e-artifacts/`
+- Otomasyon profilleri: depo `work/native-test-profiles/`; bunları yayımlama.
 
-Devam etmeden önce mevcut süreç ve son log durumunu incele; aynı derlemeyi eşzamanlı ikinci kez başlatma. / Inspect the live process/log first; do not start a competing build.
+Önemli paketleme düzeltmesi: upstream, `distribution/*` dosyalarını yalnızca BUILT_BY_MOZILLA için paketliyordu. Kendi paket manifestimiz gizlilik ilkesini ve bileşen kaynaklarını açıkça dahil eder. Çalışma dizininde ilkenin bulunması tek başına dağıtım arşivinin doğru olduğunu kanıtlamaz. `scripts/verify_native_package.py` bunu denetler.
 
-## Son kapsam ekleri / Latest scope additions
+Kaynak katmanı veya commit değişince makbuzu yenile ve yalnızca gerekli artımlı derlemeyi çalıştır. Aynı kaynak ağacında rakip build başlatma. Tam uygulanmış kaynak arşivi, nesne/cache dizinlerini dışarıda bırakır. Eksik/yarım arşivi dağıtma.
 
-Firefox’un bütün dilleri ve yerleşik özellikleri hedeflenir; yeni Aion metinleri şu an Türkçe/İngilizcedir. Gerçek Mozilla hesabıyla giriş/Sync ve bütün dil paketleri henüz doğrulanmadı. Yerel gizlilik ilkesi telemetriyi, çalışmaları, reklam ilişkilendirmesini ve sponsorlu önerileri kapatırken hesap/Sync yeteneğini ve güvenlik hizmetlerini korur. / Target all Firefox languages/features; new strings remain TR/EN and real account/language-pack validation is pending.
+## Kalan sıradaki işler
 
-İlk gönderimin yedeği doğrulanan özel Drive klasöründedir: https://drive.google.com/drive/folders/1hQIvdaWDiM0I1c77mkUEhYhdOCqTbdmw . Her yeni başarılı push için ayrı commit eşleşmeli ZIP/bundle/makbuz ekle. / Preserve prior backups and add a fresh commit-matched backup after each successful push.
+1. Gerçek Linux paketini arşivden çıkartıp yeni profilde test et; tam uygulanmış kaynak ve hash makbuzunu aynı geliştirici dağıtımıyla koru.
+2. Yerelleştirme: bütün Firefox dilleri hedeflenir; mevcut native deneme paketi en-US, Aion TR/EN. Dil paketlerini ve çalışma anında değiştirmeyi bağımsız kimlikle doğrula.
+3. Mozilla hesabı/Sync, Safe Browsing ve CDM hizmet erişimi: tercih/ilke testinden ayrı gerçek davranış denetimi gerekli. Ortamda bazı Mozilla ağ istekleri başarısız; çalışıyor varsayma.
+4. Projeye ait imzalı güncelleme hizmeti, MAR sertifikaları, kanal/mimari, iki gerçek sürümle veri koruma ve bozuk imza/kesik indirme testleri. `--disable-updater` ile kararlı sürüm çıkarma.
+5. [docs/FEATURES.md](docs/FEATURES.md) açıklarını sırayla tamamla. Bitwarden/DeepL eşdeğerliği, Netflix kalite, tüm iframe'ler ve QR henüz tamamlanmış değildir.
+6. Diğer platformlar ve bağımsız güvenlik/erişilebilirlik incelemesi. Sahte Setup.exe, .dmg, APK veya iPhone paketi üretme.
 
-## Öncelikli sonraki işler / Next priorities
+## Git ve yedek
 
-1. Tam derlemeyi tamamla, güncel modülü yeniden paketle, gerçek bağımsız tarayıcıyı yeni Fire Axolotl profilinden aç. Yerleşik modülün kullanıcı kurulumu olmadan yüklenmesini doğrula. / Finish native build and verify built-in loading in a fresh, separate profile.
-2. Uygulama kimliğini, markalamanın bütün platform varlıklarını ve tam Türkçe tarayıcı dil paketlemesini doğrula. / Verify identity, all branding assets and full Turkish browser localization.
-3. Projeye ait imzalı güncelleme altyapısını kur; iki gerçek pakette veri koruyarak yükseltme testi yap. Geliştirme `.mozconfig` dosyasındaki kapalı güncelleyiciyle kararlı sürüm yayımlama. / Implement signed updates and a real upgrade test; no stable release with the development updater disabled.
-4. Eklenti eşlemesindeki eksikleri sırayla tamamla. uBlock/Bitwarden veya diğer kodlar alınmadan lisans/sürüm/özet envanterini güncelle. Netflix kalite/DRM veya DeepL eşdeğerliğini uygulanmış gibi gösterme. / Complete mapped gaps with provenance and licensing; do not claim unsupported integrations.
-5. Windows Setup.exe, Linux AppImage/.deb, macOS imzalı/notarized .dmg, Android imzalı APK ve iPhone TestFlight/App Store akışlarını doğrula. Henüz hiçbiri hazır değil. / Validate all platform installers and store flows; none are ready yet.
+Her başarılı push sonrası `python3 scripts/backup.py`: kaynak ZIP, bütün erişilebilir Git geçmişi bundle'ı ve UTC/İstanbul tarihli commit makbuzu. Kullanıcının özel proje klasörüne yükle; geri indirip SHA-256, ZIP CRC ve git bundle doğrula. Önceki yedekleri koru; gizli anahtarları dahil etme.
 
-Her başarılı push sonrası `python3 scripts/backup.py` ile kaynak ZIP, bütün erişilebilir Git geçmişi ve commit makbuzu oluştur; kullanıcının Drive hedefindeki `fire-axolotl` klasörüne yükleyip doğrula. Özel anahtarları yedekleme. / Back up every successful push to the user's private Drive destination, excluding private keys.
+Hedef: https://drive.google.com/drive/folders/1hQIvdaWDiM0I1c77mkUEhYhdOCqTbdmw (ebeveyn `1cZxRqTob2e53E6ilMkND782KhIwXnMVJ`). Yalnızca sahip izni ve paylaşılmamış durum yeniden kontrol edildi.

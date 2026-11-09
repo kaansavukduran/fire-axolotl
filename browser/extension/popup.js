@@ -35,6 +35,7 @@ async function fileCues(id) {
   await UI.init(); await refresh(); await containers();
   document.addEventListener('aion-settings', refresh);
   action('settings', () => browser.runtime.openOptionsPage());
+  action('open-characters', () => browser.sidebarAction.open());
   $('container-form').addEventListener('submit', event => {event.preventDefault(); UI.run(async () => {
     const identity = await send({type: 'createContainer', name: $('container-name').value});
     $('container-name').value = ''; await containers(); $('container').value = identity.cookieStoreId; UI.status('created');

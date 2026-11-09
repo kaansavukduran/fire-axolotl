@@ -35,7 +35,7 @@ globalThis.UI = {
     document.querySelectorAll('[data-i18n]').forEach(el => {el.textContent = this.t(el.dataset.i18n);});
     document.querySelectorAll('[data-label]').forEach(el => {el.setAttribute('aria-label', this.t(el.dataset.label));});
     document.querySelectorAll('[data-placeholder]').forEach(el => {el.placeholder = this.t(el.dataset.placeholder);});
-    document.title = `Fire Axolotl · ${this.t(document.body.classList.contains('settings') ? 'settings' : 'companion')}`;
+    document.title = `Fire Axolotl · ${this.t(document.body.classList.contains('settings') ? 'settings' : document.body.classList.contains('characters') ? 'characterTitle' : 'companion')}`;
   },
   status(key, error = false) {
     const el = document.getElementById('status');

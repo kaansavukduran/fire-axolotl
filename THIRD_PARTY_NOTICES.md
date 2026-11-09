@@ -30,4 +30,12 @@ The project source license applies to the repository's original Aion artwork to 
 
 Bitwarden, DeepL, DuckDuckGo, Enhancer for YouTube, Firefox Multi-Account Containers, Global Speed, Netflix 1080p UA, Search by Image, Temporary Containers, uBlock Origin, Dark Reader and QR Code identify existing tools from a user-supplied screenshot. Their code, icons and store screenshots have not been copied into the repository. Mentioning them does not imply affiliation or endorsement.
 
-Any future reused component requires a recorded source version, license compatibility review, retained notices and appropriate source availability. An extension being free to download does not establish that its code can be redistributed.
+## uBlock Origin
+
+uBlock Origin 1.76.0, Copyright Raymond Hill and contributors, GPL-3.0-or-later. The unmodified official signed Firefox package is fetched and hash-verified at build time, separately from the MPL-licensed Aion companion. `components.json` pins its package, source, submodules and uAssets revisions. The native distribution includes complete corresponding source and retained component/list/library/font notices in `distribution/sources/`. See [COMPONENTS.md](docs/COMPONENTS.md) for reproduction and network/permission details. Its authors do not endorse Fire Axolotl.
+
+## Companion artwork
+
+The owner explicitly authorized using their existing custom Aion ChatGPT Pet and generating matching cartoon companions for this browser. The Aion PNG is unchanged; the lamb, wolf and owl frames were generated from the owner's character references, then registered and encoded without drawing procedural bodies. Source/packaged hashes and transformations are in `browser/extension/characters/PROVENANCE.json`. Built-in ChatGPT pet artwork such as Dot is not bundled. The artwork licensing limits described above also apply to these generated frames.
+
+Future reused components require a recorded source version, license compatibility review, retained notices and appropriate source availability. Free download alone does not establish redistribution rights.

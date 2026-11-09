@@ -1,33 +1,39 @@
-# Çalışan arayüz önizlemesi / Running interface preview
+# Derlenen tarayıcının arayüzü / Compiled browser interface
 
-2026-11-09. Bu ekran görüntüleri, Firefox ESR 153.6.0esr üzerinde çalışan gerçek Aion modülünden ve test düzeneğine eklenen yerel ayar kontrollerinden alındı. Bağımsız Fire Axolotl motor derlemesi henüz tamamlanmadı ve kurulabilir tarayıcı sürümü yayımlanmadı. Firefox adlarının veya İngilizce yerleşik metinlerin göründüğü alanlar bu test ortamına aittir. Görseller, bağımsız tarayıcının hazır olduğunun kanıtı olarak sunulmaz.
+2026-11-09. Bu yeni görüntüler Firefox ESR 153.6.0esr kaynaklarından derlenen **Fire Axolotl** çalıştırılarak çekildi. Aion ve uBlock Origin kullanıcı kurulumu olmadan yerleşik yükleniyor. Yerel ayar kontrolleri derlemeye dahildir; görüntüler için ürün kodu enjekte edilmedi.
 
-These screenshots show the real Aion companion running on Firefox ESR 153.6.0esr and native source controls injected through the test harness. The independent Fire Axolotl build is unfinished and no browser installer has been released. Remaining Firefox names and English native strings belong to the test runtime.
+These images come from the independently compiled Fire Axolotl, with packaged native controls and built-in modules, rather than a mock-up or temporary companion installation.
 
-## Üst sekmeler ve görünüm / Top tabs and appearance
+Bu hâlâ geliştirici önizlemesidir. Güvenli otomatik güncelleme, bütün diller, gerçek hesapla Sync ve diğer platform paketleri tamamlanmadı. Yerleşik metinler bu derlemede İngilizce; Aion Türkçe/İngilizce seçilebilir. Adres çubuğundaki çizgili işaret otomasyon oturumunun göstergesidir. Seçilmiş büyük yazı ve OpenDyslexic ürünün varsayılanı değildir.
 
-Koyu tema, arayüz ölçeği, bağımsız yazı boyutu ve yazı tipi seçimi. / Dark theme, interface scale, independent text size and font choice.
+Developer preview: signed updates, complete localization, real-account Sync and other platforms remain pending. The striped address field marks automation; enlarged text and OpenDyslexic in some images are selected test settings, not defaults.
 
-![Üst sekmeler ve koyu görünüm ayarları](screenshots/preview-01-ust-sekmeler-ve-gorunum.png)
+## Varsayılan üst sekmeler / Default top tabs
 
-## Solda sekmeler / Tabs on the left
+Yeni profilde koyu tema ve üst sekmeler. Görünüm bölümünde sekme konumu, araç çubuğu düzenleyicisi, sitelere bildirilen renk tercihi ve tarayıcı fontu bulunur.
 
-![Soldaki dikey sekmeler](screenshots/preview-02-sol-sekmeler.png)
+![Derlenen Fire Axolotl ve yerel ayarlar](screenshots/native-01-top-tabs.png)
 
-## Sağda sekmeler / Tabs on the right
+## İsteğe bağlı sol veya sağ sekmeler / Optional left or right tabs
 
-![Sağdaki dikey sekmeler](screenshots/preview-03-sag-sekmeler.png)
+Seçim tam yeniden başlatmada korunur. / The chosen layout survives a full browser restart.
 
-## Sekme ve site ayarları / Tab and website controls
+![Solda sekmeler](screenshots/native-02-left-tabs.png)
 
-Yerel kaynak kontrolü: sekme konumu, araç çubuğu düzenleyicisi, sitelere bildirilen renk tercihi ve tarayıcı arayüzü yazı tipi. / Native source control: tab placement, toolbar editor, website color preference and browser interface font.
+![Sağda sekmeler](screenshots/native-03-right-tabs.png)
 
-![Yerel ayar kontrolünün test görünümü](screenshots/preview-04-sekme-ve-site-ayarlari.png)
+## Karakterlerin çizilmiş animasyon kareleri / Whole-character animation frames
 
-## Aion paneli / Aion panel
+Aion, kuzu, kurt ve baykuş kendi resim dizilerinden oynatılır. Görüntü, karakter sayfasındaki kitap okuma karesidir. İsteğe bağlı yan panel, kendi PNG kare şeridini ekleme, duraklatma ve karakter yedeği de bulunur.
 
-Konteynerler ve video kumandası. Bu görüntüde panel ayrı sekmede açılmıştır. Konteyner adları yeni test profilinde oluşturulmuş örneklerdir. / Containers and video controls, with the panel opened in a separate tab. Container names are examples created in a fresh test profile.
+![Baykuş okuma animasyonunun gerçek karesi](screenshots/native-04-companion-frames.png)
 
-![Aion konteyner ve video paneli](screenshots/preview-05-aion-konteyner-video-paneli.png)
+![Dar ekranda İngilizce karakter kontrolleri, yüzde 200 ölçek](screenshots/native-06-companions-200.png)
 
-Geliştirici modülünü denemek için [README adımlarını](../README.md#geliştirici-önizlemesini-dene--try-the-developer-companion) kullan. Bu, bağımsız tarayıcı kurulumunu veya imzalı güncellemeyi sağlamaz. / See the README for temporary companion installation; it does not install an independent browser or signed updater.
+## Videonun kendi tam ekranında çift altyazı / Dual captions in native video fullscreen
+
+Yerel test videosu ve altyazı dosyaları kullanıldı. Bu görüntü Netflix veya bütün oynatıcılarla uyumluluk iddiası değildir. / Original local video/subtitle fixtures; streaming-service compatibility remains separate.
+
+![Gerçek video tam ekranında iki altyazı](screenshots/native-05-fullscreen-captions.png)
+
+Doğrulama ve kalan işler: [VALIDATION.md](VALIDATION.md), [FEATURES.md](FEATURES.md). Eski `preview-*` görselleri önceki upstream Firefox test düzeneğinin tarihsel kayıtlarıdır.

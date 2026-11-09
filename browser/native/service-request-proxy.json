@@ -1,0 +1,5 @@
+{
+  "file": "toolkit/modules/ServiceRequest.sys.mjs",
+  "old": "    let policies = Services.policies.getActivePolicies()?.filter(p => p.Proxy);\n    if (policies?.length) {",
+  "new": "    // getActivePolicies returns a policy-name dictionary, not an array.\n    let proxyPolicy = Services.policies.getActivePolicies()?.Proxy;\n    if (proxyPolicy) {"
+}

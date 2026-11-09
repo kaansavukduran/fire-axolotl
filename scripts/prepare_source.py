@@ -6,9 +6,11 @@ import json
 import re
 from pathlib import Path
 import shutil
+import subprocess
 import sys
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from package_extension import package
+from fetch_components import fetch_all, PIN as UBLOCK_PIN, CACHE as COMPONENT_CACHE, sha256
 
 ROOT = Path(__file__).resolve().parents[1]
 MARKER = '# Fire Axolotl built-in companion\nDIRS += ["aion"]\n'
@@ -23,7 +25,7 @@ def replace_once(path, old, new):
     path.write_text(text.replace(old, new, 1))
 
 
-def replace_preferences_block(path, markup):
+def replace_preferences_block(path, markup, anchor='<!-- Browser layout -->'):
     begin = '<!-- Fire Axolotl preferences begin -->'
     end = '<!-- Fire Axolotl preferences end -->'
     text = path.read_text()
@@ -37,9 +39,59 @@ def replace_preferences_block(path, markup):
         return
     # Migrate the initial overlay so adding controls never creates duplicate IDs.
     text, count = re.subn(r'<groupbox id="aionLayoutGroup"[\s\S]*?</groupbox>\s*', '', text)
-    if count > 1 or text.count('<!-- Browser layout -->') != 1:
+    if count > 1 or text.count(anchor) != 1:
         raise ValueError('Unexpected native preferences structure')
-    path.write_text(text.replace('<!-- Browser layout -->', block + '\n<!-- Browser layout -->', 1))
+    path.write_text(text.replace(anchor, block + '\n' + anchor, 1))
+
+
+def remove_legacy_preferences(path):
+    text = path.read_text()
+    text = re.sub(r'<!-- Fire Axolotl preferences begin -->[\s\S]*?<!-- Fire Axolotl preferences end -->\s*', '', text)
+    text = re.sub(r'<groupbox id="aionLayoutGroup"[\s\S]*?</groupbox>\s*', '', text)
+    path.write_text(text)
+
+
+def replace_app_startup_identity(path):
+    # Keep the application guard; xpcshell must not start the desktop browser.
+    replace_once(path, 'application={ec8030f7-c20a-464f-9b0e-13a3a9e97384}', 'application={75450dd9-387d-4289-8b23-7ad6609fa530}')
+    replace_once(path, '#   browser:        {ec8030f7-c20a-464f-9b0e-13a3a9e97384}', '#   Fire Axolotl:   {75450dd9-387d-4289-8b23-7ad6609fa530}')
+
+
+def embed_ublock(source):
+    import zipfile
+    xpi, corresponding_source = fetch_all()
+    directory = source / 'browser/extensions/ublock-origin'
+    addon = directory / 'addon'
+    if addon.exists():
+        shutil.rmtree(addon)
+    addon.mkdir(parents=True, exist_ok=True)
+    with zipfile.ZipFile(xpi) as archive:
+        archive.extractall(addon)  # fetch_all already validated every path and hash.
+    (directory / 'moz.build').write_text('JAR_MANIFESTS += ["jar.mn"]\n')
+    entries = ['browser.jar:']
+    for item in sorted(addon.iterdir()):
+        suffix = '/**' if item.is_dir() else ''
+        target = item.name + ('/' if item.is_dir() else '')
+        entries.append(f'  builtin-addons/ublock-origin/{target} (addon/{item.name}{suffix})')
+    (directory / 'jar.mn').write_text('\n'.join(entries) + '\n')
+    extensions = source / 'browser/extensions/moz.build'
+    rule = '# Fire Axolotl unmodified uBlock Origin\nDIRS += ["ublock-origin"]\n'
+    if rule not in extensions.read_text():
+        extensions.write_text(extensions.read_text() + '\n' + rule)
+    destination = source / 'browser/app/distribution/sources'
+    destination.mkdir(exist_ok=True)
+    shutil.copyfile(corresponding_source, destination / corresponding_source.name)
+    shutil.copyfile(COMPONENT_CACHE / 'ublock-origin.json', destination / 'ublock-origin.json')
+    with zipfile.ZipFile(xpi) as archive:
+        (destination / 'uBlock-Origin-LICENSE.txt').write_bytes(archive.read('LICENSE.txt'))
+    distribution = destination.parent / 'moz.build'
+    rule = '\n# Fire Axolotl corresponding component source and license\nFINAL_TARGET_FILES.distribution.sources += [\n' + ''.join(f'    "sources/{name}",\n' for name in sorted((p.name for p in destination.iterdir()), key=str.lower)) + ']\n'
+    current = distribution.read_text()
+    begin = '# Fire Axolotl corresponding component source and license'
+    if begin in current:
+        current = re.sub(re.escape(begin) + r'[\s\S]*?\]\n', '', current)
+    distribution.write_text(current.rstrip() + '\n' + rule)
+    return {'id': UBLOCK_PIN['id'], 'version': UBLOCK_PIN['version'], 'sha256': sha256(xpi), 'corresponding_source_sha256': sha256(corresponding_source)}
 
 
 def prepare(source):
@@ -48,6 +100,9 @@ def prepare(source):
     actual = (source / 'browser/config/version_display.txt').read_text().strip()
     if actual != pinned['version']:
         raise ValueError(f'Expected Firefox {pinned["version"]}, found {actual}; review the overlay before updating')
+    for patch_file in ['service-request-proxy.json', 'remote-app-family.json']:
+        patch = json.loads((ROOT / 'browser/native' / patch_file).read_text())
+        replace_once(source / patch['file'], patch['old'], patch['new'])
     extension_dir = source / 'browser/extensions/aion'
     extension_dir.mkdir(exist_ok=True)
     package(extension_dir / 'aion@fire-axolotl.browser.xpi')
@@ -105,12 +160,16 @@ def prepare(source):
     (branding / 'pref/firefox-branding.js').write_text((ROOT / 'browser/preferences/fire-axolotl.js').read_text())
     replace_once(source / 'browser/moz.configure', 'imply_option("MOZ_APP_VENDOR", "Mozilla")', 'imply_option("MOZ_APP_VENDOR", "Fire Axolotl")')
     replace_once(source / 'browser/moz.configure', 'imply_option("MOZ_APP_ID", "{ec8030f7-c20a-464f-9b0e-13a3a9e97384}")', 'imply_option("MOZ_APP_ID", "{75450dd9-387d-4289-8b23-7ad6609fa530}")')
+    replace_app_startup_identity(source / 'browser/components/BrowserComponents.manifest')
     prefs = source / 'browser/components/preferences'
     shutil.copyfile(ROOT / 'browser/native/aion-layout.js', prefs / 'aion-layout.js')
     for locale in ['tr', 'en']:
         shutil.copyfile(ROOT / f'browser/extension/_locales/{locale}/messages.json', prefs / f'aion-{locale}.json')
     replace_once(prefs / 'jar.mn', '   content/browser/preferences/main.js\n', '   content/browser/preferences/main.js\n   content/browser/preferences/aion-layout.js\n   content/browser/preferences/aion-en.json\n   content/browser/preferences/aion-tr.json\n')
-    replace_preferences_block(prefs / 'main.inc.xhtml', (ROOT / 'browser/native/aion-layout.inc.xhtml').read_text())
+    # main.inc is an inert General-pane template in redesigned preferences.
+    # Put our independently categorized group outside that legacy template.
+    remove_legacy_preferences(prefs / 'main.inc.xhtml')
+    replace_preferences_block(prefs / 'preferences.xhtml', (ROOT / 'browser/native/aion-layout.inc.xhtml').read_text(), '#include main.inc.xhtml')
     replace_once(prefs / 'preferences.xhtml', '  <script src="chrome://browser/content/preferences/preferences.js"/>', '  <script src="chrome://browser/content/preferences/preferences.js"/>\n  <script src="chrome://browser/content/preferences/aion-layout.js"/>')
     base = source / 'browser/base'
     for filename in ['aion-chrome.js', 'aion-chrome.css']:
@@ -131,7 +190,15 @@ def prepare(source):
     text = build_file.read_text()
     if policy_rule not in text:
         build_file.write_text(text + policy_rule)
-    receipt = {'upstream': pinned, 'companion_sha256': hashlib.sha256((extension_dir / 'aion@fire-axolotl.browser.xpi').read_bytes()).hexdigest(), 'status': 'source-prepared-not-built'}
+    # Upstream only packages distribution/* for BUILT_BY_MOZILLA. Our native
+    # runtime directory is not enough: retain privacy policy and corresponding
+    # source in independent installer archives as well.
+    package_manifest = source / 'browser/installer/package-manifest.in'
+    package_rule = '\n; Fire Axolotl policy and corresponding component source\n@RESPATH@/distribution/policies.json\n@RESPATH@/distribution/sources/*\n'
+    if package_rule not in package_manifest.read_text():
+        package_manifest.write_text(package_manifest.read_text() + package_rule)
+    ublock = embed_ublock(source)
+    receipt = {'upstream': pinned, 'overlay_commit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(), 'overlay_dirty': bool(subprocess.check_output(['git', 'status', '--porcelain'], cwd=ROOT, text=True).strip()), 'companion_sha256': hashlib.sha256((extension_dir / 'aion@fire-axolotl.browser.xpi').read_bytes()).hexdigest(), 'components': {'ublock-origin': ublock}, 'status': 'source-prepared-not-built'}
     (source / 'fire-axolotl-build.json').write_text(json.dumps(receipt, indent=2) + '\n')
     print(f'Prepared {source}; this is not a compiled browser')
     return source

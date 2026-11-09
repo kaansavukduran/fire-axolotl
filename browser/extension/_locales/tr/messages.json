@@ -430,5 +430,119 @@
   },
   "browserFontHelp": {
     "message": "Araç çubukları, sekme yazıları ve yerel ayarlara uygulanır. Sitelerin yazı tipi korunur. Aion panelinin yazı ayarları ayrıca değiştirilebilir."
+  },
+  "imageSearch": {
+    "message": "Görselle arama"
+  },
+  "enableImageSearch": {
+    "message": "Görsel sağ tık menüsünü göster"
+  },
+  "imageSearchHelp": {
+    "message": "Bir görsele sağ tıklayıp Google Lens, Bing, TinEye veya Yandex’i seç. Görselin adresi yalnızca bu seçimle seçtiğin arama hizmetine gönderilir."
+  },
+  "characterTitle": {
+    "message": "Yol arkadaşları"
+  },
+  "characterScope": {
+    "message": "İstersen açtığın yerel bir yan panel. Sayfalara karakter eklemez; karakter dosyalarını bir sunucuya göndermez."
+  },
+  "characterOpen": {
+    "message": "Karakter panelini aç"
+  },
+  "characterChoose": {
+    "message": "Karakter seç"
+  },
+  "characterActivity": {
+    "message": "Animasyon"
+  },
+  "characterPreview": {
+    "message": "Seçilen karakterin kare animasyonu"
+  },
+  "characterPause": {
+    "message": "Hareketi durdur"
+  },
+  "characterPlay": {
+    "message": "Hareketi oynat"
+  },
+  "characterWave": {
+    "message": "El salla"
+  },
+  "characterReduced": {
+    "message": "Azaltılmış hareket tercihi açık; karakter sabit gösterilir."
+  },
+  "characterActivity-idle": {
+    "message": "Dinleniyor"
+  },
+  "characterActivity-read": {
+    "message": "Kitap okuyor"
+  },
+  "characterActivity-work": {
+    "message": "Çalışıyor"
+  },
+  "characterActivity-wave": {
+    "message": "El sallıyor"
+  },
+  "characterAdd": {
+    "message": "Kendi karakterini ekle"
+  },
+  "characterImportHelp": {
+    "message": "PNG görseli veya daha önce dışa aktardığın karakter dosyasını seç. En fazla 8 özel karakter bu profilde saklanır. Karakter yedeği aşağıdaki dışa aktarma düğmesiyle ayrı alınır."
+  },
+  "characterName": {
+    "message": "Karakter adı"
+  },
+  "characterFile": {
+    "message": "Dosya seç"
+  },
+  "characterGrid": {
+    "message": "Kare animasyonu ayarları"
+  },
+  "characterGridHelp": {
+    "message": "Tek resim için sütun ve satır 1 kalsın. Kare şeridinde sütun/satır sayısını, oynatılacak satırı ve o satırdaki kare sayısını belirt. PNG en fazla 6 MB olabilir."
+  },
+  "characterColumns": {
+    "message": "Sütun"
+  },
+  "characterRows": {
+    "message": "Satır sayısı"
+  },
+  "characterRow": {
+    "message": "Oynatılacak satır"
+  },
+  "characterFrames": {
+    "message": "Kare sayısı"
+  },
+  "characterFps": {
+    "message": "Hız (kare/saniye)"
+  },
+  "characterImport": {
+    "message": "Karakteri kaydet ve seç"
+  },
+  "characterExport": {
+    "message": "Karakteri dışa aktar"
+  },
+  "characterDelete": {
+    "message": "Bu karakteri kaldır"
+  },
+  "characterDeleteConfirm": {
+    "message": "Bu özel karakter bu profilden kaldırılacak. Devam edilsin mi?"
+  },
+  "characterTooLarge": {
+    "message": "PNG en fazla 6 MB, kenar başına 8192 piksel ve toplam 16 milyon piksel olabilir. Daha küçük bir dosya seç."
+  },
+  "characterInvalid": {
+    "message": "Dosya geçerli bir PNG veya Fire Axolotl karakter yedeği değil. Başka bir dosya seç."
+  },
+  "characterAnimatedPNG": {
+    "message": "Bu dosya APNG. Hareketi durdurabilmek için normal PNG kare şeridi kullan."
+  },
+  "characterGridInvalid": {
+    "message": "Kare ayarları görselle uyuşmuyor. Sütun/satır 1–16, kare sayısı sütun sayısını aşmamalı ve görsel eşit bölünmeli."
+  },
+  "characterStorageFailed": {
+    "message": "Karakter yüklenemedi veya saklanamadı. Paneli yeniden açıp tekrar dene."
+  },
+  "characterLibraryFull": {
+    "message": "8 özel karakter sınırına ulaşıldı. Birini dışa aktarıp kaldırabilir, sonra yenisini ekleyebilirsin."
   }
 }

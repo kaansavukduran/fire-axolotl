@@ -18,6 +18,7 @@ function action(id, fn) {$(id).addEventListener('click', () => UI.run(fn));}
 async function save(patch) {await UI.save(patch); render();}
 (async () => {
   await UI.init(); render(); document.addEventListener('aion-settings', render);
+  action('open-characters', () => browser.sidebarAction.open());
   for (const element of document.querySelectorAll('[data-setting]')) {
     const update = () => UI.run(() => save({[element.dataset.setting]: element.type === 'checkbox' ? element.checked : ['range', 'number'].includes(element.type) ? Number(element.value) : element.value}));
     element.addEventListener(element.type === 'range' ? 'input' : 'change', update);

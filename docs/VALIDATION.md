@@ -1,28 +1,34 @@
 # Doğrulama / Validation
 
-Tarih / Date: 2026-11-09. Geliştirici önizlemesi / developer preview.
+2026-11-09, Europe/Istanbul. Geliştirici önizlemesi; güvenlik sertifikasyonu veya kararlı sürüm değildir.
 
 ## Geçen kontroller / Passed
 
-- `npm run check`: JavaScript sözdizimi, iki dilde çeviri anahtarları, yerel sekme arayüzü metinleri, manifest ve sınırlı izin modeli. / Syntax, localization, native-control strings, manifests and limited permissions.
-- `npm test`: 12 Node testi ve 4 Python testi. Kimlik/yetki sınırları, şüpheli URL'ler, bağımsız ayarlar, tekrarsız ilerleme, geçici konteyner sahipliği, altyazı zamanları, bozuk kaynak özeti, tekrarlanabilir XPI ve kaynak katmanı güncellendiğinde yinelenmeyen yerel kontroller. / 16 unit/regression checks.
-- `tests/gecko_e2e.py`: hash doğrulamalı Firefox **153.6.0esr**, geckodriver **0.37.1** üzerinde **21** arayüz/entegrasyon senaryosu. / 21 real-Gecko interface/integration scenarios.
-- Türkçe/İngilizce, Lexend, yüksek kontrast/koyu tema, bağımsız yazı boyutu, elle %135, klavye adımı, dar ekranda %200 ve ayrı sıfırlamalar. / Bilingual UI, font/theme, independent text size, manual/keyboard scale, narrow 200% layout and independent resets.
-- Sayfa yeniden açıldığında ayarlar, gerçek Firefox konteyneri, tekrarsız kelime defteri, ilerleme kapalıyken ana işlevler ve çevrimdışı ayarlar. / Page-reopen persistence, actual containers/vocabulary and offline operation.
-- Araç çubuğu eylemiyle gerçek `activeTab` izni, gerçek WebM dosyasında **1,35×**, gerçek **320×180** çözünürlük, altyazı satırı, çift altyazı ve katmanı kaldırma. / Real permission grant, speed/resolution, caption extraction and overlay lifecycle using an original synthetic fixture.
-- Üst/sol/sağ sekme kontrolü: kaynak modülü Firefox'un gerçek ayar belgesine test düzeneğiyle eklendi; yalnızca henüz upstream ikilide bulunmayan yerel kaynaklar sağlandı. Gerçek tercihler ve fiziksel sekme konumu doğrulandı. / Source control injected into the real preferences document with local-resource fixtures; real native preference/layout behavior verified.
-- OpenDyslexic Aion'da ve gerçek araç çubuğu/adres çubuğunda yüklendi. Yerel yazı kaynakları test düzeneğiyle sağlandı. Web sayfasının kendi yazı tipi ve CSS arka planı korundu; renk tercihi medya sorgusu koyu/açık seçeneklerini ve koyu tarayıcıyı takip etti. Araç çubuğu düzenleyicisi gerçek kontrol üzerinden açıldı. / Native font, preserved site CSS/fonts, independent color preferences, dark-theme following and toolbar editor verified.
-- Gizlilik ilkesi ayrı bir test Firefox kopyasına yüklendi; telemetri yüklemesinin kilitli kapalı, sponsorlu içeriğin kapalı ve Mozilla hesabı yeteneğinin açık kaldığı kontrol edildi. Asıl test ikilisi veya kullanıcının tarayıcı kurulumu değiştirilmedi. / Policy tested in an isolated runtime copy, preserving the original binary and user installations.
-- Güncel kaynak katmanı, gerçek Mozilla dosyalarının küçük bir kopyasında iki kez uygulanıp yeni kontrollerin ve kaynakların tek kez paketlendiği doğrulandı. / Overlay update/idempotence verified on real source files without interrupting the long build.
-- Firefox kaynak arşivi SHA-512 doğrulandı. Kaynak katmanı uygulandı; `mach configure` geçti. / Source archive verified, overlay applied and native configure passed.
-- `scripts/check_upstream.py`: kontrol anında ESR pini günceldi. / ESR pin current at check time.
+- `npm run check`: JavaScript sözdizimi, manifest/izinler, 111 arayüz çeviri anahtarı, karakter dosya özetleri ve animasyon sınırları.
+- `npm test`: **19 Node + 9 Python**, toplam **28** birim/gerileme testi. Yetkili UI göndereni, şüpheli URL, konteyner sahipliği, çeviri izni, altyazı, PNG/grid, görsel arama, kaynak pini, tekrarlanabilir XPI ve kaynak katmanı geçişleri.
+- Firefox **153.6.0esr** tam motor derlemesi tamamlandı. Ürün kimliği `{75450dd9-387d-4289-8b23-7ad6609fa530}`, adı `FireAxolotl`; bağımsız profil ve uygulama kaynakları kullanılıyor.
+- `tests/native_smoke.py`: **11** senaryo. Yeni profilde üst sekmeler/koyu tema; kurulum gerektirmeyen etkin Aion ve uBO; gizlilik ilkeleri; Safe Browsing ve imza doğrulama tercihleri; hesap yeteneği; derlenmiş proxy düzeltmesi; dört karakter; gerçek üst/sol/sağ düzen; yerel OpenDyslexic; Hesap/Sync bölümünden ayrı Görünüm ayarları.
+- `tests/gecko_e2e.py`, **compiled-fork** modu: **34** senaryo, gerçek bağımsız ikili üzerinde. Geçici eklenti kurulmadı ve yerel ürün kodu enjekte edilmedi. Gerçek istek engelleme, konteyner, kelime defteri, çevrimdışı ayarlar, TR/EN, font/ölçek, dar ekranda %200, gerçek video izni/hızı/çözünürlüğü, çift altyazı ve video öğesinin kendi tam ekranı, yerel görsel menüsü, font/site tercihi, araç çubuğu ve karakter içe/dışa aktarma test edildi.
+- `tests/native_restart.py`: **4** senaryo. Tam tarayıcı süreci kapatılıp aynı ayrı profille açıldı; seçilmiş sol sekmeler, font, Places yer imi, dil, konteyner, kelime defteri ve IndexedDB'deki kişisel PNG korunup yeniden çizildi. Bu, iki sürüm arasında imzalı güncelleme testi değildir.
+- Aynı **34** entegrasyon senaryosu ayrı upstream Firefox test düzeneğinde de geçti. Bu mod, Aion'u geçici kurar ve yerel kaynakları test belgesine ekler; native testlerin yerine geçmez.
+- uBlock Origin **1.76.0** resmî paket özeti ve Git kaynakları sabitlendi. Tam ilgili kaynak arşivinden yeniden üretim, **665** dosyada eşleşti. Mozilla imzaları ve öneri makbuzu kaynak karşılaştırmasının dışındadır; manifest JSON olarak karşılaştırılır. Ayrıntılar [COMPONENTS.md](COMPONENTS.md).
+- `scripts/check_upstream.py`: kontrol anında ESR ve uBO sürüm/özet pinleri güncel.
+- `mach package` ile gerçek Linux x64 `.tar.xz` üretildi. `verify_native_package.py` ürün kimliğini, tam gizlilik ilkesini, uBO envanterini, GPL bildirimini ve ilgili kaynak arşivinin özetini doğruladı. Arşiv ayrı klasöre çıkartıldı; oradaki ikili yeni profilde aynı **11** native smoke senaryosunu geçti. AppImage/.deb veya imzalı otomatik güncelleme değildir.
 
-Firefox testleri süreç korumaları veya TLS doğrulaması kapatılmadan çalıştırıldı. Ortamın komut kum havuzu Firefox'un kendi süreçlerini başlatamadığı için test çalıştırıcısı izin verilen dış yürütme yolunda çalıştırıldı; bu ürün ayarı değildir. / Browser isolation and TLS verification were not disabled. The test runner used the approved outer execution path because the command sandbox could not start Firefox child processes.
+Native smoke, integration and process-restart tests use the real independently compiled fork. Raw reports are generated under `work/native-test-artifacts/` and `work/native-e2e-artifacts/`; browser profiles remain outside published evidence. Screenshots: [UI_PREVIEW.md](UI_PREVIEW.md).
 
-## Henüz doğrulanmayanlar / Not yet verified
+## Test ortamının sınırları / Test environment
 
-Tam kaynak derlemesinden çıkan bağımsız tarayıcının ilk açılışı ve paketlenmesi; bütün işletim sistemleri; imzalı iki gerçek tarayıcı sürümü arasında veri koruyan güncelleme; tarayıcının yeniden başlatılmasında bütün kayıtların korunması; canlı YouTube/Netflix kalite davranışı; gerçek HTTPS çeviri hizmetiyle uçtan uca gönderim; gerçek Mozilla hesabı/Sync; bütün dil paketleri ve yeni Aion metinlerinin bütün dillere çevirisi; tüm iframe ve yerel video tam ekranları; ekran okuyucuyla insan testi ve bağımsız güvenlik/ağ denetimi.
+`remote.prefs.recommended=false`: WebDriver'ın Safe Browsing/izleyici koruması gibi hizmetleri kapatan toplu test tercihleri uygulanmaz. Önceki 21/33 senaryoluk koşular bu ayrımı içermiyordu; ürün güvenliğinin kanıtı olarak kullanılmamalıdır. Güncel native koşular etkin güvenlik tercihlerini ayrıca doğrular. `dom.file.createInChild=true`, yalnızca Marionette'in yerel dosya seçme testleri için ayrı otomasyon profillerinde açılır; ürün varsayılanı olarak dağıtılmaz. TLS doğrulaması veya tarayıcı süreç kum havuzu kapatılmadı.
 
-Independent compiled browser startup/packaging, all target operating systems, signed two-version upgrades, full-browser restart persistence, live streaming-site quality, actual external translation service, every iframe/native fullscreen case, human screen-reader review and independent security audit remain unverified. Actual account/Sync and complete language-pack/new-string coverage also remain unverified. Passing companion tests is not a browser security certification.
+Recommended automation preferences are opted out because they disable security services. Only Marionette's file-input capability is enabled in isolated test profiles. Neither TLS verification nor process isolation is disabled. The approved outer execution path is needed because the nested command sandbox cannot start Firefox children.
 
-Actions, aynı kaynak testlerini ve gerçek Firefox testlerini yeni gönderimlerde yeniden çalıştırır. Sonuçlar ilgili commit'in Actions sayfasından kontrol edilmelidir. / Actions repeats repository and Gecko tests for new commits; inspect the specific commit's runs.
+Testler yerel/sentetik içerikle çalışır. Görsel arama URL'si çevrimdışı açılır; gerçek görsel bir sağlayıcıya gönderilmez. Safe Browsing ve hesap tercihinin açık olması hizmetin gerçek ağda çalıştığını kanıtlamaz. Ortamda bazı Mozilla ağ çağrıları başarısız olmuştur; bağımsız ürün hizmet erişimi ayrıca doğrulanmalıdır.
+
+## Açık işler / Remaining verification
+
+Güvenli imzalı güncelleme ve iki sürüm arasında veri koruma; Windows/macOS/ARM/mobil paketler; bütün Firefox dilleri ve dil paketi değiştirme; gerçek Mozilla hesabı/Sync; Safe Browsing/CDM hizmet erişimi; canlı YouTube/Netflix kalite davranışı; dış HTTPS çeviri hizmetiyle uçtan uca işlem; bütün iframe oynatıcıları; ekran okuyucuyla insan testi; bağımsız güvenlik/ağ incelemesi. Eksik özellikler [FEATURES.md](FEATURES.md) içinde saklanır.
+
+Signed upgrades, other platforms, complete locales, actual account/service access, live streaming adapters, external translation, all-frame support, human accessibility review and independent security review remain pending. Passing tests does not certify a browser as malware-proof.
+
+Actions sonuçlarını ilgili commit'in çalıştırmalarından kontrol et. Workflow dosyasının bulunması, başarıyla tamamlandığı anlamına gelmez.

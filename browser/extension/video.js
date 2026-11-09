@@ -21,9 +21,38 @@
     const close = document.createElement('button'); close.textContent = '×'; close.setAttribute('aria-label', language === 'en' ? 'Close subtitles' : 'Altyazıyı kapat');
     const first = document.createElement('p'), second = document.createElement('p');
     section.append(close, first, second); shadow.append(style, section);
-    (document.fullscreenElement || document.body).append(overlay);
+    // A video element's native fullscreen surface cannot display arbitrary DOM
+    // children. Supply the same local cues through the browser's text renderer.
+    const previousTracks = [...v.textTracks].filter(track => track.mode === 'showing');
+    previousTracks.forEach(track => {track.mode = 'hidden';});
+    const nativeElement = document.createElement('track');
+    nativeElement.kind = 'subtitles'; nativeElement.label = 'Aion';
+    nativeElement.srclang = language === 'en' ? 'en' : 'tr';
+    v.append(nativeElement);
+    const nativeTrack = nativeElement.track;
+    nativeTrack.mode = 'disabled';
+    const escapeCue = text => String(text).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
+    for (const [cues, line] of [[original, translated.length ? 78 : 88], [translated, 88]]) {
+      for (const item of cues) {
+        if (!Number.isFinite(item.start) || !Number.isFinite(item.end) || item.end <= item.start) continue;
+        const cue = new VTTCue(item.start, item.end, escapeCue(item.text));
+        cue.snapToLines = false; cue.line = line; cue.align = 'center';
+        nativeTrack.addCue(cue);
+      }
+    }
+    function move() {
+      const fullscreen = document.fullscreenElement;
+      const nativeFullscreen = fullscreen === v;
+      nativeTrack.mode = nativeFullscreen ? 'showing' : 'disabled';
+      overlay.hidden = nativeFullscreen || (!!fullscreen && !fullscreen.contains(v));
+      overlay.style.display = overlay.hidden ? 'none' : 'block';
+      const parent = fullscreen && fullscreen !== v && fullscreen.contains(v) ? fullscreen : document.body;
+      parent.append(overlay);
+    }
+    move();
     function textAt(cues) {return cues.filter(c => v.currentTime >= c.start && v.currentTime < c.end).map(c => c.text).join('\n');}
     function update() {
+      if (!v.isConnected) {stopOverlay?.(); return;}
       first.textContent = textAt(original); second.textContent = textAt(translated);
       first.hidden = !first.textContent; second.hidden = !second.textContent;
       const rect = v.getBoundingClientRect();
@@ -33,12 +62,19 @@
       const height = overlay.getBoundingClientRect().height;
       overlay.style.top = Math.max(rect.top, Math.min(innerHeight - height, rect.bottom - height - 12)) + 'px';
     }
-    function move() {(document.fullscreenElement || document.body).append(overlay);}
     const timer = setInterval(update, 150); update();
     document.addEventListener('fullscreenchange', move);
-    stopOverlay = () => {clearInterval(timer); document.removeEventListener('fullscreenchange', move); overlay.remove(); stopOverlay = null;};
+    const onPageHide = () => stopOverlay?.();
+    stopOverlay = () => {
+      clearInterval(timer);
+      document.removeEventListener('fullscreenchange', move);
+      window.removeEventListener('pagehide', onPageHide);
+      nativeTrack.mode = 'disabled'; nativeElement.remove();
+      previousTracks.forEach(track => {if (track.mode === 'hidden') track.mode = 'showing';});
+      overlay.remove(); stopOverlay = null;
+    };
     close.onclick = () => stopOverlay?.();
-    window.addEventListener('pagehide', () => stopOverlay?.(), {once: true});
+    window.addEventListener('pagehide', onPageHide, {once: true});
   }
   browser.runtime.onMessage.addListener((message, sender) => {
     if (sender.id !== browser.runtime.id || message.type !== 'aionVideo') return undefined;

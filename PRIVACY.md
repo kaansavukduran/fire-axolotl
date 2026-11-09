@@ -18,6 +18,12 @@ Mozilla hesabı ve Sync korunur ve isteğe bağlıdır. Kullanıcı giriş/eşit
 | “Gönder ve çevir” / “Send and translate” | Görünen metin, hedef dil, normal bağlantı IP bilgisi / visible text, target language and connection IP | Kullanıcının seçtiği HTTPS sağlayıcısı / user-chosen HTTPS provider |
 | “Güncellemeleri kontrol et” / “Check for updates” | Normal GitHub HTTP isteği / normal GitHub request | GitHub Releases API |
 | JSON yedeği / JSON backup | Aion ayarları, kelime defteri ve keşif ilerlemesi / settings, vocabulary, progress | Kullanıcının indirdiği yerel dosya / user-downloaded local file |
+| Görselle arama / Image search | Sağ tıklanan görselin adresi / image URL | Yalnızca kullanıcının seçtiği Google Lens, Bing, TinEye veya Yandex sekmesi / only the explicitly chosen provider tab |
+| Karakter ekleme / Import character | PNG pikselleri, ad ve kare düzeni / PNG pixels, name and frame layout | Bu profilin yerel IndexedDB alanı; karakter yedeği ayrı dışa aktarılır / local profile IndexedDB; separate user-exported backup |
+
+Yerleşik uBlock Origin, engelleme için site isteklerine erişir ve seçilen filtre listelerini kendi sunucularından/CDN'lerinden güncelleyebilir. Aion'un sınırlı sayfa erişimiyle ayrı bir bileşendir. İzin, kaynak ve lisans ayrıntıları [bileşen envanterindedir](docs/COMPONENTS.md). / Built-in uBO needs request access and can update selected lists from their servers/CDNs; its permissions are separate from Aion's.
+
+Karakter paneli isteğe bağlıdır ve kurulumda açılmaz. Web sayfalarına içerik betiği yerleştirmez, gezinme etkinliğine göre otomatik hareket seçmez ve kişisel görselleri bir hizmete yüklemez. Karakter eklemek veya görünüm değiştirmek keşif ilerlemesi kazandırmaz. / The optional sidebar stays closed at install, does not inject into pages, does not select activities from browsing behavior and never uploads personal images. Importing a character or changing appearance awards no progress.
 
 Aion'a telemetri, reklam SDK'sı, zorunlu hesap veya otomatik sayfa/ses gönderimi eklenmedi. Modülün dışında, Firefox'un mevcut ağ hizmetleri ve ziyaret edilen siteler kendi veri akışlarına sahiptir. Bunlar ürünün kararlı sürüm gizlilik bildiriminde ayrıca doğrulanmalıdır. / Aion adds no telemetry, ad SDK, mandatory account, or automatic page/audio submission. Upstream services and visited sites have separate data flows requiring review before stable release.
 

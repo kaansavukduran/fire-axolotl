@@ -7,6 +7,16 @@
     const group = document.getElementById('aionLayoutGroup');
     if (!group || initialized) return;
     initialized = true;
+    const category = Services.prefs.getBoolPref('browser.settings-redesign.enabled', false) ? 'paneAppearance' : 'paneGeneral';
+    group.dataset.category = category;
+    // Keep the native pane heading and controls before our additional group.
+    // The preferences search/category machinery manages the group's visibility.
+    function placeGroup() {
+      const pane = document.querySelector(`setting-pane[name="${category}"]`);
+      if (pane && pane.nextElementSibling !== group) pane.after(group);
+    }
+    placeGroup();
+    document.addEventListener('paneshown', placeGroup);
     const locale = /^en(?:-|$)/i.test(Services.locale.appLocaleAsBCP47) ? 'en' : 'tr';
     const response = await fetch(`chrome://browser/content/preferences/aion-${locale}.json`);
     const messages = await response.json();
@@ -44,7 +54,10 @@
     });
     const observer = {observe: sync};
     prefs.forEach(pref => Services.prefs.addObserver(pref, observer));
-    window.addEventListener('unload', () => {prefs.forEach(pref => Services.prefs.removeObserver(pref, observer));}, {once: true});
+    window.addEventListener('unload', () => {
+      prefs.forEach(pref => Services.prefs.removeObserver(pref, observer));
+      document.removeEventListener('paneshown', placeGroup);
+    }, {once: true});
     sync();
   }
   const observer = new MutationObserver(() => {

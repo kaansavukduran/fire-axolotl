@@ -20,18 +20,25 @@ This repository contains a pinned Firefox source build overlay, original brandin
 
 ## Bu aşamada eklenenler / Implemented in this stage
 
+- Kaynak katmanında yerleşik uBlock Origin: resmî imzalı paket, sabit sürüm/özet ve tam ilgili kaynaklar. [Lisans, izin ve ağ ayrıntıları](docs/COMPONENTS.md). / Built-in uBlock Origin in the source overlay, with the official signed package, pinned provenance and corresponding source.
+- İsteğe bağlı görsel sağ tık menüsü: Google Lens, Bing, TinEye ve Yandex; yalnızca seçtiğin sağlayıcıya açık eylemle görsel adresi gönderme. / Optional image context menu with explicit provider selection.
+- İsteğe bağlı yerel karakter yan paneli: Aion, kuzu, kurt ve baykuş; bütün karakterin çizilmiş kareleri, okuma/çalışma animasyonları, özel PNG kare şeridi ekleme, duraklatma ve ayrı karakter yedeği. [Kullanım](docs/CHARACTERS.md). / Optional local animated companions, custom PNG sprite import, pause and character backup.
 - Kalıcı ve son sekme kapanınca temizlenen geçici konteynerler. / Persistent and temporary containers cleaned up after their last tab closes.
 - Video hızını 0,25×–4× ayarlama, gerçek video çözünürlüğünü okuma. / 0.25×–4× video speed and actual decoded resolution.
 - YouTube için deneysel kalite isteği; her sitede ve her abonelikte kalite garantisi değildir. / Experimental YouTube quality requests; no universal resolution guarantee.
-- Yerel VTT/SRT dosyalarından çift altyazı, mevcut altyazı satırını alma. / Dual local VTT/SRT captions and current cue capture.
+- Yerel VTT/SRT dosyalarından çift altyazı, videonun kendi tam ekranında yerel altyazı çizimi, mevcut altyazı satırını alma. / Dual local VTT/SRT captions, native video fullscreen text tracks and current cue capture.
 - Açık kullanıcı eylemiyle seçili metin çevirisi; isteğe bağlı, kullanıcının seçtiği HTTPS hizmeti. / Explicit selected-text translation through an optional user-chosen HTTPS service.
 - Varsayılan koyu görünüm, Türkçe/İngilizce Aion arayüzü, dört tema, %80–%200 arayüz ölçeği, bağımsız yazı boyutu, OpenDyslexic ve Lexend. / Default dark appearance, Turkish/English Aion UI, four themes, 80%–200% interface scale, independent text size, OpenDyslexic and Lexend.
 - JSON yedekleme/geri yükleme, isteğe bağlı üç gerçek eyleme dayalı keşif ilerlemesi. / JSON backup/restore and optional milestones based on three real actions.
 - Kaynak katmanında üst/sol/sağ sekmeler, Firefox araç çubuğu düzenleyicisi, bağımsız site renk tercihi ve yerel arayüz yazı tipi. / Native tab layout, toolbar customization, independent website color preference and native interface fonts.
 
+Yeni profilde sekmeler varsayılan olarak **üsttedir**. Kullanıcının seçtiği sol/sağ düzen normal tercih olarak saklanır; başlangıçta zorla sıfırlanmaz. / New profiles default to top tabs; saved left/right choices are not forcibly reset.
+
 Varsayılan tarayıcı koyudur. Sitelerin kendi tasarımı ve kaydettiğin tema seçimi korunur; yalnızca tarayıcı renk tercihini takip eden siteler koyu tercihi alır. Sayfalar zorla karartılmaz. Tarayıcı arayüzü için font seçmek web sitelerinin fontunu değiştirmez. / The browser defaults to dark. Site design and saved site choices stay intact; sites following browser preference receive dark. There is no forced recoloring, and native interface font changes do not override website fonts.
 
 İstenen eklentilerin tek tek kapsamı ve eksikleri: [Özellik eşlemesi / Feature map](docs/FEATURES.md).
+
+Bütün tarayıcı isteklerinin durumu ve sırası: [İstek takibi / Requirements](docs/ROADMAP.md). Linux x64 tam kaynak derlemesi artık açılıyor; [native test sonuçları](docs/VALIDATION.md) ayrı doğrulanıyor. Bu, güvenli otomatik güncellemenin veya diğer platformların hazır olduğu anlamına gelmez.
 
 ## Geliştirici önizlemesini dene / Try the developer companion
 
