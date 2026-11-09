@@ -1,3 +1,12 @@
+# Türkçe yerelleştirme taslağı / Turkish localization draft
+
+- Dal: `codex/native-turkish-localization`
+- Taban: `main`, `32ac4df618156f1d57aac21a15645f842e75b139`
+- 2026-11-09, Europe/Istanbul
+- Yerel kaynak hazırlama ve 44 saniyelik artımlı derleme geçti; yeni built-in Türkçe etkinleşme testi geçmedi. Bu dal main ile birleştirilmez veya sürüm olarak dağıtılmaz.
+- Çalışma ortamı unavailable oldu. Kaynaklar bu dala korunarak taşındı. Tanı, lisans ve sıradaki native test: [docs/LOCALIZATION_DRAFT.md](docs/LOCALIZATION_DRAFT.md).
+- Yeni dalın ZIP/bundle/commit makbuzu Actions artifact'iyle hazırlanır. Özel Drive aktarımı ortam kesintisi nedeniyle bekliyor; önceki main yedekleri korunur.
+
 # Fire Axolotl devir noktası / Handoff
 
 - Depo: https://github.com/kaansavukduran/fire-axolotl
