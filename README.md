@@ -10,6 +10,8 @@ Free browser project based on Firefox ESR source, with an Aion companion. Fire A
 
 **Durum / Status: geliştirici önizlemesi, henüz günlük kullanım için dağıtılan bir tarayıcı değil. / Developer preview, not a released browser for everyday use.**
 
+[Çalışan arayüzün ekran görüntüleri / Screenshots of the running interface](docs/UI_PREVIEW.md)
+
 Bu depo; doğrulanmış Firefox kaynağını indiren derleme katmanını, özgün markalamayı, yerleşik Aion modülünü ve sekme konumu için yerel ayarları içerir. Motorun tüm geçmişini bu küçük depoya kopyalamak yerine kaynak sürümü ve SHA-512 özeti `upstream.json` içinde sabitlenir. Gömülü modül tarayıcı derlenirken paketlenir; son kullanıcının ayrı eklenti kurması hedeflenmez. Geliştirme sırasında aynı modül geçici eklenti olarak denenebilir.
 
 Firefox'un yerleşik özellikleri, dil yönetimi ve isteğe bağlı Mozilla hesabı/Sync temel alınır. Telemetri, çalışmalar, sponsorlu öneriler ve reklam ilişkilendirmesi yerel ilkelerle kapatılır; güvenlik bağlantıları korunur. Aion'un yeni metinleri şu an Türkçe/İngilizcedir; tüm Firefox dillerine genişletilmesi ve gerçek hesapla Sync doğrulaması henüz tamamlanmadı.

@@ -20,6 +20,8 @@ Firefox ESR `153.6.0esr` kaynak/hash pini, kaynak indirme ve hazırlama betikler
 
 Bu devir notu yazılırken tam derleme devam ediyordu. / Full source compilation was still running when this note was written.
 
+Arayüz gösterimi sırasında yeniden kontrol edildi: bağımsız çalıştırılabilir dosya henüz oluşmamıştı ve derleme devam ediyordu. `docs/UI_PREVIEW.md` içindeki yeni ekranlar, geçici Aion modülü ve yerel kaynak kontrolü test düzeneğinden alınmıştır; tamamlanmış ürün olarak gösterilmemelidir. / Rechecked during UI preview capture: no independent executable yet; screenshots document the working test preview, not a finished product.
+
 - Kaynak / Source: `/workspace/work/upstream-source/firefox-153.6.0`
 - Log: `/workspace/work/mach-build.log`
 - Configure log: `/workspace/work/mach-configure.log`
