@@ -9,6 +9,10 @@
 - `windows-preview-release.yml` yalnızca sabitlenmiş, başarılı main/manual native çalıştırmasının dosyalarını kullanır. Kurulum paketi ve tüm native dosya özetleri, Başlat kısayolu, ayrı varsayılan profil, 11/4/34 kurulu program senaryosu ve veri koruyan kaldırma geçmeden yayın işi başlamaz.
 - Native bootstrap artık MozillaBuild giriş kabuğunda çalışır; sessiz configure hatalarının tanısı `windows_mach.py` ile korunur. Dev Drive önerisi CI'da kapalıdır; güvenlik hizmetleri kapatılmaz.
 - Windows default-agent ilke okuyucusunun JSON anahtarındaki büyük/küçük harf hatası kaynak katmanında düzeltildi. `DisableDefaultBrowserAgent` gönderilir; gerçek Windows servisindeki `agentDisabled()` kurulum testinde doğrulanmalıdır.
+- Son native kaynak: `5d48bca1cda33484c4346bc1f22ff9831314f19a`; [Windows çalıştırması 42709930229](https://github.com/kaansavukduran/fire-axolotl/actions/runs/42709930229). Sonucu bağlantıdan denetle; bu kayıt yazılırken native build sürüyordu.
+- `MOZ_AUTOMATION`, VCS içermeyen doğrulanmış kaynak arşivlerini reddettiği için bu geliştirici derlemesinde kullanılmaz. Bootstrap `--no-system-changes` ve `--no-interactive` ile çalışır.
+- Native NSIS kurulum/kaldırma ping çağrıları, dış anketler ve launcher telemetri kaydı kapatıldı. SFX açılış başlığı da Fire Axolotl. İlgili kaynak yaması gerçek upstream NSIS dosyalarının ayrı kopyasında iki kez uygulanarak denetlendi.
+- Başarılı native çalıştırma, Windows temiz kurulum/yayın akışını otomatik başlatır. Akış yalnızca yukarıdaki kaynak/run pinini kabul eder; native kaynak sonradan değişmişse yayın durur. Authenticode ve otomatik güncelleme hâlâ tamamlanmadı.
 
 # Yayımlanan Linux ön sürümü / Published Linux preview
 

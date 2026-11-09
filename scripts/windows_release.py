@@ -40,6 +40,7 @@ def preflight():
 
 
 def inputs():
+    subprocess.run(['git', 'diff', '--exit-code', CONFIG['source_commit'], 'HEAD', '--', 'browser', 'branding', 'components.json', 'upstream.json', 'scripts/prepare_source.py', 'scripts/package_extension.py', 'scripts/fetch_components.py'], cwd=ROOT, check=True)
     incoming = ROOT / 'work/windows-inputs'
     zips = []
     for path in incoming.rglob('fire-axolotl-*.zip'):
