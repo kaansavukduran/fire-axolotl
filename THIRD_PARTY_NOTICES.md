@@ -1,5 +1,11 @@
 # Üçüncü taraf bildirimleri / Third-party notices
 
+## Linux AppImage runtime and packaging
+
+Linux installer inputs and hashes are pinned in `linux-packaging.json`. AppImage type2 runtime commit `fedfad51acc2860b2916a1eef32ba4a500ff31ef` is MIT licensed and statically links libfuse (LGPL), squashfuse (BSD), musl (MIT), zstd (BSD), zlib and mimalloc (MIT). Runtime/library notices are included under `usr/share/doc/fire-axolotl-preview/licenses` in the Linux packages. The separate AppImage support-source archive contains runtime source, the pinned libfuse 3.15.0 source and patch/build/link scripts, squashfuse source, and permissive-library source/support material. The runtime can be rebuilt and relinked against a modified libfuse. The appimagetool build tool is not embedded in the browser payload.
+
+AppImage runtime ve kitaplıklarının lisansları korunur; statik LGPL bileşeninin kaynağı ile yeniden derleme/bağlama betikleri ayrı destek kaynak arşivinde sunulur. Paketleme imzalı otomatik güncelleme altyapısı anlamına gelmez.
+
 ## Mozilla Firefox / Gecko
 
 Upstream: https://archive.mozilla.org/pub/firefox/releases/153.6.0esr/source/firefox-153.6.0esr.source.tar.xz

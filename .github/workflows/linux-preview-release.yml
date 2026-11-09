@@ -1,0 +1,104 @@
+name: Publish tested Linux developer preview
+on:
+  workflow_dispatch:
+    inputs:
+      native_run_id:
+        description: Successful reviewed native main-branch build
+        default: '42666129157'
+        required: true
+        type: string
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: publish-linux-developer-preview
+  cancel-in-progress: false
+jobs:
+  package:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v6.3.0
+        with:
+          node-version: '22'
+      - run: npm run check && npm test
+      - name: Verify source-run provenance before downloading binaries
+        env:
+          GH_TOKEN: ${{ github.token }}
+          AION_NATIVE_RUN_ID: ${{ inputs.native_run_id }}
+        run: |
+          python3 scripts/release_validation.py preflight
+          git diff --exit-code 0f94fea2429d578015acc0a6494fe8c2dbd5223a HEAD -- browser branding components.json upstream.json scripts/prepare_source.py scripts/package_extension.py
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+        with:
+          name: fire-axolotl-linux-developer-build-with-source-NOT-STABLE
+          path: work/release-inputs
+          run-id: ${{ inputs.native_run_id }}
+          github-token: ${{ github.token }}
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+        with:
+          name: native-linux-test-evidence
+          path: work/release-evidence
+          run-id: ${{ inputs.native_run_id }}
+          github-token: ${{ github.token }}
+      - name: Verify full source, native identity, privacy and test reports
+        run: python3 scripts/release_validation.py inputs
+      - name: Build actual Linux installer files with pinned tooling
+        run: python3 scripts/linux_packages.py work/release-inputs/fire-axolotl-153.6.0.en-US.linux-x86_64.tar.xz
+      - run: python3 -m pip install -r tests/requirements-gecko.txt
+      - run: python3 scripts/fetch_test_runtime.py
+      - name: Launch the AppImage and compare both installer payloads
+        run: python3 scripts/test_linux_installers.py dist/fire-axolotl-0.1.0-dev.20261109-linux-x86_64.AppImage dist/fire-axolotl-0.1.0-dev.20261109-linux-amd64.deb
+      - name: Install the actual Debian package
+        run: sudo apt-get install -y ./dist/fire-axolotl-0.1.0-dev.20261109-linux-amd64.deb
+      - name: Test first startup from the installed browser
+        env:
+          AION_NATIVE_BINARY: /usr/lib/fire-axolotl-preview/fire-axolotl
+          AION_NATIVE_ARTIFACTS: ${{ github.workspace }}/work/installed-native-test-artifacts
+        run: python3 tests/native_smoke.py
+      - name: Test data persistence with the installed browser
+        env:
+          AION_NATIVE_BINARY: /usr/lib/fire-axolotl-preview/fire-axolotl
+        run: python3 tests/native_restart.py
+      - name: Assemble complete source, notices, evidence and checksums
+        run: python3 scripts/assemble_release.py
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: tested-linux-preview-release-files
+          path: dist/
+          retention-days: 14
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: linux-installer-test-evidence
+          path: |
+            work/installer-test-artifacts/
+            work/installed-native-test-artifacts/
+            work/native-test-artifacts/
+          retention-days: 14
+  publish:
+    needs: package
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+        with:
+          name: tested-linux-preview-release-files
+          path: dist
+      - name: Publish only the complete tested preview; preserve existing releases
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/publish_preview.py

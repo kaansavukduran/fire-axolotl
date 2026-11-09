@@ -1,3 +1,15 @@
+# Linux yayın hazırlığı / Linux publication staging
+
+- Dal: `main`; native tarayıcı kaynağı `0f94fea2429d578015acc0a6494fe8c2dbd5223a`.
+- İlk hedef: `v0.1.0-dev.20261109`, yalnızca Linux x86_64 geliştirici önizlemesi. Kararlı/Latest değildir; otomatik güncelleyici kapalıdır.
+- Native GitHub çalıştırması `42666129157` tam derleme, 11 ilk açılış, 34 entegrasyon, 4 yeniden başlatma ve paket denetimini başarıyla tamamladı.
+- Yeni paketleme için 29 birim/gerileme kontrolü ve gerçek AppImage girişinden 4 kurulum kontrolü yerelde geçti. AppImage Aion/uBO'yu etkin yerleşik bileşen olarak açtı; TR Aion ayarları ve iki paketin native dosya eşleşmesi doğrulandı.
+- `.deb` temiz kurulumu ve kurulu programdan native testler, `Publish tested Linux developer preview` akışının zorunlu yayın kapısıdır. Bu aşamalar geçmeden Release yayımlanmaz.
+- `release.json` kaynak commit/run/tag pinlerini; `linux-packaging.json` paketleme araçları ve runtime/kitaplık kaynak özetlerini tutar. Runtime/kitaplık lisansları paketlerde, ilgili kaynaklar ayrı destek arşivinde korunur.
+- Yayın akışı yalnızca tamamlanmış, doğru depoya ait main/manual native çalıştırmasını kabul eder. Paketleme ve yayımlama işleri ayrıdır. Yalnızca yayımlama işi contents:write alır; eski yayımlanmış sürüm ve varlıklar değiştirilmez.
+- Türkçe native kaynak denemesi PR #1'de ayrı kalır ve bu pakete girmez. Aion TR/EN, native tarayıcı en-US. Diğer işletim sistemleri ve özellik eşlemesindeki açıklar devam eder.
+- Yayın akışı main'e gönderildikten sonra elle çalıştırılmalı; gerçek sonuç ve Release URL'si kontrol edilmeden yayın tamamlandı denmez. Her push ve yayımlanan sürüm için özel Drive yedeği gerekir.
+
 # Fire Axolotl devir noktası / Handoff
 
 - Depo: https://github.com/kaansavukduran/fire-axolotl
