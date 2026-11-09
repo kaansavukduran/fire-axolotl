@@ -2,6 +2,14 @@
 
 2026-11-09, Europe/Istanbul. Geliştirici önizlemesi; güvenlik sertifikasyonu veya kararlı sürüm değildir.
 
+## Yayımlanan kurulumlar / Published installers
+
+[v0.1.0-dev.20261109](https://github.com/kaansavukduran/fire-axolotl/releases/tag/v0.1.0-dev.20261109) Linux x86_64 ön sürümü yayımlandı. [Yayın akışı 42682284085](https://github.com/kaansavukduran/fire-axolotl/actions/runs/42682284085) başarılı: 29 birim/gerileme testi, gerçek AppImage açılışı ve iki paketin native dosya eşleşmesi için 4 kontrol; Ubuntu 24.04 üzerinde gerçek `.deb` kurulumu ardından 11 açılış ve 4 süreç yeniden başlatma senaryosu.
+
+Native kaynak `0f94fea2429d578015acc0a6494fe8c2dbd5223a`, paketleme kaynağı/etiket `92e30af0ac76f6aafbd322f9c78b0e68926af98f`. Native CI `42666129157` ayrıca tam derleme, 11 açılış, 34 entegrasyon ve 4 yeniden başlatmayı geçti. Release içindeki `release-manifest.json`, `release-validation.json` ve `SHA256SUMS` yayımlanan dosyalara aittir. Aşağıdaki eski yerel derleme özetleri CI dosyalarının özeti olarak kullanılmamalıdır.
+
+The actual Linux prerelease installers passed the publication workflow. Automatic updates are disabled; native chrome is en-US and Aion is TR/EN. Other platforms, all locales, real-account Sync and live protection/DRM service verification remain incomplete.
+
 ## Geçen kontroller / Passed
 
 - `npm run check`: JavaScript sözdizimi, manifest/izinler, 111 arayüz çeviri anahtarı, karakter dosya özetleri ve animasyon sınırları.

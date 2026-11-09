@@ -1,4 +1,13 @@
-# Linux yayın hazırlığı / Linux publication staging
+# Yayımlanan Linux ön sürümü / Published Linux preview
+
+- **Yayımlandı:** [v0.1.0-dev.20261109](https://github.com/kaansavukduran/fire-axolotl/releases/tag/v0.1.0-dev.20261109), 2026-11-09 19:28 UTC. Pre-release; Latest/kararlı değildir.
+- Paketleme commit'i ve etiket hedefi `92e30af0ac76f6aafbd322f9c78b0e68926af98f`; native kaynak `0f94fea2429d578015acc0a6494fe8c2dbd5223a`.
+- [Yayın akışı 42682284085](https://github.com/kaansavukduran/fire-axolotl/actions/runs/42682284085) başarılı: 29 birim/gerileme, 4 AppImage/paket eşleşmesi, gerçek `.deb` kurulumu, kurulu programda 11 açılış ve 4 yeniden başlatma kontrolü. Native derleme ayrıca 34 entegrasyon senaryosunu geçti.
+- 15 gerçek indirme dosyası: AppImage, `.deb`, native `.tar.xz`, tam motor/paketleme/destek kaynakları, lisans ve test makbuzları. Sunucu SHA-256 özetleri yayın öncesinde denetlendi.
+- Doğrudan yerel asset yüklemesinin HTTP 401 engeli, yalnızca yayın işi için yetkili Actions kimliği kullanılarak çözüldü. Önceki yedekler korundu.
+- Otomatik güncelleme kapalı, native arayüz en-US, Aion TR/EN. Diğer platformlar, diller, gerçek Sync/hizmet erişimi ve özellik eşlemesindeki açıklar devam ediyor.
+
+## Yayın hazırlığının kaydı / Publication staging record
 
 - Dal: `main`; native tarayıcı kaynağı `0f94fea2429d578015acc0a6494fe8c2dbd5223a`.
 - İlk hedef: `v0.1.0-dev.20261109`, yalnızca Linux x86_64 geliştirici önizlemesi. Kararlı/Latest değildir; otomatik güncelleyici kapalıdır.
@@ -50,7 +59,7 @@ Kaynak katmanı veya commit değişince makbuzu yenile ve yalnızca gerekli art�
 
 ## Kalan sıradaki işler
 
-1. **Tamamlandı:** gerçek Linux paketi ayrı klasöre çıkartılıp yeni profilde 11 senaryoyu geçti; bütün uygulanmış motor kaynakları arşivlendi. Tarayıcının iki ve kaynağın on bir kayıpsız aktarım parçası özel Drive'dan geri okunarak doğrulandı. Özetler `docs/VALIDATION.md` içinde. GitHub asset yüklemesi HTTP 401 verdi; Release taslağı yayımlanmadı. İndirme yayını için bu yetkilendirme sorunu hâlâ açık.
+1. **Tamamlandı:** Linux ön sürümü AppImage/`.deb`, tam ilgili kaynaklar ve özetlerle yayımlandı. Yukarıdaki yayın kaydı günceldir; aşağıdaki eski yerel arşiv özetleri ayrı doğrulama kaydıdır.
 2. Yerelleştirme: bütün Firefox dilleri hedeflenir; mevcut native deneme paketi en-US, Aion TR/EN. Dil paketlerini ve çalışma anında değiştirmeyi bağımsız kimlikle doğrula.
 3. Mozilla hesabı/Sync, Safe Browsing ve CDM hizmet erişimi: tercih/ilke testinden ayrı gerçek davranış denetimi gerekli. Ortamda bazı Mozilla ağ istekleri başarısız; çalışıyor varsayma.
 4. Projeye ait imzalı güncelleme hizmeti, MAR sertifikaları, kanal/mimari, iki gerçek sürümle veri koruma ve bozuk imza/kesik indirme testleri. `--disable-updater` ile kararlı sürüm çıkarma.

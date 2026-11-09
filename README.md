@@ -8,7 +8,11 @@ Firefox ESR kaynak kodunu temel alan, Aion karakteriyle kişiselleştirilen ücr
 
 Free browser project based on Firefox ESR source, with an Aion companion. Fire Axolotl is not officially associated with Mozilla or its products. Firefox is a trademark of the Mozilla Foundation.
 
-**Durum / Status: geliştirici önizlemesi, henüz günlük kullanım için dağıtılan bir tarayıcı değil. / Developer preview, not a released browser for everyday use.**
+**Durum / Status: Linux x86_64 geliştirici ön sürümü yayımlandı; kararlı günlük kullanım sürümü değildir. Otomatik güncellemeler kapalıdır. / Linux x86_64 developer prerelease published; not a stable daily-use release. Automatic updates are disabled.**
+
+[**Linux için indir ve kur / Download and install for Linux — v0.1.0-dev.20261109**](https://github.com/kaansavukduran/fire-axolotl/releases/tag/v0.1.0-dev.20261109)
+
+Release sayfasında AppImage ve Ubuntu 24.04 amd64 `.deb` kurulumu, tam motor/paketleme kaynakları, lisanslar ve SHA-256 özetleri bulunur. Yeni profilde sekmeler üsttedir. Ana tarayıcı bu sürümde en-US; Aion ayarları Türkçe/İngilizcedir. Windows/macOS/mobil kurulumları henüz yoktur. / The release includes AppImage and Ubuntu 24.04 amd64 `.deb` instructions, complete engine/packaging source, notices and checksums. Fresh profiles use top tabs. Browser chrome is en-US; Aion settings support Turkish/English. Windows/macOS/mobile installers are not available yet.
 
 [Çalışan arayüzün ekran görüntüleri / Screenshots of the running interface](docs/UI_PREVIEW.md)
 
@@ -40,7 +44,9 @@ Varsayılan tarayıcı koyudur. Sitelerin kendi tasarımı ve kaydettiğin tema 
 
 Bütün tarayıcı isteklerinin durumu ve sırası: [İstek takibi / Requirements](docs/ROADMAP.md). Linux x64 tam kaynak derlemesi artık açılıyor; [native test sonuçları](docs/VALIDATION.md) ayrı doğrulanıyor. Bu, güvenli otomatik güncellemenin veya diğer platformların hazır olduğu anlamına gelmez.
 
-## Geliştirici önizlemesini dene / Try the developer companion
+## Modülü kaynak kodundan dene / Try the companion from source
+
+Tam tarayıcı için yukarıdaki Release bağlantısını kullan. Aşağıdaki adımlar yalnızca modül geliştirme içindir. / For the complete browser use the release above. The following steps are for module development only.
 
 Python 3.12 ve Node.js 22 veya daha yenisi gerekir. / Requires Python 3.12 and Node.js 22 or newer.
 
