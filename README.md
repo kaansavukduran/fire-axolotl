@@ -71,6 +71,7 @@ Kaynak ve kurulum dosyası aynı şey değildir. İmzalı güncelleyici, Windows
 - [Lisanslar ve marka sınırları / Licensing and branding](docs/LICENSING.md)
 - [Üçüncü taraf bildirimleri / Third-party notices](THIRD_PARTY_NOTICES.md)
 - [Son doğrulanan devir noktası / Handoff](FORGE.md)
+- [Doğrulama sonuçları ve sınırlar / Validation results and limits](docs/VALIDATION.md)
 
 Yeni kaynak kodu MPL-2.0 lisanslıdır. Üçüncü taraf bileşenlerin lisansları korunur. Projenin ücretsiz dağıtılması, açık kaynak lisanslarının izin verdiği ticari kullanımı yasaklamaz. Tarayıcıya “virüs bulaşmaz” veya “hiç veri göndermez” garantisi verilmez.
 
