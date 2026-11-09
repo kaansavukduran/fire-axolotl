@@ -454,7 +454,19 @@ try:
     export = downloads / 'fire-axolotl-character.json'
     export.unlink(missing_ok=True)
     driver.find_element(By.ID, 'character-export').click()
-    wait.until(lambda _d: export.is_file())
+    # Firefox may create an empty destination before the download completes.
+    # Wait for the browser's completion signal before reading or importing it.
+    driver.set_context('chrome')
+    try:
+        wait.until(lambda d: d.execute_async_script('''
+            const target = arguments[0], done = arguments[arguments.length - 1];
+            const {Downloads} = ChromeUtils.importESModule('resource://gre/modules/Downloads.sys.mjs');
+            Downloads.getList(Downloads.ALL).then(list => list.getAll()).then(
+                items => done(items.some(item => item.target.path === target && item.succeeded)),
+                () => done(false));
+        ''', str(export)))
+    finally:
+        driver.set_context('content')
     backup = json.loads(export.read_text())
     assert backup['format'] == 'fire-axolotl-character' and backup['name'] == 'Kişisel Aion · Test'
     assert base64.b64decode(backup['png']) == (ROOT / 'browser/extension/characters/aion.png').read_bytes()
