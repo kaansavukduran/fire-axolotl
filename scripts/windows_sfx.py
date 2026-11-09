@@ -29,6 +29,13 @@ def prepare(sdk, icon):
                 raise ValueError(f'Unexpected upstream SFX resource: {key}')
             text = text.replace(old, new)
     resource.write_text(text)
+    project = sdk / 'firefox/SFXSetup.vcxproj'
+    text = project.read_text()
+    # VS 2022 adds C5286 for the SDK's existing enum-to-enum conversions.
+    warning = '<DisableSpecificWarnings>5286;%(DisableSpecificWarnings)</DisableSpecificWarnings>'
+    if warning not in text:
+        text = text.replace('<ClCompile>', '<ClCompile>\n      ' + warning)
+        project.write_text(text)
 
 
 def extract(source, destination):
@@ -60,7 +67,7 @@ def build(sdk):
     msbuild = Path(installation) / 'MSBuild/Current/Bin/MSBuild.exe'
     if not installation or not msbuild.is_file():
         raise ValueError('Visual Studio C++ build tools required')
-    command = [str(msbuild), str(sdk / 'firefox/SFXSetup.vcxproj'), '/m', '/p:Configuration=ReleaseD', '/p:Platform=Win32', '/p:PlatformToolset=v143', '/p:WindowsTargetPlatformVersion=10.0', f'/p:SolutionDir={sdk / "firefox"}{os.sep}', '/p:TreatWarningAsError=false', '/verbosity:minimal']
+    command = [str(msbuild), str(sdk / 'firefox/SFXSetup.vcxproj'), '/m', '/p:Configuration=ReleaseD', '/p:Platform=Win32', '/p:PlatformToolset=v143', '/p:WindowsTargetPlatformVersion=10.0', f'/p:SolutionDir={sdk / "firefox"}{os.sep}', '/verbosity:minimal']
     subprocess.run(command, check=True)
     stub = sdk / 'firefox/Win32/ReleaseD/7zSD.Win32.sfx'
     data = stub.read_bytes()
