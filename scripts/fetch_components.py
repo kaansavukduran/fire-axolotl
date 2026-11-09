@@ -75,7 +75,7 @@ def fetch_xpi():
 
 
 def git(directory, *args):
-    return subprocess.check_output(['git', '-C', str(directory), *args], text=True).strip()
+    return subprocess.check_output(['git', '-c', 'core.autocrlf=false', '-c', 'core.eol=lf', '-C', str(directory), *args], text=True).strip()
 
 
 def source_checkout(name, record):

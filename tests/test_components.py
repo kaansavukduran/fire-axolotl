@@ -14,6 +14,20 @@ spec.loader.exec_module(components)
 
 
 class ComponentSafetyTests(unittest.TestCase):
+    def test_source_checkout_preserves_pinned_bytes_despite_windows_git_defaults(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            components.git(root, 'init', '-q')
+            path = root / 'filter.txt'
+            body = b'filter source\nlicense line\n'
+            path.write_bytes(body)
+            components.git(root, 'add', 'filter.txt')
+            components.git(root, '-c', 'user.name=Test', '-c', 'user.email=test@example.invalid', 'commit', '-qm', 'fixture')
+            components.git(root, 'config', 'core.autocrlf', 'true')
+            path.unlink()
+            components.git(root, 'checkout', '--', 'filter.txt')
+            self.assertEqual(path.read_bytes(), body)
+
     def test_damaged_official_package_is_rejected(self):
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / 'component.xpi'
