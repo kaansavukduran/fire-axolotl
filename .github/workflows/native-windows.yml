@@ -14,7 +14,6 @@ jobs:
       PYTHONUTF8: '1'
       MOZBUILD_STATE_PATH: C:\mozstate
       MACH_INTERACTIVE: '0'
-      MOZ_AUTOMATION: '1'
       MACH_HIDE_DEV_DRIVE_SUGGESTION: '1'
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1

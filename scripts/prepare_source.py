@@ -87,6 +87,29 @@ def prepare_windows_installer(source, branding):
         shutil.copyfile(ROOT / 'branding/windows' / name, branding / name)
 
 
+def replace_nsis_function(path, name, body):
+    pattern = r'^Function ' + re.escape(name) + r'\n.*?^FunctionEnd$'
+    text, count = re.subn(pattern, lambda _match: f'Function {name}\n{body}\nFunctionEnd', path.read_text(), flags=re.MULTILINE | re.DOTALL)
+    if count != 1:
+        raise ValueError(f'Unexpected Windows installer function: {name}')
+    path.write_text(text)
+
+
+def prepare_windows_installer_privacy(source):
+    base = source / 'browser/installer/windows'
+    for name in ['app.tag', 'stub.tag']:
+        replace_once(base / name, 'Title="Mozilla Firefox"', 'Title="Fire Axolotl"')
+    installer = base / 'nsis/installer.nsi'
+    uninstaller = base / 'nsis/uninstaller.nsi'
+    replace_nsis_function(installer, 'SendPingIfApplicable', '  Return')
+    replace_nsis_function(uninstaller, 'un.SendUninstallPing', '  Return')
+    replace_nsis_function(uninstaller, 'un.onGUIEnd', '  ${un.OnEndCommon}')
+    replace_nsis_function(installer, 'CustomAbort', '  MessageBox MB_YESNO|MB_ICONEXCLAMATION "$(MOZ_MUI_TEXT_ABORTWARNING)" IDYES +1 IDNO +2\n  Return\n  Abort')
+    survey = '!define MUI_FINISHPAGE_SHOWREADME\n!define MUI_FINISHPAGE_SHOWREADME_NOTCHECKED\n!define MUI_FINISHPAGE_SHOWREADME_TEXT $(UN_SURVEY_CHECKBOX_LABEL)\n!define MUI_FINISHPAGE_SHOWREADME_FUNCTION un.Survey'
+    replace_once(uninstaller, survey, '; Fire Axolotl has no uninstall survey.')
+    replace_once(installer, 'WriteRegDWORD HKCU ${MOZ_LAUNCHER_SUBKEY} "$INSTDIR\\${FileMainEXE}|Telemetry" 1', 'WriteRegDWORD HKCU ${MOZ_LAUNCHER_SUBKEY} "$INSTDIR\\${FileMainEXE}|Telemetry" 0')
+
+
 def embed_ublock(source):
     import zipfile
     xpi, corresponding_source = fetch_all()
@@ -170,6 +193,7 @@ def prepare(source):
     for filename in ['firefox.ico', 'document.ico']:
         shutil.copyfile(ROOT / 'branding/aion.ico', branding / filename)
     prepare_windows_installer(source, branding)
+    prepare_windows_installer_privacy(source)
     for filename in ['firefox.icns', 'document.icns']:
         if (branding / filename).exists():
             shutil.copyfile(ROOT / 'branding/aion.icns', branding / filename)
