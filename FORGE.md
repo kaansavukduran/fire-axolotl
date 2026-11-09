@@ -2,7 +2,7 @@
 
 - Depo / Repository: https://github.com/kaansavukduran/fire-axolotl
 - Dal / Branch: `main`
-- Doğrulanan kod kaydı / Validated code commit: `d99f04218bd8f16bae4392e0afbcfb820e36da62`
+- Doğrulanan kod kaydı / Validated code commit: `3b3282293224446e38c5f4c5fc484f978499cd6a`
 - Tarih / Date: 2026-11-09, Europe/Istanbul
 - Ürün aşaması / Product stage: geliştirici önizlemesi; kararlı tarayıcı veya kurulum dosyası henüz yayımlanmadı. / Developer preview; no stable browser or installers published.
 
@@ -12,9 +12,9 @@ Kullanıcı, ücretsiz dağıtılacak gerçek bir Firefox forku istiyor. Aion ak
 
 ## Yapılanlar ve doğrulama / Implemented and validated
 
-Firefox ESR `153.6.0esr` kaynak/hash pini, kaynak indirme ve hazırlama betikleri; Aion yerleşik modülü; kalıcı/geçici konteynerler; hız ve çözünürlük; yerel çift altyazı; açık eylemle isteğe bağlı HTTPS çeviri; kelime defteri; görünüm/erişilebilirlik; yedek; isteğe bağlı ilerleme; yerel sekme konumu kontrolü; CI, gerçek Firefox test akışı ve günlük ESR tazelik kontrolü.
+Firefox ESR `153.6.0esr` kaynak/hash pini, kaynak indirme ve hazırlama betikleri; Aion yerleşik modülü; kalıcı/geçici konteynerler; hız ve çözünürlük; yerel çift altyazı; açık eylemle isteğe bağlı HTTPS çeviri; kelime defteri; görünüm/erişilebilirlik; yedek; isteğe bağlı ilerleme; yerel sekme konumu kontrolü; araç çubuğu düzenleyicisi; OpenDyslexic; varsayılan koyu tema; site CSS’ine müdahale etmeyen bağımsız renk tercihi; telemetri/sponsor kapatma ilkeleri; CI, gerçek Firefox test akışı ve günlük ESR tazelik kontrolü.
 
-`npm run check`, 14 birim/gerileme testi, 14 gerçek Firefox arayüz/entegrasyon senaryosu ve `mach configure` geçti. Ayrıntılı kanıt ve sınırlar `docs/VALIDATION.md` içinde. Testler süreç güvenliğini veya TLS doğrulamasını kapatmadı. / Checks, 14 unit/regression tests, 14 real-Gecko interface/integration scenarios and native configure passed; see the validation document for limits.
+`npm run check`, 16 birim/gerileme testi, 21 gerçek Firefox arayüz/entegrasyon senaryosu ve `mach configure` geçti. Ayrıntılı kanıt ve sınırlar `docs/VALIDATION.md` içinde. Testler süreç güvenliğini veya TLS doğrulamasını kapatmadı. / Checks, 16 unit/regression tests, 21 real-Gecko interface/integration scenarios and native configure passed; see the validation document for limits.
 
 ## Çalışma alanındaki tam derleme / Long native build in the workspace
 
@@ -35,6 +35,12 @@ PATH=/workspace/work/cargo/bin:$PATH CARGO_HOME=/workspace/work/cargo RUSTUP_HOM
 ```
 
 Devam etmeden önce mevcut süreç ve son log durumunu incele; aynı derlemeyi eşzamanlı ikinci kez başlatma. / Inspect the live process/log first; do not start a competing build.
+
+## Son kapsam ekleri / Latest scope additions
+
+Firefox’un bütün dilleri ve yerleşik özellikleri hedeflenir; yeni Aion metinleri şu an Türkçe/İngilizcedir. Gerçek Mozilla hesabıyla giriş/Sync ve bütün dil paketleri henüz doğrulanmadı. Yerel gizlilik ilkesi telemetriyi, çalışmaları, reklam ilişkilendirmesini ve sponsorlu önerileri kapatırken hesap/Sync yeteneğini ve güvenlik hizmetlerini korur. / Target all Firefox languages/features; new strings remain TR/EN and real account/language-pack validation is pending.
+
+İlk gönderimin yedeği doğrulanan özel Drive klasöründedir: https://drive.google.com/drive/folders/1hQIvdaWDiM0I1c77mkUEhYhdOCqTbdmw . Her yeni başarılı push için ayrı commit eşleşmeli ZIP/bundle/makbuz ekle. / Preserve prior backups and add a fresh commit-matched backup after each successful push.
 
 ## Öncelikli sonraki işler / Next priorities
 
