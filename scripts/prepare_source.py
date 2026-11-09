@@ -57,6 +57,36 @@ def replace_app_startup_identity(path):
     replace_once(path, '#   browser:        {ec8030f7-c20a-464f-9b0e-13a3a9e97384}', '#   Fire Axolotl:   {75450dd9-387d-4289-8b23-7ad6609fa530}')
 
 
+def prepare_windows_installer(source, branding):
+    path = branding / 'branding.nsi'
+    text = path.read_text()
+    values = {
+        'BrandFullNameInternal': 'Fire Axolotl', 'BrandFullName': 'Fire Axolotl',
+        'CompanyName': 'Fire Axolotl',
+        'URLInfoAbout': 'https://github.com/kaansavukduran/fire-axolotl',
+        'HelpLink': 'https://github.com/kaansavukduran/fire-axolotl/issues',
+        'URLSystemRequirements': 'https://github.com/kaansavukduran/fire-axolotl/blob/main/docs/BUILD.md',
+        'URLManualDownload': 'https://github.com/kaansavukduran/fire-axolotl/releases',
+        'URLStubDownloadX86': '', 'URLStubDownloadAMD64': '', 'URLStubDownloadAArch64': '',
+        'CertNameDownload': 'Fire Axolotl', 'CertIssuerDownload': '',
+    }
+    for key, value in values.items():
+        text, count = re.subn(r'(?m)^!define\s+' + key + r'\s+"[^"]*"\s*$', f'!define {key} "{value}"', text)
+        if count != 1:
+            raise ValueError(f'Unexpected Windows installer branding: {key}')
+    path.write_text(text)
+    defines = source / 'browser/installer/windows/nsis/defines.nsi.in'
+    for key, old, new in [('AppName', 'Firefox', 'FireAxolotl'), ('DDEApplication', 'Firefox', 'FireAxolotl'), ('AppRegName', 'Firefox', 'FireAxolotl'), ('BrandProductName', 'Firefox', 'Fire Axolotl')]:
+        text = defines.read_text()
+        text, count = re.subn(r'(?m)^!define\s+' + key + r'\s+"' + re.escape(old) + r'"$', f'!define {key} "{new}"', text)
+        if count != 1 and not re.search(r'(?m)^!define\s+' + key + r'\s+"' + re.escape(new) + r'"$', text):
+            raise ValueError(f'Unexpected Windows integration namespace: {key}')
+        defines.write_text(text)
+    shutil.copyfile(ROOT / 'branding/aion.ico', branding / 'firefox64.ico')
+    for name in ['wizHeader.bmp', 'wizHeaderRTL.bmp', 'wizWatermark.bmp']:
+        shutil.copyfile(ROOT / 'branding/windows' / name, branding / name)
+
+
 def embed_ublock(source):
     import zipfile
     xpi, corresponding_source = fetch_all()
@@ -139,6 +169,7 @@ def prepare(source):
         shutil.copyfile(ROOT / f'branding/icon-{size}.png', branding / f'default{size}.png')
     for filename in ['firefox.ico', 'document.ico']:
         shutil.copyfile(ROOT / 'branding/aion.ico', branding / filename)
+    prepare_windows_installer(source, branding)
     for filename in ['firefox.icns', 'document.icns']:
         if (branding / filename).exists():
             shutil.copyfile(ROOT / 'branding/aion.icns', branding / filename)
