@@ -1,6 +1,8 @@
 name: Native Linux developer build (not a stable release)
 on:
   workflow_dispatch:
+  push:
+    branches: [codex/native-turkish-localization]
 permissions:
   contents: read
 concurrency:
@@ -35,6 +37,10 @@ jobs:
         env:
           AION_NATIVE_BINARY: ${{ github.workspace }}/work/upstream/firefox-153.6.0/obj-fire-axolotl/dist/bin/fire-axolotl
         run: python3 tests/native_smoke.py
+      - name: Native Turkish localization activation and branding gate
+        env:
+          AION_NATIVE_BINARY: ${{ github.workspace }}/work/upstream/firefox-153.6.0/obj-fire-axolotl/dist/bin/fire-axolotl
+        run: python3 tests/native_localization.py
       - name: Preserve data across a real browser process restart
         env:
           AION_NATIVE_BINARY: ${{ github.workspace }}/work/upstream/firefox-153.6.0/obj-fire-axolotl/dist/bin/fire-axolotl

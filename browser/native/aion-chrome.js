@@ -2,6 +2,10 @@
 (() => {
   'use strict';
   if (globalThis.AionChrome) return;
+  if (!Services.prefs.prefHasUserValue('intl.locale.requested') && Services.locale.availableLocales.includes('tr')) {
+    const system = Cc['@mozilla.org/intl/ospreferences;1'].getService(Ci.mozIOSPreferences).systemLocales;
+    Services.locale.requestedLocales = Services.locale.negotiateLanguages(system, Services.locale.availableLocales, 'tr', Services.locale.langNegStrategyLookup);
+  }
   const preference = 'fireaxolotl.ui.font';
   const fonts = {opendyslexic: 'OpenDyslexic,system-ui,sans-serif', lexend: 'Lexend,system-ui,sans-serif', sans: 'Arial,Helvetica,sans-serif', serif: 'Georgia,serif'};
   const controller = {
