@@ -13,6 +13,7 @@ if ($Mode -eq 'Install') {
     $files = @(Get-ChildItem "$root/dist/windows-release/*-Setup.exe")
     if ($files.Count -ne 1) { throw 'Expected one Windows Setup.exe' }
     $setup = $files[0].FullName
+    if ((Get-Item $setup).VersionInfo.ProductName -ne 'Fire Axolotl') { throw 'Installer extraction wrapper has the wrong product branding' }
     $signature = Get-AuthenticodeSignature $setup
     if ($signature.Status -ne 'NotSigned') { throw "Unexpected developer-installer signing state: $($signature.Status)" }
     $destination = Join-Path $env:RUNNER_TEMP 'FireAxolotlInstalled'
@@ -50,6 +51,6 @@ if ($Mode -eq 'Install') {
     if ([IO.File]::ReadAllText($state.firefox_sentinel) -ne 'Firefox profile data must survive Fire Axolotl install/uninstall.' -or (Get-FileHash $probe.marker -Algorithm SHA256).Hash.ToLowerInvariant() -ne $probe.marker_sha256) { throw 'User profile sentinel contents changed' }
     if ((BrowserChoice) -ne $state.default_browser) { throw 'Uninstallation changed the default browser' }
     if ($state.firefox_sha256 -and (Get-FileHash $state.firefox_binary -Algorithm SHA256).Hash -ne $state.firefox_sha256) { throw 'Existing Firefox executable was changed' }
-    @{profiles_preserved=$true; default_browser_preserved=$true; firefox_binary_preserved=$true; own_default_profile_root=$probe.default_profile_root} | ConvertTo-Json -Depth 5 | Set-Content "$evidence/uninstallation.json" -Encoding utf8
+    @{profiles_preserved=$true; default_browser_preserved=$true; firefox_binary_checked=[bool]$state.firefox_sha256; firefox_binary_preserved=$(if ($state.firefox_sha256) { $true } else { $null }); own_default_profile_root=$probe.default_profile_root} | ConvertTo-Json -Depth 5 | Set-Content "$evidence/uninstallation.json" -Encoding utf8
     Remove-Item $state.firefox_sentinel, $probe.marker
 }

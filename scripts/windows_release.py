@@ -93,11 +93,15 @@ def assemble():
     validate_checks(checks)
     installer = json.loads((ROOT / 'work/windows-installer-test/installation.json').read_text())
     uninstall = json.loads((ROOT / 'work/windows-installer-test/uninstallation.json').read_text())
+    sfx = json.loads((DIST / 'windows-sfx-build.json').read_text())
+    setup = DIST / f'{STEM}-Setup.exe'
+    if not sfx['native_7z_payload_unchanged'] or sfx['installer_sha256'] != digest(setup) or sfx['icon_sha256'] != digest(ROOT / 'branding/aion.ico'):
+        raise ValueError('Original-brand installer wrapper verification missing')
     if not installer['payload_verified'] or not uninstall['profiles_preserved'] or not uninstall['default_browser_preserved']:
         raise ValueError('Clean installation/uninstallation data protection not verified')
     commit = gh('api', f'repos/{CONFIG["repository"]}/git/commits/{os.environ["GITHUB_SHA"]}', '--jq', '.sha')
     subprocess.run(['git', 'archive', '--format=zip', '--prefix=fire-axolotl/', f'--output={DIST / (STEM + "-packaging-source.zip")}', commit], cwd=ROOT, check=True)
-    (DIST / 'release-manifest.json').write_text(json.dumps({'browser_source_commit': CONFIG['source_commit'], 'packaging_commit': commit, 'native_run': CONFIG['native_run_id'], 'installer_run': os.environ['GITHUB_RUN_ID'], 'authenticode_signed': False, 'automatic_updates': False, 'checks': checks, 'installation': installer, 'uninstallation': uninstall}, indent=2) + '\n')
+    (DIST / 'release-manifest.json').write_text(json.dumps({'browser_source_commit': CONFIG['source_commit'], 'packaging_commit': commit, 'native_run': CONFIG['native_run_id'], 'installer_run': os.environ['GITHUB_RUN_ID'], 'authenticode_signed': False, 'automatic_updates': False, 'checks': checks, 'installation': installer, 'uninstallation': uninstall, 'installer_wrapper': sfx}, indent=2) + '\n')
     notes = f'''Fire Axolotl Windows x64 geliştirici ön sürümü / developer preview
 
 **Kararlı günlük kullanım sürümü değildir. Windows Authenticode imzası ve otomatik güncelleme henüz yoktur.**

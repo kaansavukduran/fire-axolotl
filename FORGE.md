@@ -1,5 +1,7 @@
 # Windows geliştirmesi / Windows development
 
+- Driver Booster / WinOptimizer tarama, onarma ve sürücü güncelleme talepleri kullanıcı tarafından yanlış proje olarak geri çekildi; tarayıcı kapsamına dahil değildir.
+- Dış 7z kurulum kabuğundaki Firefox simgesi tespit edildi. `windows_sfx.py`, paketteki kamu malı LZMA SDK kaynağından Aion simgeli kendi kabuğumuzu derler; native 7z yükünün tamamını değiştirmeden korur. İlgili SDK kaynağı ve özet makbuzu ayrıca dağıtılır. Windows'ta gerçek derleme/kurulum sonucu henüz bekleniyor; motor çalıştırması iptal edilmez.
 - Güncel hedef: Windows x64 için gerçek tam motor derlemesi ve kullanıcı hesabına kurulan çevrimdışı `Setup.exe`. Linux ön sürümü korunur; Windows dosyası mevcut olduğu varsayılmaz.
 - `native-windows.yml`, Windows Server 2022 üzerinde doğrulanmış MozillaBuild 4.2.1, sabit geckodriver ve aynı Firefox kaynak katmanını kullanır. Defender dışlaması eklenmez; TLS, tarayıcı kum havuzu ve eklenti imzaları kapatılmaz.
 - Derlenen ZIP, sonraki paketleme/test hatasında motoru yeniden derlemek gerekmemesi için ayrı artifact olarak saklanır. Gerçek Windows'ta 11 ilk açılış, 4 yeniden başlatma ve 34 entegrasyon kontrolü zorunludur.
