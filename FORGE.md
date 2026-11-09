@@ -38,7 +38,7 @@ Kaynak katmanı veya commit değişince makbuzu yenile ve yalnızca gerekli art�
 
 ## Kalan sıradaki işler
 
-1. Gerçek Linux paketini arşivden çıkartıp yeni profilde test et; tam uygulanmış kaynak ve hash makbuzunu aynı geliştirici dağıtımıyla koru.
+1. **Tamamlandı:** gerçek Linux paketi ayrı klasöre çıkartılıp yeni profilde 11 senaryoyu geçti; bütün uygulanmış motor kaynakları arşivlendi. Tarayıcının iki ve kaynağın on bir kayıpsız aktarım parçası özel Drive'dan geri okunarak doğrulandı. Özetler `docs/VALIDATION.md` içinde. GitHub asset yüklemesi HTTP 401 verdi; Release taslağı yayımlanmadı. İndirme yayını için bu yetkilendirme sorunu hâlâ açık.
 2. Yerelleştirme: bütün Firefox dilleri hedeflenir; mevcut native deneme paketi en-US, Aion TR/EN. Dil paketlerini ve çalışma anında değiştirmeyi bağımsız kimlikle doğrula.
 3. Mozilla hesabı/Sync, Safe Browsing ve CDM hizmet erişimi: tercih/ilke testinden ayrı gerçek davranış denetimi gerekli. Ortamda bazı Mozilla ağ istekleri başarısız; çalışıyor varsayma.
 4. Projeye ait imzalı güncelleme hizmeti, MAR sertifikaları, kanal/mimari, iki gerçek sürümle veri koruma ve bozuk imza/kesik indirme testleri. `--disable-updater` ile kararlı sürüm çıkarma.

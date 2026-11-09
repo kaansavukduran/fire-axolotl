@@ -28,6 +28,12 @@ python3 scripts/archive_applied_source.py /path/to/prepared-source dist/fire-axo
 
 Standart `mach bootstrap`, `mach build`, `mach run` ve `mach package` girişleri kullanılır. `--disable-updater`, imzalama anahtarları ve gerçek güncelleme hizmeti hazır olmadığı için geliştirme yapılandırmasındadır. Bu yapılandırmayla üretilen dosya kararlı günlük kullanım paketi olarak yayımlanmamalıdır. / The development config disables the updater until independent signing and update hosting exist; do not publish that build as a stable daily-use browser.
 
+## İlk native denemenin aktarımı / First native test delivery
+
+`0f94fea` kaynak kaydının gerçek Linux arşivi ve tam uygulanmış motor kaynakları üretildi, özel Drive aktarımından geri okunarak doğrulandı. GitHub kaynak gönderimi ve normal CI başarılıdır; `uploads.github.com` varlık yüklemesi HTTP 401 verdiği için Release kaydı **taslak ve yayımlanmamış** durumda kaldı. Boş Release, indirilebilir sürüm olarak gösterilmez. Drive bağlantısının tek dosyada 100 MiB sınırı, özgün arşivi değiştirmeyen kayıpsız parçalarla aşıldı; bu, son kullanıcı kurulum deneyimi olarak tasarlanmış değildir.
+
+Native Linux developer CI ayrıca [42666129157](https://github.com/kaansavukduran/fire-axolotl/actions/runs/42666129157) çalıştırmasında başlatıldı. Bu kayıt yazılırken kaynak/katman/yeniden üretim/arşiv/bootstrap aşamaları geçmişti ve motor derlemesi sürüyordu. Uzaktaki sonuç, yerelde geçen testlerin yerine varsayılmaz; çalıştırma durumunu bağlantıdan kontrol et.
+
 ## Platform durumu / Platform status
 
 | Platform | Hedef / Target | Durum / Status |

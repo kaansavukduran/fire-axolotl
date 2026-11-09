@@ -14,6 +14,9 @@
 - uBlock Origin **1.76.0** resmî paket özeti ve Git kaynakları sabitlendi. Tam ilgili kaynak arşivinden yeniden üretim, **665** dosyada eşleşti. Mozilla imzaları ve öneri makbuzu kaynak karşılaştırmasının dışındadır; manifest JSON olarak karşılaştırılır. Ayrıntılar [COMPONENTS.md](COMPONENTS.md).
 - `scripts/check_upstream.py`: kontrol anında ESR ve uBO sürüm/özet pinleri güncel.
 - `mach package` ile gerçek Linux x64 `.tar.xz` üretildi. `verify_native_package.py` ürün kimliğini, tam gizlilik ilkesini, uBO envanterini, GPL bildirimini ve ilgili kaynak arşivinin özetini doğruladı. Arşiv ayrı klasöre çıkartıldı; oradaki ikili yeni profilde aynı **11** native smoke senaryosunu geçti. AppImage/.deb veya imzalı otomatik güncelleme değildir.
+- Derlenen ürünün kaynak kaydı: `0f94fea2429d578015acc0a6494fe8c2dbd5223a`. Linux arşivi **115236228 bayt**, SHA-256 `c6315a0f745f33ada02523a96dc52f3110dd241f1fd7a40b5cd497421501c4e2`.
+- Tam uygulanmış motor kaynak arşivi **1024371110 bayt**, SHA-256 `1c5385b89ad52b362ae5dc9abcd5b4ad8411c67034ad91b37a70dcc876a957a0`. Akışla taranan **511062** girdi içinde commit makbuzu, paket manifesti, Aion/uBO ve lisanslar doğrulandı; derleme nesneleri dışarıda tutuldu.
+- Özel Drive aktarımında tarayıcı iki, tam motor kaynağı on bir kayıpsız parçaya ayrıldı. Bütün parçalar Drive'dan geri okunup boyut/SHA-256 ile karşılaştırıldı. Yeniden birleştirme özeti özgün arşivle eşleşti. Kaynak ZIP/Git bundle yedeği bu büyük motor arşivinden ayrıdır ve ayrıca doğrulandı.
 
 Native smoke, integration and process-restart tests use the real independently compiled fork. Raw reports are generated under `work/native-test-artifacts/` and `work/native-e2e-artifacts/`; browser profiles remain outside published evidence. Screenshots: [UI_PREVIEW.md](UI_PREVIEW.md).
 
