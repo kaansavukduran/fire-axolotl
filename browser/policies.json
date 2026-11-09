@@ -1,6 +1,7 @@
 {
   "policies": {
     "DisableTelemetry": true,
+    "DisableDefaultBrowserAgent": true,
     "DisableFirefoxStudies": true,
     "FirefoxSuggest": {
       "SponsoredSuggestions": false,

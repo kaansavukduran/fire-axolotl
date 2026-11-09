@@ -1,0 +1,5 @@
+{
+  "file": "toolkit/mozapps/defaultagent/Policy.cpp",
+  "old": "  if (jsonRoot.isObject() && jsonRoot.isMember(\"Policies\") &&\n      jsonRoot[\"Policies\"].isObject()) {\n    if (jsonRoot[\"Policies\"].isMember(policyName) &&\n        jsonRoot[\"Policies\"][policyName].isBool()) {\n      return jsonRoot[\"Policies\"][policyName].asBool() ? PolicyState::Enabled\n                                                       : PolicyState::Disabled;\n    } else {\n      return PolicyState::NoPolicy;\n    }\n  }\n",
+  "new": "  if (jsonRoot.isObject() && jsonRoot.isMember(\"policies\") &&\n      jsonRoot[\"policies\"].isObject()) {\n    if (jsonRoot[\"policies\"].isMember(policyName) &&\n        jsonRoot[\"policies\"][policyName].isBool()) {\n      return jsonRoot[\"policies\"][policyName].asBool() ? PolicyState::Enabled\n                                                       : PolicyState::Disabled;\n    } else {\n      return PolicyState::NoPolicy;\n    }\n  }\n"
+}

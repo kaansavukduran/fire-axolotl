@@ -15,6 +15,7 @@ jobs:
       MOZBUILD_STATE_PATH: C:\mozstate
       MACH_INTERACTIVE: '0'
       MOZ_AUTOMATION: '1'
+      MACH_HIDE_DEV_DRIVE_SUGGESTION: '1'
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
@@ -33,14 +34,25 @@ jobs:
       - run: python scripts/fetch_source.py
       - run: python scripts/prepare_source.py work/upstream/firefox-153.6.0
       - name: Bootstrap the native Windows toolchain
-        working-directory: work/upstream/firefox-153.6.0
-        run: python mach --no-interactive bootstrap --application-choice browser --no-system-changes
+        shell: C:\mozilla-build\msys2\usr\bin\bash.exe --login -e -o pipefail {0}
+        run: |
+          repo=$(cygpath -u "$GITHUB_WORKSPACE")
+          cd "$repo/work/upstream/firefox-153.6.0"
+          type python3
+          python3 --version
+          python3 "$repo/scripts/windows_mach.py" --no-interactive bootstrap --application-choice browser --no-system-changes
       - name: Compile the actual Windows Firefox fork
-        working-directory: work/upstream/firefox-153.6.0
-        run: python mach build
+        shell: C:\mozilla-build\msys2\usr\bin\bash.exe --login -e -o pipefail {0}
+        run: |
+          repo=$(cygpath -u "$GITHUB_WORKSPACE")
+          cd "$repo/work/upstream/firefox-153.6.0"
+          python3 "$repo/scripts/windows_mach.py" build
       - name: Package the compiled Windows payload
-        working-directory: work/upstream/firefox-153.6.0
-        run: python mach package
+        shell: C:\mozilla-build\msys2\usr\bin\bash.exe --login -e -o pipefail {0}
+        run: |
+          repo=$(cygpath -u "$GITHUB_WORKSPACE")
+          cd "$repo/work/upstream/firefox-153.6.0"
+          python3 "$repo/scripts/windows_mach.py" package
       - name: Preserve the compiled payload before subsequent installer work
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         with:

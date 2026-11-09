@@ -7,6 +7,7 @@ import io
 import json
 from pathlib import Path, PurePosixPath
 import tarfile
+import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -14,14 +15,16 @@ ROOT = Path(__file__).resolve().parents[1]
 def verify(package):
     pin = json.loads((ROOT / 'upstream.json').read_text())
     component = json.loads((ROOT / 'components.json').read_text())['ublock-origin']
-    with tarfile.open(package) as archive:
-        members = archive.getmembers()
-        for member in members:
-            name = PurePosixPath(member.name)
-            if name.is_absolute() or '..' in name.parts:
+    windows = Path(package).suffix.lower() == '.zip'
+    with (zipfile.ZipFile(package) if windows else tarfile.open(package)) as archive:
+        members = archive.infolist() if windows else archive.getmembers()
+        names = [member.filename if windows else member.name for member in members]
+        for entry in names:
+            name = PurePosixPath(entry)
+            if name.is_absolute() or '..' in name.parts or (windows and ('\\' in entry or ':' in entry)):
                 raise ValueError('Unsafe package path')
-        names = [member.name for member in members]
-        if len(names) != len(set(names)):
+        unique = [name.casefold() for name in names] if windows else names
+        if len(unique) != len(set(unique)):
             raise ValueError('Duplicate package paths')
         ini_names = [name for name in names if name.endswith('/application.ini')]
         if len(ini_names) != 1:
@@ -29,6 +32,11 @@ def verify(package):
         prefix = ini_names[0].removesuffix('/application.ini')
 
         def read(relative):
+            if windows:
+                info = archive.getinfo(prefix + '/' + relative)
+                if info.is_dir() or (info.external_attr >> 16) & 0o170000 == 0o120000:
+                    raise ValueError(f'Expected a regular packaged file: {relative}')
+                return archive.read(info)
             member = archive.getmember(prefix + '/' + relative)
             if not member.isfile():
                 raise ValueError(f'Expected a regular packaged file: {relative}')
@@ -41,6 +49,11 @@ def verify(package):
             raise ValueError('Native package has an upstream or unexpected identity')
         if app['Version'].removesuffix('esr') != pin['version'].removesuffix('esr'):
             raise ValueError('Native package does not match the reviewed ESR pin')
+        if windows:
+            exe = read('fire-axolotl.exe')
+            offset = int.from_bytes(exe[0x3c:0x40], 'little')
+            if exe[:2] != b'MZ' or exe[offset:offset+6] != b'PE\0\0\x64\x86':
+                raise ValueError('Expected a real Windows x64 native executable')
         if json.loads(read('distribution/policies.json')) != json.loads((ROOT / 'browser/policies.json').read_text()):
             raise ValueError('Packaged privacy policy differs from the reviewed policy')
         receipt = json.loads(read('distribution/sources/ublock-origin.json'))

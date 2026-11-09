@@ -5,6 +5,10 @@
 - Derlenen ZIP, sonraki paketleme/test hatasında motoru yeniden derlemek gerekmemesi için ayrı artifact olarak saklanır. Gerçek Windows'ta 11 ilk açılış, 4 yeniden başlatma ve 34 entegrasyon kontrolü zorunludur.
 - Windows kullanıcı kurulumu kendi uygulama/dizin/kaldırma kimliğini kullanmalı; Firefox profilini taşımamalı, kendini varsayılan tarayıcı yapmamalı ve kaldırmada kullanıcı profillerini silmemeli.
 - Authenticode sertifikası ve imzalı güncelleme kanalı henüz yoktur. Yalnızca açıkça etiketlenmiş geliştirici Pre-release çıkarılabilir. `Setup.exe` üretimi ve temiz kurulum doğrulanmadan Windows hazır denmez.
+- Windows'ta Git satır sonları hem kök depoda hem uBO/uAssets kaynak indirmesinde korunur; npm test keşfi Windows komut satırına uyarlandı. Yerelde 19 Node + 14 Python kontrolü geçti.
+- `windows-preview-release.yml` yalnızca sabitlenmiş, başarılı main/manual native çalıştırmasının dosyalarını kullanır. Kurulum paketi ve tüm native dosya özetleri, Başlat kısayolu, ayrı varsayılan profil, 11/4/34 kurulu program senaryosu ve veri koruyan kaldırma geçmeden yayın işi başlamaz.
+- Native bootstrap artık MozillaBuild giriş kabuğunda çalışır; sessiz configure hatalarının tanısı `windows_mach.py` ile korunur. Dev Drive önerisi CI'da kapalıdır; güvenlik hizmetleri kapatılmaz.
+- Windows default-agent ilke okuyucusunun JSON anahtarındaki büyük/küçük harf hatası kaynak katmanında düzeltildi. `DisableDefaultBrowserAgent` gönderilir; gerçek Windows servisindeki `agentDisabled()` kurulum testinde doğrulanmalıdır.
 
 # Yayımlanan Linux ön sürümü / Published Linux preview
 

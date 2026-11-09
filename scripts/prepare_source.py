@@ -130,7 +130,7 @@ def prepare(source):
     actual = (source / 'browser/config/version_display.txt').read_text().strip()
     if actual != pinned['version']:
         raise ValueError(f'Expected Firefox {pinned["version"]}, found {actual}; review the overlay before updating')
-    for patch_file in ['service-request-proxy.json', 'remote-app-family.json']:
+    for patch_file in ['service-request-proxy.json', 'remote-app-family.json', 'windows-agent-policy.json']:
         patch = json.loads((ROOT / 'browser/native' / patch_file).read_text())
         replace_once(source / patch['file'], patch['old'], patch['new'])
     extension_dir = source / 'browser/extensions/aion'

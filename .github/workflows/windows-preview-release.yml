@@ -1,0 +1,100 @@
+name: Publish tested Windows developer preview
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: [Native Windows x64 developer build]
+    types: [completed]
+    branches: [main]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: publish-windows-developer-preview
+  cancel-in-progress: false
+jobs:
+  package:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    runs-on: windows-2022
+    timeout-minutes: 45
+    env:
+      PYTHONUTF8: '1'
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: '3.12'
+      - run: python scripts/windows_release.py preflight
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131
+        with:
+          name: fire-axolotl-windows-x64-native-payload
+          path: work/windows-inputs
+          run-id: 42704569858
+          github-token: ${{ github.token }}
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131
+        with:
+          name: fire-axolotl-windows-x64-corresponding-source
+          path: work/windows-inputs
+          run-id: 42704569858
+          github-token: ${{ github.token }}
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131
+        with:
+          name: windows-native-test-evidence
+          path: work/windows-evidence
+          run-id: 42704569858
+          github-token: ${{ github.token }}
+      - run: python -m pip install -r tests/requirements-gecko.txt zstandard==0.25.0
+      - run: python scripts/windows_release.py inputs
+      - name: Install the actual offline Setup.exe and verify its files
+        run: ./scripts/windows_install.ps1 Install
+      - run: python scripts/fetch_test_runtime.py
+      - name: Fresh-profile tests from the installed browser
+        env:
+          AION_NATIVE_ARTIFACTS: ${{ github.workspace }}/work/installed-windows-test-artifacts
+        run: python tests/native_smoke.py
+      - name: Installed product profile namespace
+        run: python tests/windows_profile.py
+      - name: Preserve data through a real process restart
+        run: python tests/native_restart.py
+      - name: Full integration on the installed Windows browser
+        run: python tests/gecko_e2e.py
+      - name: Uninstall while preserving profiles and default-browser choice
+        run: ./scripts/windows_install.ps1 Uninstall
+      - run: python scripts/windows_release.py assemble
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: tested-windows-preview-release-files
+          path: dist/windows-release/
+          if-no-files-found: error
+          retention-days: 14
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        if: always()
+        with:
+          name: windows-installer-test-evidence
+          path: |
+            work/windows-installer-test/
+            work/installed-windows-test-artifacts/
+            work/native-test-artifacts/
+            work/native-e2e-artifacts/
+          retention-days: 14
+  publish:
+    needs: package
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131
+        with:
+          name: tested-windows-preview-release-files
+          path: dist/windows-release
+      - name: Publish the complete tested Windows prerelease
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/windows_release.py publish
