@@ -1,3 +1,11 @@
+# Windows geliştirmesi / Windows development
+
+- Güncel hedef: Windows x64 için gerçek tam motor derlemesi ve kullanıcı hesabına kurulan çevrimdışı `Setup.exe`. Linux ön sürümü korunur; Windows dosyası mevcut olduğu varsayılmaz.
+- `native-windows.yml`, Windows Server 2022 üzerinde doğrulanmış MozillaBuild 4.2.1, sabit geckodriver ve aynı Firefox kaynak katmanını kullanır. Defender dışlaması eklenmez; TLS, tarayıcı kum havuzu ve eklenti imzaları kapatılmaz.
+- Derlenen ZIP, sonraki paketleme/test hatasında motoru yeniden derlemek gerekmemesi için ayrı artifact olarak saklanır. Gerçek Windows'ta 11 ilk açılış, 4 yeniden başlatma ve 34 entegrasyon kontrolü zorunludur.
+- Windows kullanıcı kurulumu kendi uygulama/dizin/kaldırma kimliğini kullanmalı; Firefox profilini taşımamalı, kendini varsayılan tarayıcı yapmamalı ve kaldırmada kullanıcı profillerini silmemeli.
+- Authenticode sertifikası ve imzalı güncelleme kanalı henüz yoktur. Yalnızca açıkça etiketlenmiş geliştirici Pre-release çıkarılabilir. `Setup.exe` üretimi ve temiz kurulum doğrulanmadan Windows hazır denmez.
+
 # Yayımlanan Linux ön sürümü / Published Linux preview
 
 - **Yayımlandı:** [v0.1.0-dev.20261109](https://github.com/kaansavukduran/fire-axolotl/releases/tag/v0.1.0-dev.20261109), 2026-11-09 19:28 UTC. Pre-release; Latest/kararlı değildir.

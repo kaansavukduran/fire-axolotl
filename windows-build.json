@@ -1,0 +1,11 @@
+{
+  "mozillabuild": {
+    "version": "4.2.1",
+    "url": "https://archive.mozilla.org/pub/mozilla/libraries/win32/MozillaBuildSetup-4.2.1.exe",
+    "sha256": "8ef5b3d2087e4867dc75bf19f5e62f12e917f518239415723cc70896b6f1e3d8"
+  },
+  "architecture": "x86_64",
+  "stage": "developer-preview",
+  "authenticode_signed": false,
+  "automatic_updates": false
+}
