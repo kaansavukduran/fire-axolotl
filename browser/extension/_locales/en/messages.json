@@ -1,0 +1,413 @@
+{
+  "companion": {
+    "message": "Browse with Aion"
+  },
+  "settings": {
+    "message": "Settings"
+  },
+  "prototype": {
+    "message": "Developer preview · Browser installers and security review are not complete."
+  },
+  "containers": {
+    "message": "Containers"
+  },
+  "separateCookies": {
+    "message": "Separate cookies"
+  },
+  "containerHelp": {
+    "message": "Keep accounts in separate spaces. This does not hide your IP address. Your current tab stays open."
+  },
+  "containerChoice": {
+    "message": "Choose a container"
+  },
+  "openContainer": {
+    "message": "Open page here"
+  },
+  "newContainer": {
+    "message": "New container name"
+  },
+  "containerPlaceholder": {
+    "message": "Work, Personal, Learning…"
+  },
+  "create": {
+    "message": "Create"
+  },
+  "noContainers": {
+    "message": "Create a container first"
+  },
+  "video": {
+    "message": "Video controls"
+  },
+  "videoHelp": {
+    "message": "Control the video in your active tab. Some embedded players are not supported. Reloading restores the site’s default speed."
+  },
+  "speed": {
+    "message": "Playback speed"
+  },
+  "applyVideo": {
+    "message": "Apply to video"
+  },
+  "normalSpeed": {
+    "message": "Reset to 1×"
+  },
+  "dualSubtitles": {
+    "message": "Dual subtitle files"
+  },
+  "subtitleHelp": {
+    "message": "Choose original and translated VTT or SRT files. Captions follow video time and stay on your device. This tool does not automatically translate files."
+  },
+  "originalSubtitle": {
+    "message": "Original subtitles · optional"
+  },
+  "translatedSubtitle": {
+    "message": "Translated subtitles · optional"
+  },
+  "showSubtitles": {
+    "message": "Show subtitles"
+  },
+  "hideSubtitles": {
+    "message": "Close subtitles"
+  },
+  "translate": {
+    "message": "Text and caption translation"
+  },
+  "translationHelp": {
+    "message": "Bring selected text or the current caption line here. Review the text before sending. Selectable text in page popups also works."
+  },
+  "readSelection": {
+    "message": "Get selected text"
+  },
+  "readCaption": {
+    "message": "Get caption line"
+  },
+  "sourceText": {
+    "message": "Text to send · up to 5,000 characters"
+  },
+  "provider": {
+    "message": "Destination and target language"
+  },
+  "noProvider": {
+    "message": "No translation service selected. Add a trusted service in Settings → Translation. No text has been sent to a service."
+  },
+  "sendTranslation": {
+    "message": "Send this text and translate"
+  },
+  "translationResult": {
+    "message": "Translation"
+  },
+  "saveWord": {
+    "message": "Add text to my vocabulary"
+  },
+  "discovery": {
+    "message": "Explore with Aion"
+  },
+  "progressHelp": {
+    "message": "3 discoveries: create or open a container, apply a video speed, and save text to your vocabulary. Each action counts once; taking a break keeps your progress."
+  },
+  "localScope": {
+    "message": "Saved on this device in this browser profile."
+  },
+  "language": {
+    "message": "Language"
+  },
+  "interfaceLanguage": {
+    "message": "Aion interface language"
+  },
+  "deviceLanguage": {
+    "message": "Device language · Turkish if unsupported"
+  },
+  "languageScope": {
+    "message": "This changes the Aion panel and settings. Other browser menus use Firefox language settings."
+  },
+  "appearance": {
+    "message": "Appearance and Accessibility"
+  },
+  "theme": {
+    "message": "Theme"
+  },
+  "system": {
+    "message": "System"
+  },
+  "light": {
+    "message": "Light"
+  },
+  "dark": {
+    "message": "Dark"
+  },
+  "contrast": {
+    "message": "High contrast"
+  },
+  "scale": {
+    "message": "Interface scale · 80%–200%"
+  },
+  "reset": {
+    "message": "Reset"
+  },
+  "textSize": {
+    "message": "Independent text size · 80%–200%"
+  },
+  "font": {
+    "message": "Font"
+  },
+  "systemFont": {
+    "message": "System font"
+  },
+  "fontHelp": {
+    "message": "Lexend is an alternative designed for easier reading, with Turkish character support. Choose the font that works best for you."
+  },
+  "advanced": {
+    "message": "Advanced text settings"
+  },
+  "lineHeight": {
+    "message": "Line spacing"
+  },
+  "letterSpacing": {
+    "message": "Letter spacing"
+  },
+  "preview": {
+    "message": "Live preview"
+  },
+  "previewText": {
+    "message": "Learn, explore, browse freely. Turkish characters: Çç Ğğ Iı İi Öö Şş Üü. Your settings apply immediately."
+  },
+  "previewButton": {
+    "message": "Example button"
+  },
+  "appearanceScope": {
+    "message": "These settings apply to Aion surfaces. Web pages and browser toolbars use their own zoom and accessibility settings."
+  },
+  "translationSettings": {
+    "message": "Translation"
+  },
+  "nativeTranslation": {
+    "message": "Firefox’s built-in page translation is preserved and runs on-device for supported languages. Aion selected-text translation uses the optional service below."
+  },
+  "targetLanguage": {
+    "message": "Translation target language · depends on service support"
+  },
+  "endpoint": {
+    "message": "LibreTranslate-compatible HTTPS translation endpoint"
+  },
+  "endpointHelp": {
+    "message": "Use only a service you trust. The provider can see the text you send and your IP address. Permission is requested only for your chosen domain. Services requiring payment or API keys are not supported in this version."
+  },
+  "saveEndpoint": {
+    "message": "Save endpoint and grant access"
+  },
+  "revokeEndpoint": {
+    "message": "Remove service and permission"
+  },
+  "enableProgress": {
+    "message": "Show discovery progress"
+  },
+  "animations": {
+    "message": "Allow animated feedback"
+  },
+  "silentFeedback": {
+    "message": "Feedback in this version is silent and static. Your system’s reduced-motion preference is always respected."
+  },
+  "resetProgress": {
+    "message": "Reset discovery progress only"
+  },
+  "confirmResetProgress": {
+    "message": "Discovery progress will be reset. Containers and vocabulary will be kept. Continue?"
+  },
+  "data": {
+    "message": "Data and backup"
+  },
+  "dataHelp": {
+    "message": "Back up Aion settings, vocabulary and discovery progress as JSON. This backup excludes cookies, passwords, history and containers. The file may contain personal text."
+  },
+  "export": {
+    "message": "Download backup"
+  },
+  "import": {
+    "message": "Restore backup"
+  },
+  "wordList": {
+    "message": "My vocabulary"
+  },
+  "savedWords": {
+    "message": "saved entries"
+  },
+  "confirmImport": {
+    "message": "Aion settings, vocabulary and progress will be replaced with the backup. Download your current backup first if needed. The translation endpoint stays unchanged. Continue?"
+  },
+  "updates": {
+    "message": "Updates"
+  },
+  "installedVersion": {
+    "message": "Installed Aion version:"
+  },
+  "developmentVersion": {
+    "message": "developer preview"
+  },
+  "updateHelp": {
+    "message": "The check button connects to GitHub. This preview does not install updates. Signed browser updates are not ready; keep stable Firefox updated for everyday browsing."
+  },
+  "checkUpdates": {
+    "message": "Check for updates"
+  },
+  "releases": {
+    "message": "Open GitHub releases"
+  },
+  "checkingUpdates": {
+    "message": "Checking GitHub releases…"
+  },
+  "latestPublished": {
+    "message": "Latest published release"
+  },
+  "noRelease": {
+    "message": "No stable browser release has been published yet."
+  },
+  "securityNote": {
+    "message": "No browser can guarantee protection from every infection. Security requires an updated engine and verified distribution."
+  },
+  "saved": {
+    "message": "Saved."
+  },
+  "created": {
+    "message": "Container created."
+  },
+  "opened": {
+    "message": "Page opened in a new container tab."
+  },
+  "applied": {
+    "message": "Applied to video."
+  },
+  "selectionRead": {
+    "message": "Text captured. Review it before sending."
+  },
+  "translating": {
+    "message": "Sending your chosen text to the translation service…"
+  },
+  "translated": {
+    "message": "Translation ready."
+  },
+  "wordSaved": {
+    "message": "Saved to vocabulary. Duplicate text is not added twice."
+  },
+  "exported": {
+    "message": "Backup download started."
+  },
+  "imported": {
+    "message": "Backup restored."
+  },
+  "restrictedPage": {
+    "message": "This page cannot be accessed. Open a regular HTTP or HTTPS tab and try again."
+  },
+  "unauthorized": {
+    "message": "This action must be started from the Aion panel."
+  },
+  "nameRequired": {
+    "message": "Enter a container name."
+  },
+  "containerMissing": {
+    "message": "Container not found. Reopen the panel and select it again."
+  },
+  "noVideo": {
+    "message": "No accessible video was found. Try again in the tab containing the video. Cross-origin embedded players may not be supported."
+  },
+  "invalidSpeed": {
+    "message": "Enter a speed between 0.25× and 4×."
+  },
+  "invalidCaptions": {
+    "message": "Could not read subtitles. Choose a valid VTT or SRT file with timestamps."
+  },
+  "chooseSubtitle": {
+    "message": "Choose at least one subtitle file."
+  },
+  "noCaptions": {
+    "message": "No caption line is accessible now. Enable video captions and try again, or paste text manually."
+  },
+  "textRequired": {
+    "message": "Select or paste text to translate or save."
+  },
+  "invalidEndpoint": {
+    "message": "Enter a valid HTTPS endpoint without credentials, query parameters, IP addresses or custom ports."
+  },
+  "permissionRequired": {
+    "message": "Translation domain permission was not granted. Enable the service again in Settings."
+  },
+  "translationFailed": {
+    "message": "The service could not complete translation. Check the endpoint and target language support, then retry."
+  },
+  "updateFailed": {
+    "message": "Could not reach GitHub. Check your connection and retry; other features remain available."
+  },
+  "invalidScale": {
+    "message": "Enter a value between 80% and 200%."
+  },
+  "fileTooLarge": {
+    "message": "File is too large. Use subtitles up to 2 MB or backups up to 3 MB."
+  },
+  "invalidBackup": {
+    "message": "This is not a supported Aion backup. Choose a version 1 JSON backup."
+  },
+  "operationFailed": {
+    "message": "The action could not be completed. Retry on a regular web tab; for translation, check your connection and service settings."
+  },
+  "tabLayout": {
+    "message": "Tab layout"
+  },
+  "tabLayoutHelp": {
+    "message": "Place tabs at the top, left or right. Your choice is saved in this profile and applies to open windows."
+  },
+  "tabPosition": {
+    "message": "Tab position"
+  },
+  "tabsTop": {
+    "message": "Top"
+  },
+  "tabsLeft": {
+    "message": "Left"
+  },
+  "tabsRight": {
+    "message": "Right"
+  },
+  "temporaryContainer": {
+    "message": "Open in a temporary container"
+  },
+  "temporary": {
+    "message": "temporary"
+  },
+  "temporaryHelp": {
+    "message": "The container and its site data are removed when its last tab closes. Downloads and browsing history are not deleted."
+  },
+  "preferredQuality": {
+    "message": "Preferred video quality"
+  },
+  "qualityAuto": {
+    "message": "Automatic"
+  },
+  "qualityBest": {
+    "message": "Highest available"
+  },
+  "qualityHelp": {
+    "message": "The first quality adapter targets YouTube and may be affected by site changes. Quality forcing on Netflix and other services is not supported yet. Account, DRM and device limits apply. Your preference is saved; apply it to each video with the button in this preview."
+  },
+  "applyQuality": {
+    "message": "Request quality"
+  },
+  "readResolution": {
+    "message": "Read actual resolution"
+  },
+  "actualResolution": {
+    "message": "Actual decoded video resolution"
+  },
+  "resolutionUnknown": {
+    "message": "Resolution is not available yet. Start the video and try again."
+  },
+  "unsupportedQuality": {
+    "message": "Quality selection is not supported on this player. Use the site’s own quality menu."
+  },
+  "unavailableQuality": {
+    "message": "This player does not offer the requested quality. Choose another quality or highest available."
+  },
+  "qualityRequested": {
+    "message": "Quality preference sent to the player. Check the result with actual resolution; the player may override the request."
+  },
+  "unsupportedSpeed": {
+    "message": "This video source does not accept speed changes. Live media streams may have a fixed playback rate."
+  }
+}

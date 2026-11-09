@@ -1,0 +1,413 @@
+{
+  "companion": {
+    "message": "Aion ile gezin"
+  },
+  "settings": {
+    "message": "Ayarlar"
+  },
+  "prototype": {
+    "message": "Geliştirici önizlemesi · Kurulum paketi ve güvenlik denetimi henüz tamamlanmadı."
+  },
+  "containers": {
+    "message": "Konteynerler"
+  },
+  "separateCookies": {
+    "message": "Ayrı çerezler"
+  },
+  "containerHelp": {
+    "message": "Hesaplarını ayrı alanlarda kullan. Bu işlem IP adresini gizlemez. Mevcut sekmen açık kalır."
+  },
+  "containerChoice": {
+    "message": "Konteyner seç"
+  },
+  "openContainer": {
+    "message": "Sayfayı burada aç"
+  },
+  "newContainer": {
+    "message": "Yeni konteyner adı"
+  },
+  "containerPlaceholder": {
+    "message": "İş, Kişisel, Öğrenme…"
+  },
+  "create": {
+    "message": "Oluştur"
+  },
+  "noContainers": {
+    "message": "Önce bir konteyner oluştur"
+  },
+  "video": {
+    "message": "Video kumandası"
+  },
+  "videoHelp": {
+    "message": "Açık sekmedeki videoyu kontrol et. Bazı gömülü oynatıcılar desteklenmez. Sayfayı yenileyince varsayılan hız geri gelir."
+  },
+  "speed": {
+    "message": "Oynatma hızı"
+  },
+  "applyVideo": {
+    "message": "Videoya uygula"
+  },
+  "normalSpeed": {
+    "message": "1× hıza dön"
+  },
+  "dualSubtitles": {
+    "message": "Çift altyazı dosyası"
+  },
+  "subtitleHelp": {
+    "message": "Orijinal ve çevrilmiş VTT veya SRT dosyalarını seç. Altyazılar video zamanıyla eşleşir ve cihazda kalır. Bu araç dosyaları kendiliğinden çevirmez."
+  },
+  "originalSubtitle": {
+    "message": "Orijinal altyazı · isteğe bağlı"
+  },
+  "translatedSubtitle": {
+    "message": "Çevrilmiş altyazı · isteğe bağlı"
+  },
+  "showSubtitles": {
+    "message": "Altyazıları göster"
+  },
+  "hideSubtitles": {
+    "message": "Altyazıları kapat"
+  },
+  "translate": {
+    "message": "Metin ve altyazı çevirisi"
+  },
+  "translationHelp": {
+    "message": "Seçili metni veya mevcut altyazı satırını buraya al. Göndermeden önce metni incele. Sayfa içindeki açılır kutularda seçilebilen yazılar da kullanılabilir."
+  },
+  "readSelection": {
+    "message": "Seçili metni al"
+  },
+  "readCaption": {
+    "message": "Altyazı satırını al"
+  },
+  "sourceText": {
+    "message": "Gönderilecek metin · en fazla 5.000 karakter"
+  },
+  "provider": {
+    "message": "Gönderim adresi ve hedef dil"
+  },
+  "noProvider": {
+    "message": "Çeviri hizmeti seçilmedi. Ayarlar → Çeviri bölümünde güvendiğin bir hizmet ekle. Metin henüz hiçbir hizmete gönderilmedi."
+  },
+  "sendTranslation": {
+    "message": "Bu metni gönder ve çevir"
+  },
+  "translationResult": {
+    "message": "Çeviri"
+  },
+  "saveWord": {
+    "message": "Metni kelime defterime ekle"
+  },
+  "discovery": {
+    "message": "Aion ile keşfet"
+  },
+  "progressHelp": {
+    "message": "3 keşif: bir konteyner oluştur veya aç, video hızını uygula, kelime defterine bir metin ekle. Her eylem bir kez sayılır; ara vermek ilerlemeyi silmez."
+  },
+  "localScope": {
+    "message": "Bu cihazda ve bu tarayıcı profilinde saklanır."
+  },
+  "language": {
+    "message": "Dil"
+  },
+  "interfaceLanguage": {
+    "message": "Aion arayüz dili"
+  },
+  "deviceLanguage": {
+    "message": "Cihaz dili · desteklenmiyorsa Türkçe"
+  },
+  "languageScope": {
+    "message": "Bu seçim Aion panelini ve ayarlarını değiştirir. Tarayıcının diğer menülerinin dili Firefox dil ayarlarından yönetilir."
+  },
+  "appearance": {
+    "message": "Görünüm ve Erişilebilirlik"
+  },
+  "theme": {
+    "message": "Tema"
+  },
+  "system": {
+    "message": "Sistem"
+  },
+  "light": {
+    "message": "Açık"
+  },
+  "dark": {
+    "message": "Koyu"
+  },
+  "contrast": {
+    "message": "Yüksek kontrast"
+  },
+  "scale": {
+    "message": "Arayüz ölçeği · %80–%200"
+  },
+  "reset": {
+    "message": "Sıfırla"
+  },
+  "textSize": {
+    "message": "Bağımsız yazı boyutu · %80–%200"
+  },
+  "font": {
+    "message": "Yazı tipi"
+  },
+  "systemFont": {
+    "message": "Sistem yazı tipi"
+  },
+  "fontHelp": {
+    "message": "Lexend, okumayı kolaylaştırmak için tasarlanmış bir alternatiftir ve Türkçe karakterleri destekler. Tercihine en uygun yazı tipini seç."
+  },
+  "advanced": {
+    "message": "Gelişmiş yazı ayarları"
+  },
+  "lineHeight": {
+    "message": "Satır aralığı"
+  },
+  "letterSpacing": {
+    "message": "Harf aralığı"
+  },
+  "preview": {
+    "message": "Canlı önizleme"
+  },
+  "previewText": {
+    "message": "Öğren, keşfet, özgürce gezin. Çığ, ışık, şüphe, öğüt: Türkçe karakterler burada. Ayarların hemen uygulanır."
+  },
+  "previewButton": {
+    "message": "Örnek düğme"
+  },
+  "appearanceScope": {
+    "message": "Bu ayarlar Aion yüzeylerine uygulanır. Web sayfaları ve tarayıcı araç çubukları kendi yakınlaştırma ve erişilebilirlik ayarlarını kullanır."
+  },
+  "translationSettings": {
+    "message": "Çeviri"
+  },
+  "nativeTranslation": {
+    "message": "Firefox’un yerleşik sayfa çevirisi korunur ve desteklenen dillerde cihazda çalışır. Aion içindeki seçili metin çevirisi aşağıdaki isteğe bağlı hizmeti kullanır."
+  },
+  "targetLanguage": {
+    "message": "Çeviri hedef dili · hizmet desteğine bağlı"
+  },
+  "endpoint": {
+    "message": "LibreTranslate uyumlu HTTPS çeviri adresi"
+  },
+  "endpointHelp": {
+    "message": "Yalnızca güvendiğin bir hizmeti kullan. Sağlayıcı, düğmeyle gönderdiğin metni ve IP adresini görebilir. Yalnızca seçtiğin alan adına izin istenir. Ücretli veya API anahtarı gerektiren hizmetler bu sürümde desteklenmez."
+  },
+  "saveEndpoint": {
+    "message": "Adresi kaydet ve izin ver"
+  },
+  "revokeEndpoint": {
+    "message": "Hizmeti ve iznini kaldır"
+  },
+  "enableProgress": {
+    "message": "Keşif ilerlemesini göster"
+  },
+  "animations": {
+    "message": "Hareketli geri bildirime izin ver"
+  },
+  "silentFeedback": {
+    "message": "Bu sürümün geri bildirimi sessiz ve sabittir. Sistemin azaltılmış hareket tercihi her zaman uygulanır."
+  },
+  "resetProgress": {
+    "message": "Yalnızca keşif ilerlemesini sıfırla"
+  },
+  "confirmResetProgress": {
+    "message": "Keşif ilerlemesi sıfırlanacak. Konteynerler ve kelime defteri korunacak. Devam edilsin mi?"
+  },
+  "data": {
+    "message": "Veri ve yedek"
+  },
+  "dataHelp": {
+    "message": "Aion ayarlarını, kelime defterini ve keşif ilerlemesini JSON olarak yedekle. Bu yedek; çerezleri, parolaları, geçmişi veya konteynerleri içermez. Dosya kişisel metin içerebilir."
+  },
+  "export": {
+    "message": "Yedeği indir"
+  },
+  "import": {
+    "message": "Yedekten geri yükle"
+  },
+  "wordList": {
+    "message": "Kelime defterim"
+  },
+  "savedWords": {
+    "message": "kayıtlı metin"
+  },
+  "confirmImport": {
+    "message": "Aion ayarları, kelime defteri ve ilerleme dosyadaki kayıtlarla değiştirilecek. Önce mevcut yedeği indirmen önerilir. Çeviri adresi değişmez. Devam edilsin mi?"
+  },
+  "updates": {
+    "message": "Güncellemeler"
+  },
+  "installedVersion": {
+    "message": "Yüklü Aion sürümü:"
+  },
+  "developmentVersion": {
+    "message": "geliştirici önizlemesi"
+  },
+  "updateHelp": {
+    "message": "Kontrol düğmesi GitHub’a bağlanır. Bu önizleme otomatik kurulum yapmaz. İmzalı tarayıcı güncellemeleri henüz hazır değildir; günlük kullanım için kararlı Firefox’u güncel tut."
+  },
+  "checkUpdates": {
+    "message": "Güncellemeleri kontrol et"
+  },
+  "releases": {
+    "message": "GitHub sürüm sayfasını aç"
+  },
+  "checkingUpdates": {
+    "message": "GitHub sürümleri kontrol ediliyor…"
+  },
+  "latestPublished": {
+    "message": "Son yayımlanan sürüm"
+  },
+  "noRelease": {
+    "message": "Henüz kararlı bir tarayıcı sürümü yayımlanmadı."
+  },
+  "securityNote": {
+    "message": "Hiçbir tarayıcı virüs bulaşmayacağını garanti edemez. Güvenlik, güncel motor ve doğrulanmış dağıtım gerektirir."
+  },
+  "saved": {
+    "message": "Kaydedildi."
+  },
+  "created": {
+    "message": "Konteyner oluşturuldu."
+  },
+  "opened": {
+    "message": "Sayfa yeni konteyner sekmesinde açıldı."
+  },
+  "applied": {
+    "message": "Videoya uygulandı."
+  },
+  "selectionRead": {
+    "message": "Metin alındı. Göndermeden önce inceleyebilirsin."
+  },
+  "translating": {
+    "message": "Seçtiğin metin çeviri hizmetine gönderiliyor…"
+  },
+  "translated": {
+    "message": "Çeviri hazır."
+  },
+  "wordSaved": {
+    "message": "Kelime defterine kaydedildi. Aynı metin ikinci kez eklenmez."
+  },
+  "exported": {
+    "message": "Yedek indirmesi başlatıldı."
+  },
+  "imported": {
+    "message": "Yedek geri yüklendi."
+  },
+  "restrictedPage": {
+    "message": "Bu sayfada işlem yapılamıyor. Normal bir http veya https sekmesi açıp yeniden dene."
+  },
+  "unauthorized": {
+    "message": "Bu işlem yalnızca Aion panelinden başlatılabilir."
+  },
+  "nameRequired": {
+    "message": "Konteyner için bir ad yaz."
+  },
+  "containerMissing": {
+    "message": "Konteyner bulunamadı. Paneli yeniden açıp seçimini yenile."
+  },
+  "noVideo": {
+    "message": "Bu sayfada erişilebilir video bulunamadı. Videonun bulunduğu sekmede yeniden dene. Başka kaynaktan gömülü oynatıcılar desteklenmeyebilir."
+  },
+  "invalidSpeed": {
+    "message": "0,25× ile 4× arasında bir hız gir."
+  },
+  "invalidCaptions": {
+    "message": "Altyazı okunamadı. Zaman damgaları olan geçerli bir VTT veya SRT dosyası seç."
+  },
+  "chooseSubtitle": {
+    "message": "En az bir altyazı dosyası seç."
+  },
+  "noCaptions": {
+    "message": "Şu anda erişilebilir altyazı satırı yok. Videoda altyazıyı açıp yeniden dene veya metni elle yapıştır."
+  },
+  "textRequired": {
+    "message": "Çevirmek veya kaydetmek için önce metin seç ya da yapıştır."
+  },
+  "invalidEndpoint": {
+    "message": "Geçerli bir HTTPS adresi gir. Kullanıcı adı, parola, sorgu, IP adresi veya özel port kullanma."
+  },
+  "permissionRequired": {
+    "message": "Çeviri alan adı izni verilmedi. Ayarlar bölümünden hizmeti yeniden etkinleştir."
+  },
+  "translationFailed": {
+    "message": "Hizmet çeviriyi tamamlayamadı. Adresi ve hedef dil desteğini kontrol edip yeniden dene."
+  },
+  "updateFailed": {
+    "message": "GitHub’a ulaşılamadı. Bağlantını kontrol edip yeniden dene; diğer özellikleri kullanmaya devam edebilirsin."
+  },
+  "invalidScale": {
+    "message": "%80 ile %200 arasında bir değer gir."
+  },
+  "fileTooLarge": {
+    "message": "Dosya çok büyük. Altyazı için en fazla 2 MB, yedek için 3 MB kullan."
+  },
+  "invalidBackup": {
+    "message": "Bu dosya desteklenen bir Aion yedeği değil. Sürüm 1 JSON yedeği seç."
+  },
+  "operationFailed": {
+    "message": "İşlem tamamlanamadı. Normal bir web sekmesinde yeniden dene; çeviri için bağlantıyı ve hizmet ayarlarını kontrol et."
+  },
+  "tabLayout": {
+    "message": "Sekme yerleşimi"
+  },
+  "tabLayoutHelp": {
+    "message": "Sekmeler üstte, solda veya sağda olabilir. Seçimin bu profilde saklanır ve açık pencerelere uygulanır."
+  },
+  "tabPosition": {
+    "message": "Sekmelerin konumu"
+  },
+  "tabsTop": {
+    "message": "Üstte"
+  },
+  "tabsLeft": {
+    "message": "Solda"
+  },
+  "tabsRight": {
+    "message": "Sağda"
+  },
+  "temporaryContainer": {
+    "message": "Geçici konteynerde aç"
+  },
+  "temporary": {
+    "message": "geçici"
+  },
+  "temporaryHelp": {
+    "message": "Bu alandaki son sekme kapanınca konteyner ve site verileri silinir. İndirilen dosyalar ve geçmiş silinmez."
+  },
+  "preferredQuality": {
+    "message": "Tercih edilen video kalitesi"
+  },
+  "qualityAuto": {
+    "message": "Otomatik"
+  },
+  "qualityBest": {
+    "message": "Sunulan en yüksek kalite"
+  },
+  "qualityHelp": {
+    "message": "İlk kalite bağdaştırıcısı YouTube içindir ve site değişikliklerinden etkilenebilir. Netflix ve diğer hizmetler için kalite zorlama henüz desteklenmez. Hesap, DRM ve cihaz sınırları geçerlidir. Tercihin kaydedilir; bu önizlemede her videoya düğmeyle uygulanır."
+  },
+  "applyQuality": {
+    "message": "Kaliteyi iste"
+  },
+  "readResolution": {
+    "message": "Gerçek çözünürlüğü oku"
+  },
+  "actualResolution": {
+    "message": "Oynatılan videonun gerçek çözünürlüğü"
+  },
+  "resolutionUnknown": {
+    "message": "Çözünürlük henüz okunamıyor. Videoyu başlatıp yeniden dene."
+  },
+  "unsupportedQuality": {
+    "message": "Bu oynatıcıda kalite seçimi desteklenmiyor. Sitenin kendi kalite menüsünü kullanabilirsin."
+  },
+  "unavailableQuality": {
+    "message": "İstediğin kalite bu oynatıcıda sunulmuyor. Farklı bir kalite veya sunulan en yüksek kaliteyi seç."
+  },
+  "qualityRequested": {
+    "message": "Kalite tercihi oynatıcıya iletildi. Sonucu gerçek çözünürlük düğmesiyle kontrol et; oynatıcı tercihi değiştirebilir."
+  },
+  "unsupportedSpeed": {
+    "message": "Bu video kaynağı hız değişikliğini kabul etmiyor. Canlı medya akışları sabit hızda olabilir."
+  }
+}

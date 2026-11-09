@@ -1,0 +1,10 @@
+work/
+dist/
+node_modules/
+__pycache__/
+*.pyc
+.DS_Store
+*.pem
+*.key
+.env*
+!.env.example

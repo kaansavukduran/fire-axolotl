@@ -1,0 +1,15 @@
+# Full source build: artifact mode would retain upstream native branding.
+ac_add_options --enable-application=browser
+ac_add_options --with-branding=browser/branding/fireaxolotl
+ac_add_options --enable-release
+ac_add_options --disable-debug
+ac_add_options --disable-debug-symbols
+ac_add_options --disable-tests
+ac_add_options --with-app-name=fire-axolotl
+ac_add_options --with-app-basename=FireAxolotl
+ac_add_options MOZ_APP_REMOTINGNAME=fire-axolotl
+# Do not accept Mozilla-signed MAR files as updates to this independent product.
+# Enable the updater only after project MAR signing and hosting are operational.
+ac_add_options --disable-updater
+mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/obj-fire-axolotl
+mk_add_options MOZ_MAKE_FLAGS=-j4

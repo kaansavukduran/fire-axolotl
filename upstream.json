@@ -1,0 +1,9 @@
+{
+  "product": "firefox",
+  "channel": "esr",
+  "version": "153.6.0esr",
+  "source_url": "https://archive.mozilla.org/pub/firefox/releases/153.6.0esr/source/firefox-153.6.0esr.source.tar.xz",
+  "sha512": "3e9f1f8e7c14d1994f4896702a50b46c1a3c7c7b696a080112f5ab3fdf0fcdd41ade4e81f9abafe2d3824cf1dfb16b5c09e5eaec12a05a733906f1483395565d",
+  "verified_on": "2026-11-09",
+  "checksums_url": "https://archive.mozilla.org/pub/firefox/releases/153.6.0esr/SHA512SUMS"
+}
