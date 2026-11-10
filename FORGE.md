@@ -1,5 +1,7 @@
 # Aion yeni sekme oyunu / Aion new-tab game
 
+- Güncel native kaynak `7bbc53a6a388476ecd9c3e4a795f75bf834a2196`; [Windows çalıştırması 42729988254](https://github.com/kaansavukduran/fire-axolotl/actions/runs/42729988254) kısa kök ve cache ile başlatıldı. Yayın JSON ve üç artifact indirme pini bu run’a eşlendi. Bu kayıt sırasında derleme sürüyor; Windows Setup henüz yok. Önceki 5d/427099 derlemesi başarısız tarihsel kayıttır.
+
 - Son gözden geçirmede gerçek bir klavye zıplamasıyla engel aşıldı ve kazanılan rekor yeni sekmede korundu. Arama kutusu kapalıyken oyun görünür; kullanıcının tamamen boş yeni sekme seçimi korunur. `native_runner.py` artık 11 senaryoyu geçti; kurulu Windows yayın kapısı da 11 ister. Son yerel birim toplamı 22 Node + 16 Python; önceki 11 native smoke + 4 restart da oyun katmanıyla geçti.
 - Windows çalıştırması 42709930229, 117m derleme sonunda `goog_cc_scream_network_controller_gn/...obj` için "No rule to make target" hatası verdi; ZIP/Setup üretilemedi. Uzun Windows kökünün göreli nesne yollarıyla birleşmesi incelendi. Sonraki kaynak `D:/s/firefox-153.6.0`, nesneler `D:/o`; uzun kaynak/çıktı kökleri kaldırıldı. Tam birim sonuç henüz yeni çalıştırmadan bekleniyor.
 - Native workflow dosyası main'e değişince kontrollü olarak yeni motor derlemesi başlar; yayın ön kontrolü yalnızca tam sabitlenen başarılı main/manual veya main/push çalıştırmasını kabul eder. Yeni run başladıktan sonra `windows-release.json` ve artifact indirme pinlerini onun kesin kaynak SHA/run ID'sine güncelle. Başarısız eski run ile yayın yapılamaz.
