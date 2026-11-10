@@ -1,3 +1,9 @@
+# Kurulum doğrulayıcısında native ZIP seçimi
+
+- Windows validation 42808841079 bütün 65 senaryoyu geçti: 11 açılış, 4 restart, 34 integration, 11 oyun, 5 dil. Motor/source 42791204074/9d564dc korunur.
+- İlk paketleme run 42809410052: kendi Aion SFX kabuğu başarıyla derlendi, gerçek Setup kurup native exe/uninstaller üretti. Dosya doğrulayıcısı kaynak ZIP'lerini de native ZIP saydığı için durdu. Native ZIP artık sürümün kesin STEM adı ve newtab-ui-overlay.json içindeki SHA-256 ile seçilir; bütün kurulu dosyaların karşılaştırması korunur.
+- Sonraki yayın çalıştırması güncel main'den manuel başlatılmalıdır. Test edilmiş native dosyalar yeniden derlenmez. Aynı başarılı validation pinleri korunur. Kurulu program/kaldırma testleri geçmeden yayın yok.
+
 # Güncel başarılı test kapısı hedefi: Windows yeniden doğrulama
 
 - Motor ve kaynak run 42791204074, kaynak SHA 9d564dced55dc4816cc4aeb57387ba1643f007ed olarak korunur. Testler [42808841079](https://github.com/kaansavukduran/fire-axolotl/actions/runs/42808841079) üzerinde, 6ca1932d36605aa327ea005c2474aa8f0cae1ec4 doğrulama kaynaklarıyla yeniden koşar. Workflow ID 413213938; path windows-revalidate.yml. Yayın başarılı doğrulama SHA/run’ını ve aynı ZIP/Setup/source hashlerini zorunlu tutar.

@@ -5,14 +5,16 @@ import json
 import os
 from pathlib import Path
 import zipfile
+from windows_release import DIST, STEM, digest
 
 ROOT = Path(__file__).resolve().parents[1]
 destination = Path(os.environ['AION_INSTALLED_DIRECTORY']).resolve()
-packages = list((ROOT / 'dist/windows-release').glob('*.zip'))
-if len(packages) != 1:
-    raise ValueError('Expected one verified native ZIP')
+package = DIST / f'{STEM}.zip'
+overlay = json.loads((DIST / 'newtab-ui-overlay.json').read_text())
+if not package.is_file() or digest(package) != overlay['native_zip_sha256']:
+    raise ValueError('The installed payload must match the exact verified native ZIP')
 count = 0
-with zipfile.ZipFile(packages[0]) as archive:
+with zipfile.ZipFile(package) as archive:
     ini = next(n for n in archive.namelist() if n.endswith('/application.ini'))
     prefix = ini.removesuffix('application.ini')
     for member in archive.infolist():
