@@ -9,6 +9,7 @@ import shutil
 import subprocess
 import tarfile
 import zipfile
+from windows_runtime import pe_imports, CRT_NAME
 
 ROOT = Path(__file__).resolve().parents[1]
 MAGIC = b"7z\xbc\xaf'\x1c"
@@ -105,6 +106,8 @@ def frontend_payload(installer, tag, native, work, repack=True):
     inner_hash = digest(inner.read_bytes())
     if inner.read_bytes()[:2] != b'MZ':
         raise ValueError('Native NSIS installer missing')
+    if any(CRT_NAME.match(name) for name in pe_imports(inner.read_bytes())[1]):
+        raise ValueError('The extraction-stage NSIS installer must not require an external Visual C++ runtime')
     if not repack:
         return original_archive.read_bytes(), inner_hash
     with zipfile.ZipFile(native) as archive:
@@ -136,6 +139,9 @@ def main():
         tag = extract(ROOT / 'work/windows-inputs/fire-axolotl-windows-applied-source.tar.zst', sdk)
     prepare(sdk, ROOT / 'branding/aion.ico')
     stub, command = build(sdk)
+    stub_imports = pe_imports(stub)[1]
+    if any(CRT_NAME.match(name) for name in stub_imports):
+        raise ValueError('The initial extraction wrapper must run before any bundled Visual C++ runtime is extracted')
     (work / 'fire-axolotl-setup.sfx').write_bytes(stub)
     if tag is None:
         print('Original-brand Windows extraction wrapper compiled')
@@ -157,6 +163,9 @@ def main():
     installer.write_bytes(updated)
     dist = installer.parent
     report = {'original_installer_sha256': digest(original), 'installer_sha256': digest(updated), 'native_7z_payload_unchanged': not repack, 'frontend_zip_sha256': digest(native.read_bytes()), 'inner_nsis_preserved': True, 'inner_nsis_sha256': inner_hash, 'native_7z_payload_sha256': payload_sha256, 'sfx_sha256': digest(stub), 'icon_sha256': digest((ROOT / 'branding/aion.ico').read_bytes()), 'sdk_license': 'LZMA SDK 18.05 public domain; Mozilla notices retained', 'build_command': command}
+    report['extraction_wrapper_crt_imports_absent'] = True
+    report['inner_nsis_crt_imports_absent'] = True
+    report['extraction_wrapper_imports'] = sorted(stub_imports)
     (dist / 'windows-sfx-build.json').write_text(json.dumps(report, indent=2) + '\n')
     with zipfile.ZipFile(dist / 'windows-sfx-corresponding-source.zip', 'w', zipfile.ZIP_DEFLATED) as archive:
         for path in sorted(sdk.rglob('*')):

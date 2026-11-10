@@ -1,5 +1,7 @@
 # Varsayılan ağ örneklemesi için yayın kapısı
 
+- İlk kurulum kabuğunun da harici x86 VC runtime gerektirmemesi denetlendi: önceki gerçek Setup PE'si yalnızca kernel32/oleaut32/shell32/user32 kullanıyor. Yeni SFX ve iç NSIS programı normal/gecikmeli importlarında herhangi bir Visual C++ CRT isterse paketleme durur; bu iki doğrulama yayın makbuzuna eklenir. Sistem Microsoft bileşenleri kaldırılmaz/değiştirilmez.
+
 - Kurulu 153.7 ürününde taze sentetik profille nsHttp günlükleri örneklenir; yerel HTTP canary isteğinin hem sunucuya ulaşması hem tarayıcı günlüğünde görünmesi zorunludur. Ardından 30 saniye normal yeni sekme izlenir. TLS, önerilen otomasyon tercihlerini kapatma ve ürün güvenlik politikaları değiştirilmez; güvensiz sertifika kabul edilmez.
 - Bilinen telemetri/studies/sponsor uçlarına HTTP başlatma girişimi veya çalışmayan günlük yakalama yayını durdurur. Güvenlik/hizmet uçları ayrı tutulur. Rapor sorguları ve uzun URL kimliklerini atar; ham günlükler özel çalışma dizinindedir ve yayın kanıtına alınmaz. Bu sınırlı örnekleme sonraki zamanlanmış trafik/hesap/gerçek kullanıcı gezintisini veya başarılı ağ teslimini doğrulamaz.
 - Yerel sınıflandırıcı için üç gerileme eklendi. Gerçek 153.7 ağ örneklemesi kurulum akışında koşmadan başarılı denmez. 103 dil kaynak overlay çalıştırması 42834629329 geçti; iki motor derlemesi devam ediyor.

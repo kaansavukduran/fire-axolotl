@@ -128,7 +128,7 @@ def assemble():
     if len(profile.get('verified_crt_modules', {})) != 3 or not runtime['crt_imports'] or not all(fallback.get(key) for key in ['local_crt_fallback_verified', 'core_library_loaded', 'prefer_system32_mitigation_enabled', 'probe_has_no_dynamic_crt_imports']):
         raise ValueError('Actual application-local Windows runtime loading was not verified')
     setup = DIST / f'{STEM}-Setup.exe'
-    if sfx['frontend_zip_sha256'] != overlay['native_zip_sha256'] or not sfx['inner_nsis_preserved'] or sfx['installer_sha256'] != digest(setup) or sfx['icon_sha256'] != digest(ROOT / 'branding/aion.ico'):
+    if sfx['frontend_zip_sha256'] != overlay['native_zip_sha256'] or not sfx['inner_nsis_preserved'] or not sfx.get('extraction_wrapper_crt_imports_absent') or not sfx.get('inner_nsis_crt_imports_absent') or sfx['installer_sha256'] != digest(setup) or sfx['icon_sha256'] != digest(ROOT / 'branding/aion.ico'):
         raise ValueError('Original-brand installer wrapper verification missing')
     if game['mode'] != 'compiled-fork-normal-newtab' or len(game['passed']) < 11:
         raise ValueError('Installed-browser new-tab game checks missing')
