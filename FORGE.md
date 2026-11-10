@@ -1,3 +1,13 @@
+# Aion0.2 araç UX çalışması · yayın öncesi
+
+Yetkili kaynak `/workspace/work/fire-axolotl-locale`, dal `codex/native-locale-repair`, uzak `kaansavukduran/fire-axolotl/main`. Orijinal çalışma ağacındaki kullanıcı WIP'leri korunur.
+
+760px açılır panel, Çeviri/Konteyner/Video görevleri, tam sekme çalışma alanı, kaynak sekme bağlamı ve oturumluk taslak eklendi. Sağ tık menüsünde kalıcı/geçici konteyner ve seçili metin girişi bulunur; görsel arama menüsü diğer menüleri silmez. Native çeviri bağlantısı yalnızca kendi Aion sayfasından sabit about adresini açar. Yeni izin eklenmedi. Aion sürümü0.2.0; engine153.7 korunur.
+
+Yerelde34 mevcut entegrasyon senaryosu geçti. Gerçek toolbar genişliği760px, geniş çalışma alanı, kişisel/iş çerez ayrımı ve native çeviri açılışı doğrulandı. Gerçek EN→TR model çıkarımı Merhaba dünya ve internet kapalı yeni metin Günaydın sonucunu verdi; yerel testte sadece sentetik profile ortamın sağladığı TLS proxy/CA uygulandı. Ürünün TLS ayarı değiştirilmedi. Genişletilmiş8 araç senaryosu ve gerçek kurulum akışları0.2 yayınından önce zorunludur.
+
+Yeni sürüm hedefleri Windows `v0.2.0-dev.20261110-windows`, Linux `v0.2.0-dev.20261110-linux`. Native engine run/source pinleri korunur; yalnızca incelenmiş kendi UI kaynakları, aynı kimlik/izinlerle Aion manifest sürümü ve kayıt güncellenir. Windows önceki153.7/Aion0.1 Setup → Aion0.2 yükseltmesinde veriler ve native çeviri bağlantısı ayrıca doğrulanır. Henüz yeni yayın tamamlandı denmez. Aşağıdaki bölümler tarihseldir.
+
 # Güncel devir · ESR 153.7 · 2026-11-10
 
 Windows x64 `v0.1.0-dev.20261110-windows.1` ve Linux `v0.1.0-dev.20261110-linux.1` yayımlandı. Her kurulu üründe 70 senaryo, Windows app-local CRT doğrulaması, gerçek eski Setup → yeni Setup veri koruyan yükseltmesi ve kaldırma geçti. Native Windows run 42828049949, Linux run 42827574889; paketleme/yayın Windows 42849921106, Linux 42849928004. Yayımlanmış paketleme kaydı `0759fae4b09e5cf27f709a1496eea3a23d1c33df`. 103 resmî native dil paketli; ek Aion metinleri TR/EN.

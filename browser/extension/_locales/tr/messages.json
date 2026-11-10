@@ -6,13 +6,13 @@
     "message": "Ayarlar"
   },
   "prototype": {
-    "message": "Geliştirici önizlemesi · Kurulum paketi ve güvenlik denetimi henüz tamamlanmadı."
+    "message": "Geliştirici önizlemesi · Otomatik güncelleme henüz yok."
   },
   "containers": {
     "message": "Konteynerler"
   },
   "separateCookies": {
-    "message": "Ayrı çerezler"
+    "message": "Bağımsız oturumlar"
   },
   "containerHelp": {
     "message": "Hesaplarını ayrı alanlarda kullan. Bu işlem IP adresini gizlemez. Mevcut sekmen açık kalır."
@@ -21,7 +21,7 @@
     "message": "Konteyner seç"
   },
   "openContainer": {
-    "message": "Sayfayı burada aç"
+    "message": "Seçili konteynerde aç"
   },
   "newContainer": {
     "message": "Yeni konteyner adı"
@@ -87,7 +87,7 @@
     "message": "Gönderim adresi ve hedef dil"
   },
   "noProvider": {
-    "message": "Çeviri hizmeti seçilmedi. Ayarlar → Çeviri bölümünde güvendiğin bir hizmet ekle. Metin henüz hiçbir hizmete gönderilmedi."
+    "message": "Hizmet seçilmedi. Cihazda çeviri aracını kullanabilir veya aşağıdan kendi güvendiğin HTTPS çeviri hizmetini ayarlayabilirsin."
   },
   "sendTranslation": {
     "message": "Bu metni gönder ve çevir"
@@ -556,5 +556,83 @@
   },
   "newtabGameReset": {
     "message": "Bu cihazdaki oyun rekorunu sıfırla"
+  },
+  "expandTools": {
+    "message": "Geniş ekranda aç"
+  },
+  "toolsNavigation": {
+    "message": "Aion araçları"
+  },
+  "sourceContext": {
+    "message": "Üzerinde çalışılan sekme"
+  },
+  "noSourceTab": {
+    "message": "Sayfa araçları için önce bir web sitesi aç, sonra Aion simgesine bas. Cihazda çeviri aracını burada da açabilirsin."
+  },
+  "containerExampleTitle": {
+    "message": "Aynı sitede iki farklı hesap"
+  },
+  "containerExample": {
+    "message": "Örneğin kişisel hesabını normal sekmede, iş hesabını İş konteynerinde aç. Her alanın çerezleri ve site oturumları ayrıdır; birindeki giriş diğerine taşınmaz. Konteyner VPN veya gizli gezinme değildir."
+  },
+  "containerMenuHelp": {
+    "message": "Bir bağlantıya veya sayfanın boş alanına sağ tıkla → Aion · Konteyner ile aç → bir alan seç. Sayfa yeni sekmede açılır, eski sekmen korunur."
+  },
+  "onDevice": {
+    "message": "Cihazda çeviri"
+  },
+  "localTranslationTitle": {
+    "message": "İnternetteki metinleri kendi cihazında çevir"
+  },
+  "localTranslationHelp": {
+    "message": "Firefox’un açık kaynak çeviri aracı desteklenen dillerde cihazda çalışır. Dil modelleri ilk kullanımda indirilebilir; indirildikten sonra metin çeviri hizmetine gönderilmez."
+  },
+  "openNativeTranslation": {
+    "message": "Cihazda çeviri aracını aç"
+  },
+  "localTranslationGuide": {
+    "message": "Nasıl kullanılır?"
+  },
+  "nativeStep1": {
+    "message": "Aracı aç, kaynak dili ve çevirmek istediğin dili seç."
+  },
+  "nativeStep2": {
+    "message": "Metnini yaz veya yapıştır. İlk kullanımda gerekli model indirmesinin tamamlanmasını bekle."
+  },
+  "nativeStep3": {
+    "message": "Bir sayfanın tamamı için tarayıcı menüsündeki Sayfayı çevir seçeneğini kullan. Desteklenmeyen dillerde bu seçenek görünmeyebilir."
+  },
+  "nativeAiScope": {
+    "message": "Bu bir metin çeviri aracıdır. Tarayıcıya ayrıca bir sohbet yapay zekâsı veya genel amaçlı dil modeli kurulmuş değildir. Desteklenen diller ve model indirmeleri Firefox aracında gösterilir."
+  },
+  "serviceTranslationTitle": {
+    "message": "Bir hizmetle metin çevirisi · isteğe bağlı"
+  },
+  "translationSetup": {
+    "message": "Çeviri hizmeti ayarları"
+  },
+  "setupBeforeTranslation": {
+    "message": "Önce bir çeviri hizmeti seç"
+  },
+  "containerContextMenu": {
+    "message": "Aion · Konteyner ile aç"
+  },
+  "temporaryContextMenu": {
+    "message": "Yeni geçici konteyner"
+  },
+  "selectionContextMenu": {
+    "message": "Aion ile seçili metni çevir"
+  },
+  "privateContainerUnsupported": {
+    "message": "Konteynerler normal gezinme penceresinde kullanılabilir."
+  },
+  "nativeTranslationUnavailable": {
+    "message": "Cihazda çeviri aracı açılamadı. Tarayıcı menüsündeki Sayfayı çevir seçeneğini kontrol et; bu özellik desteklenen dillerde kullanılabilir."
+  },
+  "toolTranslation": {
+    "message": "Çeviri"
+  },
+  "toolVideo": {
+    "message": "Video"
   }
 }

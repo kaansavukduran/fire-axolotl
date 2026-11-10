@@ -6,13 +6,13 @@
     "message": "Settings"
   },
   "prototype": {
-    "message": "Developer preview · Browser installers and security review are not complete."
+    "message": "Developer preview · Automatic updates are not available yet."
   },
   "containers": {
     "message": "Containers"
   },
   "separateCookies": {
-    "message": "Separate cookies"
+    "message": "Separate sessions"
   },
   "containerHelp": {
     "message": "Keep accounts in separate spaces. This does not hide your IP address. Your current tab stays open."
@@ -21,7 +21,7 @@
     "message": "Choose a container"
   },
   "openContainer": {
-    "message": "Open page here"
+    "message": "Open in selected container"
   },
   "newContainer": {
     "message": "New container name"
@@ -87,7 +87,7 @@
     "message": "Destination and target language"
   },
   "noProvider": {
-    "message": "No translation service selected. Add a trusted service in Settings → Translation. No text has been sent to a service."
+    "message": "No service selected. Use on-device translation above, or configure your trusted HTTPS translation service below."
   },
   "sendTranslation": {
     "message": "Send this text and translate"
@@ -556,5 +556,83 @@
   },
   "newtabGameReset": {
     "message": "Reset the local game record"
+  },
+  "expandTools": {
+    "message": "Open full workspace"
+  },
+  "toolsNavigation": {
+    "message": "Aion tools"
+  },
+  "sourceContext": {
+    "message": "Working with tab"
+  },
+  "noSourceTab": {
+    "message": "For page tools, open a website and click Aion. You can still open on-device translation here."
+  },
+  "containerExampleTitle": {
+    "message": "Two accounts on the same website"
+  },
+  "containerExample": {
+    "message": "For example, keep your personal account in a normal tab and your work account in a Work container. Cookies and website sessions are separate; signing in to one does not sign you in to the other. Containers are not a VPN or private browsing."
+  },
+  "containerMenuHelp": {
+    "message": "Right-click a link or an empty area of the page → Aion · Open in container → choose a container. A new tab opens and the original stays open."
+  },
+  "onDevice": {
+    "message": "On-device translation"
+  },
+  "localTranslationTitle": {
+    "message": "Translate text on your own device"
+  },
+  "localTranslationHelp": {
+    "message": "Firefox’s open-source translation tool runs on your device for supported languages. Language models may download on first use; once downloaded, text is not sent to a translation service."
+  },
+  "openNativeTranslation": {
+    "message": "Open on-device translator"
+  },
+  "localTranslationGuide": {
+    "message": "How do I use it?"
+  },
+  "nativeStep1": {
+    "message": "Open the translator and choose the source and target languages."
+  },
+  "nativeStep2": {
+    "message": "Type or paste your text. On first use, allow the required model download to finish."
+  },
+  "nativeStep3": {
+    "message": "To translate a whole page, use Translate page in the browser menu. It may be unavailable for unsupported languages."
+  },
+  "nativeAiScope": {
+    "message": "This is a text translator. No separate AI chat assistant or general-purpose language model is installed. Supported languages and model downloads are shown in Firefox’s tool."
+  },
+  "serviceTranslationTitle": {
+    "message": "Translate with a service · optional"
+  },
+  "translationSetup": {
+    "message": "Translation service settings"
+  },
+  "setupBeforeTranslation": {
+    "message": "Choose a translation service first"
+  },
+  "containerContextMenu": {
+    "message": "Aion · Open in container"
+  },
+  "temporaryContextMenu": {
+    "message": "New temporary container"
+  },
+  "selectionContextMenu": {
+    "message": "Translate selected text with Aion"
+  },
+  "privateContainerUnsupported": {
+    "message": "Containers are available in regular browsing windows."
+  },
+  "nativeTranslationUnavailable": {
+    "message": "The on-device translator could not open. Check Translate page in the browser menu; availability depends on supported languages."
+  },
+  "toolTranslation": {
+    "message": "Translation"
+  },
+  "toolVideo": {
+    "message": "Video"
   }
 }

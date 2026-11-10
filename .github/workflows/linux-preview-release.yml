@@ -97,6 +97,10 @@ jobs:
         env:
           AION_NATIVE_BINARY: /usr/lib/fire-axolotl-preview/fire-axolotl
         run: python3 tests/native_localization.py
+      - name: Real toolbar popup, workspace, container menus and two-language accessibility
+        run: python3 tests/native_tools.py
+      - name: Real native English-Turkish inference and offline reuse after model download
+        run: python3 tests/native_translation.py
       - name: Sample actual default new-tab network attempts without TLS exceptions
         env:
           AION_NATIVE_BINARY: /usr/lib/fire-axolotl-preview/fire-axolotl
@@ -119,6 +123,9 @@ jobs:
             work/native-e2e-artifacts/
             work/runner-test-artifacts/
             work/localization-test-artifacts/
+            work/tools-test-artifacts/
+            work/translation-test-artifacts/*.json
+            work/translation-test-artifacts/*.png
             work/network-test-artifacts/results.json
           retention-days: 14
   publish:

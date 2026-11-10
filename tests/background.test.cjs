@@ -19,7 +19,7 @@ function fixture(seed = {}) {
       create: async details => {const identity = {...details, cookieStoreId: 'firefox-container-' + (identities.length + 1)}; identities.push(identity); return identity;},
       remove: async id => {removed.push(id); identities = identities.filter(i => i.cookieStoreId !== id);}
     },
-    tabs: {query: async () => tabs, create: async tab => {createdTabs.push(tab); return {id: 8};}, onRemoved: {addListener: fn => listeners.removed = fn}},
+    tabs: {query: async () => tabs, get: async id => tabs.find(tab => tab.id === id), create: async tab => {createdTabs.push(tab); return {id: 8};}, onRemoved: {addListener: fn => listeners.removed = fn}},
     i18n: {getUILanguage: () => 'tr'},
     permissions: {contains: async () => false}
   };
@@ -42,6 +42,13 @@ test('opening a container creates a new tab and never rewrites the existing tab'
   assert.equal(f.createdTabs[0].url, 'https://example.org/');
   assert.equal(f.createdTabs[0].cookieStoreId, 'firefox-container-1');
   assert.deepEqual(f.store.settings.milestones, ['container']);
+});
+test('full workspace keeps authority with query/hash and acts on its captured source rather than its own active tab', async () => {
+  const f = fixture();
+  f.setTabs([{id:20,url:'moz-extension://test/popup.html?view=tab&sourceTabId=7#containers'},{id:7,url:'https://example.org/source'}]);
+  await f.listeners.message({type:'openContainer',id:'firefox-container-1',tabId:7},{id:'test@aion',url:'moz-extension://test/popup.html?view=tab&sourceTabId=7#containers'});
+  assert.equal(f.createdTabs[0].url,'https://example.org/source');
+  await assert.rejects(f.send({type:'openContainer',id:'firefox-container-1',tabId:99}),/restrictedPage/);
 });
 test('repeating a real action awards a milestone only once, disabling progress keeps core functions working', async () => {
   const f = fixture();

@@ -34,3 +34,11 @@ Karakter paneli isteğe bağlıdır ve kurulumda açılmaz. Web sayfalarına iç
 Aion'a telemetri, reklam SDK'sı, zorunlu hesap veya otomatik sayfa/ses gönderimi eklenmedi. Modülün dışında, Firefox'un mevcut ağ hizmetleri ve ziyaret edilen siteler kendi veri akışlarına sahiptir. Bunlar ürünün kararlı sürüm gizlilik bildiriminde ayrıca doğrulanmalıdır. / Aion adds no telemetry, ad SDK, mandatory account, or automatic page/audio submission. Upstream services and visited sites have separate data flows requiring review before stable release.
 
 Yedek dosyası parola, geçmiş veya çerez içermez; kullanıcı tarafından kaydedilmiş kişisel metin içerebilir. Yedekleme görünümü gerçek ziyaretleri veya görevleri tamamlandı olarak işaretlemez. / Backups exclude passwords, history and cookies, but may contain personal vocabulary text. Previews do not mark real actions complete.
+
+## Aion0.2 araç çalışma alanı
+
+Açılır panel ve tam sekme çalışma alanı seçilen kaynak sekmenin kimliğini korur. Çeviri taslağı ve sonuç yalnızca tarayıcı oturumunun belleğindeki `storage.session` içinde tutulur; normal ayar yedeğine ve kalıcı diske eklenmez. Seçili metin sağ tık komutuyla bu taslağa alınır; dış çeviri hizmetine otomatik gönderilmez.
+
+Cihazda çeviri düğmesi Firefox'un `about:translations` aracını açar. İlk kullanımda desteklenen dil modelleri indirilebilir; modeller hazır olduğunda çeviri cihazda çalışır. Ayrı bir sohbet modeli paketlenmez. HTTPS hizmetiyle Aion çevirisi ayrı ve isteğe bağlıdır; hizmet ve hedef dil kullanıcı tarafından seçilir.
+
+Yerel açılış bağlantısı yalnızca kendi `aion@fire-axolotl.browser` kimliğindeki `popup.html` belgesini kabul eder. Sabit `about:translations` adresini açar; çağırandan URL, kod, dosya yolu veya metin kabul etmez. Diğer eklentiler ve web siteleri bu bağlantıyı kullanamaz. Mevcut eklenti izinleri ve imza kontrolleri değiştirilmez.

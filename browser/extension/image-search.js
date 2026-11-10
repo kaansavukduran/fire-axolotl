@@ -12,7 +12,8 @@
   function synchronize() {
     menuQueue = menuQueue.catch(() => {}).then(async () => {
       const settings = await readSettings();
-      await browser.menus.removeAll();
+      // Other Aion tools own their own menu roots.
+      try {await browser.menus.remove(parent);} catch {}
       if (!settings.imageSearch) {await browser.menus.refresh(); return;}
       const language = Aion.language(settings, browser.i18n.getUILanguage());
       await createMenu({id: parent, title: language === 'en' ? 'Aion · Search by image' : 'Aion · Görselle ara', contexts: ['image'], documentUrlPatterns: ['https://*/*', 'http://*/*'], targetUrlPatterns: ['https://*/*', 'http://*/*']});

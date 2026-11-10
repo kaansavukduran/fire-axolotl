@@ -1,7 +1,8 @@
 # SPDX-License-Identifier: MPL-2.0
 """Apply only audited new-tab UI resources to our own compiled browser.
 
-The engine and built-in add-ons are preserved. The modified omni.ja and complete
+The engine and signed third-party add-ons are preserved. Our own Aion UI and
+its built-in version record may be updated. The modified omni.ja and complete
 overlay source are recorded separately from the original engine build receipt.
 """
 import argparse
@@ -27,8 +28,19 @@ def check_source_delta(base):
     allowed = {'browser/native/aion-chrome.js', 'browser/native/aion-layout.js', 'browser/native/aion-layout.inc.xhtml', 'scripts/prepare_source.py', 'browser/extension/_locales/tr/messages.json', 'browser/extension/_locales/en/messages.json'}
     allowed.update('browser/native/aion-runner/' + name for name in ['AionRunnerParent.sys.mjs', 'AionRunnerChild.sys.mjs', 'card.sys.mjs', 'world.sys.mjs', 'aion-runner.png', 'PROVENANCE.json'])
     allowed.update(['localization.json', 'scripts/localization.py', 'browser/preferences/fire-axolotl.js'])
+    allowed.update('browser/native/aion-runner/' + name for name in ['AionToolsParent.sys.mjs', 'AionToolsChild.sys.mjs'])
+    allowed.update('browser/extension/' + name for name in ['manifest.json', 'background.js', 'popup.html', 'popup.js', 'ui.css', 'image-search.js', 'container-menus.js', 'settings.html'])
     if set(changed) - allowed:
         raise ValueError('The compiled core differs from the reviewed build: ' + ', '.join(sorted(set(changed) - allowed)))
+    old_manifest = json.loads(subprocess.check_output(['git', 'show', base + ':browser/extension/manifest.json'], cwd=ROOT))
+    new_manifest = json.loads((ROOT / 'browser/extension/manifest.json').read_text())
+    for manifest in [old_manifest, new_manifest]:
+        manifest.pop('version')
+        scripts = manifest['background'].pop('scripts')
+        if scripts not in [['shared.js', 'background.js', 'image-search.js'], ['shared.js', 'background.js', 'image-search.js', 'container-menus.js']]:
+            raise ValueError('Unreviewed Aion background script list')
+    if old_manifest != new_manifest:
+        raise ValueError('Aion identity, permissions, CSP and native integration must stay unchanged')
     before = subprocess.check_output(['git', 'show', base + ':scripts/prepare_source.py'], cwd=ROOT).decode()
     anchor = "    shutil.copytree(ROOT / 'browser/extension/fonts', base / 'content/aion-fonts', dirs_exist_ok=True)"
     if "shutil.copytree(ROOT / 'browser/native/aion-runner'" not in before:
@@ -80,6 +92,17 @@ def apply(runtime):
             raise ValueError('Duplicate omni.ja member')
         locale_entries, locales = overlay_resources(archive)
         replacements.update(locale_entries)
+        aion = ROOT / 'browser/extension'
+        for file in sorted(aion.rglob('*')):
+            if file.is_file():
+                replacements['chrome/browser/builtin-addons/aion/' + file.relative_to(aion).as_posix()] = file.read_bytes()
+        catalog_path = PREFIX + 'built_in_addons.json'
+        catalog = json.loads(replacements.get(catalog_path, archive.read(catalog_path)))
+        own = [entry for entry in catalog['builtins'] if entry['addon_id'] == 'aion@fire-axolotl.browser']
+        if len(own) != 1 or own[0]['res_url'] != 'resource://builtin-addons/aion/':
+            raise ValueError('Expected our existing independent built-in Aion identity')
+        own[0]['addon_version'] = json.loads((aion / 'manifest.json').read_text())['version']
+        replacements[catalog_path] = (json.dumps(catalog, ensure_ascii=False) + '\n').encode()
         pref_path = 'defaults/preferences/firefox-branding.js'
         preferences = archive.read(pref_path).decode().replace('\r\n', '\n')
         if 'pref("intl.locale.requested", "");' not in preferences:
@@ -122,7 +145,7 @@ def apply(runtime):
         temp.replace(path)
     else:
         temp.unlink()
-    return {'original_browser_omni_sha256': sha(original), 'browser_omni_sha256': sha(path.read_bytes()), 'changed': changed, 'unchanged_member_count': len(unchanged), 'localizations': locales, 'scope': 'Listed browser/omni.ja UI resources, pinned built-in translation data/catalog and OS-language default only. Native executables, engine, policies, Aion and signed uBlock Origin are preserved.'}
+    return {'original_browser_omni_sha256': sha(original), 'browser_omni_sha256': sha(path.read_bytes()), 'changed': changed, 'unchanged_member_count': len(unchanged), 'localizations': locales, 'scope': 'Listed browser/omni.ja UI resources, own Aion resources/version and pinned language data. Native executables, engine, policies, Aion identity/permissions/CSP and signed uBlock Origin are preserved.'}
 
 
 def windows_archive(path):

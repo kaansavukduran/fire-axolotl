@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Fire Axolotl · Aion",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Containers, video controls, captions and translation with explicit consent.",
   "default_locale": "tr",
   "browser_specific_settings": {
@@ -10,17 +10,48 @@
       "strict_min_version": "140.0"
     }
   },
-  "permissions": ["activeTab", "storage", "contextualIdentities", "cookies", "menus"],
-  "optional_permissions": ["https://*/*"],
-  "background": {"scripts": ["shared.js", "background.js", "image-search.js"], "persistent": false},
+  "permissions": [
+    "activeTab",
+    "storage",
+    "contextualIdentities",
+    "cookies",
+    "menus"
+  ],
+  "optional_permissions": [
+    "https://*/*"
+  ],
+  "background": {
+    "scripts": [
+      "shared.js",
+      "background.js",
+      "image-search.js",
+      "container-menus.js"
+    ],
+    "persistent": false
+  },
   "browser_action": {
     "default_area": "navbar",
     "default_title": "Fire Axolotl · Aion",
     "default_popup": "popup.html",
-    "default_icon": {"32": "icons/32.png", "64": "icons/64.png"}
+    "default_icon": {
+      "32": "icons/32.png",
+      "64": "icons/64.png"
+    }
   },
-  "icons": {"48": "icons/48.png", "96": "icons/96.png"},
-  "options_ui": {"page": "settings.html", "open_in_tab": true},
-  "sidebar_action": {"default_title": "__MSG_characterTitle__", "default_panel": "characters.html", "default_icon": "icons/32.png", "open_at_install": false, "browser_style": false},
+  "icons": {
+    "48": "icons/48.png",
+    "96": "icons/96.png"
+  },
+  "options_ui": {
+    "page": "settings.html",
+    "open_in_tab": true
+  },
+  "sidebar_action": {
+    "default_title": "__MSG_characterTitle__",
+    "default_panel": "characters.html",
+    "default_icon": "icons/32.png",
+    "open_at_install": false,
+    "browser_style": false
+  },
   "content_security_policy": "script-src 'self'; object-src 'none'; base-uri 'none'"
 }

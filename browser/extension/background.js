@@ -24,15 +24,51 @@ async function milestone(name) {
     }
   });
 }
-async function activeTab() {
-  const [tab] = await browser.tabs.query({active: true, currentWindow: true});
+async function activeTab(id) {
+  const tab = Number.isInteger(id) ? await browser.tabs.get(id) : (await browser.tabs.query({active: true, currentWindow: true}))[0];
   if (!tab || !Aion.webURL(tab.url)) throw new Error('restrictedPage');
   return tab;
+}
+async function containerForTab(tab, id, url = tab.url) {
+  const target = Aion.webURL(url);
+  if (!target) throw new Error('restrictedPage');
+  if (tab.incognito) throw new Error('privateContainerUnsupported');
+  const identities = await browser.contextualIdentities.query({});
+  if (!identities.some(identity => identity.cookieStoreId === id)) throw new Error('containerMissing');
+  const details = {url: target, cookieStoreId: id};
+  if (Number.isInteger(tab.windowId)) details.windowId = tab.windowId;
+  const created = await browser.tabs.create(details);
+  await milestone('container');
+  return {id: created.id};
+}
+async function temporaryForTab(tab, name, url = tab.url) {
+  const target = Aion.webURL(url);
+  if (!target) throw new Error('restrictedPage');
+  if (tab.incognito) throw new Error('privateContainerUnsupported');
+  return serial(async () => {
+    const identity = await browser.contextualIdentities.create({name: name === 'Temporary' ? 'Aion · Temporary' : 'Aion · Geçici', color: 'turquoise', icon: 'circle'});
+    const temporary = (await browser.storage.local.get('temporaryContainers')).temporaryContainers || [];
+    await browser.storage.local.set({temporaryContainers: [...temporary, identity.cookieStoreId]});
+    try {
+      const details = {url: target, cookieStoreId: identity.cookieStoreId};
+      if (Number.isInteger(tab.windowId)) details.windowId = tab.windowId;
+      await browser.tabs.create(details);
+    } catch (error) {
+      await browser.contextualIdentities.remove(identity.cookieStoreId);
+      await browser.storage.local.set({temporaryContainers: temporary});
+      throw error;
+    }
+    return true;
+  });
 }
 async function onMessage(message, sender) {
   // Content scripts and websites cannot invoke privileged container/storage/network actions.
   const allowedPages = ['popup.html', 'settings.html', 'characters.html'].map(page => browser.runtime.getURL(page));
-  if (sender.id !== browser.runtime.id || !allowedPages.includes(sender.url)) throw new Error('unauthorized');
+  let page;
+  try {const url = new URL(sender.url); page = url.origin + url.pathname;} catch {throw new Error('unauthorized');}
+  // URL.origin is "null" for extension URLs in some JS environments.
+  const ownPage = new URL(sender.url); page = ownPage.protocol + '//' + ownPage.host + ownPage.pathname;
+  if (sender.id !== browser.runtime.id || !allowedPages.includes(page)) throw new Error('unauthorized');
   switch (message.type) {
     case 'settings': return readSettings();
     case 'save': return writeSettings(message.patch);
@@ -40,21 +76,7 @@ async function onMessage(message, sender) {
       const temporary = (await browser.storage.local.get('temporaryContainers')).temporaryContainers || [];
       return (await browser.contextualIdentities.query({})).map(identity => ({...identity, temporary: temporary.includes(identity.cookieStoreId)}));
     }
-    case 'temporaryContainer': {
-      return serial(async () => {
-        const tab = await activeTab();
-        const identity = await browser.contextualIdentities.create({name: message.name === 'Temporary' ? 'Aion · Temporary' : 'Aion · Geçici', color: 'turquoise', icon: 'circle'});
-        const temporary = (await browser.storage.local.get('temporaryContainers')).temporaryContainers || [];
-        await browser.storage.local.set({temporaryContainers: [...temporary, identity.cookieStoreId]});
-        try {await browser.tabs.create({url: tab.url, cookieStoreId: identity.cookieStoreId});}
-        catch (error) {
-          await browser.contextualIdentities.remove(identity.cookieStoreId);
-          await browser.storage.local.set({temporaryContainers: temporary});
-          throw error;
-        }
-        return true;
-      });
-    }
+    case 'temporaryContainer': return temporaryForTab(await activeTab(message.tabId), message.name);
     case 'createContainer': {
       const name = String(message.name || '').trim().slice(0, 80);
       if (!name) throw new Error('nameRequired');
@@ -62,16 +84,9 @@ async function onMessage(message, sender) {
       await milestone('container');
       return identity;
     }
-    case 'openContainer': {
-      const identities = await browser.contextualIdentities.query({});
-      if (!identities.some(i => i.cookieStoreId === message.id)) throw new Error('containerMissing');
-      const tab = await activeTab();
-      const created = await browser.tabs.create({url: tab.url, cookieStoreId: message.id});
-      await milestone('container');
-      return {id: created.id};
-    }
+    case 'openContainer': return containerForTab(await activeTab(message.tabId), message.id);
     case 'video': {
-      const tab = await activeTab();
+      const tab = await activeTab(message.tabId);
       await browser.tabs.executeScript(tab.id, {file: 'video.js'});
       const command = {...message.command, language: Aion.language(await readSettings(), browser.i18n.getUILanguage())};
       const result = await browser.tabs.sendMessage(tab.id, {type: 'aionVideo', command});
@@ -80,7 +95,7 @@ async function onMessage(message, sender) {
       return result;
     }
     case 'selection': {
-      const tab = await activeTab();
+      const tab = await activeTab(message.tabId);
       const result = await browser.tabs.executeScript(tab.id, {code: 'window.getSelection().toString().slice(0, 5000)'});
       return result[0] || '';
     }

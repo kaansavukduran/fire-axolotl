@@ -19,8 +19,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 ROOT = Path(__file__).resolve().parents[1]
 WORK = ROOT / 'work/windows-upgrade'
 WORK.mkdir(parents=True, exist_ok=True)
-OLD_URL = 'https://github.com/kaansavukduran/fire-axolotl/releases/download/v0.1.0-dev.20261110-windows/fire-axolotl-0.1.0-dev.20261110-windows-x86_64-Setup.exe'
-OLD_SHA = '4a3ce439324abc26704aa3036c46a56b4cc808defd068dbead89d08c7abd6c6c'
+OLD_URL = 'https://github.com/kaansavukduran/fire-axolotl/releases/download/v0.1.0-dev.20261110-windows.1/fire-axolotl-0.1.0-dev.20261110.1-windows-x86_64-Setup.exe'
+OLD_SHA = '2ccee2bba66d24dbaf1b23a45852d56a91a8f82ba63033299daeb0166ddb3766'
 destination = Path(os.environ['RUNNER_TEMP']) / 'FireAxolotlUpgrade'
 assert not destination.exists(), 'The synthetic upgrade installation target must be fresh'
 binary = destination / 'fire-axolotl.exe'
@@ -92,17 +92,23 @@ try:
     install(old)
     driver = start()
     before = identity()
-    assert before['version'].removesuffix('esr') == '153.6.0'
+    before_tools = driver.execute_async_script('const done=arguments[0];ChromeUtils.importESModule("resource://gre/modules/AddonManager.sys.mjs").AddonManager.getAddonByID("aion@fire-axolotl.browser").then(a=>done(a.version));')
+    assert before_tools == "0.1.0"
+    assert before['version'].removesuffix('esr') == '153.7.0'
     driver.execute_script('Services.prefs.setIntPref("fireaxolotl.newtabGame.best",37); Services.prefs.setStringPref("fireaxolotl.ui.font","opendyslexic"); Services.prefs.setBoolPref("sidebar.position_start",true); Services.prefs.setBoolPref("sidebar.verticalTabs",true); Services.locale.requestedLocales=["tr"];')
     seeded = driver.execute_async_script('const done=arguments[0]; (async()=>{const info=Cc["@mozilla.org/login-manager/loginInfo;1"].createInstance(Ci.nsILoginInfo);info.init("https://example.invalid","https://example.invalid",null,"upgrade-fixture","local-fixture-not-a-user-password","username","password");await Services.logins.addLoginAsync(info);await ChromeUtils.importESModule("resource://gre/modules/PlacesUtils.sys.mjs").PlacesUtils.bookmarks.insert({parentGuid:"unfiled_____",url:"https://example.invalid/fire-axolotl-upgrade",title:"Güncelleme · Yer imi"});return true;})().then(done);')
     assert seeded
     base = companion()
     driver.get(base + 'popup.html')
     wait = WebDriverWait(driver, 30)
+    if driver.find_elements(By.ID, 'tab-containers'):
+        wait.until(lambda d: d.execute_script('return document.body.dataset.ready === "true";'))
+        driver.find_element(By.ID, 'tab-containers').click()
     wait.until(lambda d: d.find_element(By.ID, 'container-name').is_displayed())
     driver.find_element(By.ID, 'container-name').send_keys('Güncelleme · İş')
     driver.find_element(By.CSS_SELECTOR, '#container-form button').click()
     wait.until(lambda d: 'Güncelleme · İş' in d.find_element(By.ID, 'container').text)
+    if driver.find_elements(By.ID, 'tab-translation'): driver.find_element(By.ID, 'tab-translation').click()
     driver.find_element(By.ID, 'source-text').send_keys('Sürüm · ışık')
     driver.find_element(By.ID, 'save-word').click()
     wait.until(lambda d: d.execute_script('return document.getElementById("status").textContent===UI.t("wordSaved");'))
@@ -122,6 +128,8 @@ try:
     subprocess.run([sys.executable, str(ROOT / 'scripts/verify_windows_installation.py'), '--evidence-file', str(payload)], env=dict(os.environ, AION_INSTALLED_DIRECTORY=str(destination)), check=True)
     driver = start()
     after = identity()
+    after_tools = driver.execute_async_script('const done=arguments[0];ChromeUtils.importESModule("resource://gre/modules/AddonManager.sys.mjs").AddonManager.getAddonByID("aion@fire-axolotl.browser").then(a=>done(a.version));')
+    assert after_tools == "0.2.0"
     assert after['version'].removesuffix('esr') == json.loads((ROOT / 'upstream.json').read_text())['version'].removesuffix('esr')
     state = driver.execute_async_script('const done=arguments[0];(async()=>{const b=await ChromeUtils.importESModule("resource://gre/modules/PlacesUtils.sys.mjs").PlacesUtils.bookmarks.fetch({url:"https://example.invalid/fire-axolotl-upgrade"});const logins=await Services.logins.getAllLogins();return {bookmark:b?.title,password:logins.some(l=>l.username==="upgrade-fixture"&&l.password==="local-fixture-not-a-user-password"),best:Services.prefs.getIntPref("fireaxolotl.newtabGame.best"),font:Services.prefs.getStringPref("fireaxolotl.ui.font"),vertical:Services.prefs.getBoolPref("sidebar.verticalTabs"),locale:Services.locale.appLocaleAsBCP47};})().then(done);')
     assert state == {'bookmark': 'Güncelleme · Yer imi', 'password': True, 'best': 37, 'font': 'opendyslexic', 'vertical': True, 'locale': 'tr'}
@@ -133,13 +141,21 @@ try:
     assert driver.execute_script('return UI.settings.character;') == character
     driver.get(base + 'characters.html')
     wait.until(lambda d: d.find_element(By.ID, 'character-canvas').get_attribute('data-character') == character)
-    driver.get(base + 'popup.html')
+    driver.get(base + 'popup.html#containers')
+    wait.until(lambda d: d.execute_script('return document.body.dataset.ready === "true";'))
     wait.until(lambda d: 'Güncelleme · İş' in d.find_element(By.ID, 'container').text)
+    driver.find_element(By.ID, 'tab-translation').click()
+    before_windows = set(driver.window_handles)
+    driver.find_element(By.ID, 'native-translation').click()
+    translated_window = wait.until(lambda d: next((h for h in d.window_handles if h not in before_windows), None))
+    driver.switch_to.window(translated_window)
+    wait.until(lambda d: d.current_url == 'about:translations')
+    bridge_after_upgrade_verified = True
     driver.quit()
     driver = None
     assert hashlib.sha256(marker.read_bytes()).hexdigest() == marker_sha
     assert choices() == before_choice
-    report.update(passed=True, from_identity=before, to_identity=after, previous_installer_sha256=OLD_SHA, installed_payload=json.loads(payload.read_text()), profile_data_preserved=True, password_fixture_preserved=True, companion_data_preserved=True, default_browser_preserved=True, same_install_directory=True, limits='Manual offline Setup upgrade with a synthetic profile. This is not a signed MAR, automatic updater, real account or real-user password test.')
+    report.update(passed=True, from_identity=before, to_identity=after, from_tools_version=before_tools, to_tools_version=after_tools, bridge_after_upgrade_verified=bridge_after_upgrade_verified, previous_installer_sha256=OLD_SHA, installed_payload=json.loads(payload.read_text()), profile_data_preserved=True, password_fixture_preserved=True, companion_data_preserved=True, default_browser_preserved=True, same_install_directory=True, limits='Manual offline Setup upgrade with a synthetic profile. This is not a signed MAR, automatic updater, real account or real-user password test.')
 finally:
     try:
         if driver:
@@ -158,4 +174,4 @@ finally:
     finally:
         (WORK / 'results.json').write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
 assert report['passed']
-print('Actual Setup upgrade 153.6 → 153.7 preserved synthetic native passwords, bookmarks, language, appearance, local record, containers, vocabulary and custom PNG without changing the default browser')
+print('Actual Setup upgrade Aion0.1 →0.2 on ESR153.7 preserved synthetic native passwords, bookmarks, language, appearance, local record, containers, vocabulary and custom PNG without changing the default browser')

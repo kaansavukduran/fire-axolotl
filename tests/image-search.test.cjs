@@ -21,7 +21,7 @@ test('context-menu search needs an explicit click, respects disable and preserve
   const menuItems = new Map(), tabs = [], events = {};
   let settings = Aion.normalize({language: 'en'});
   const browser = {
-    menus: {removeAll: async () => menuItems.clear(), refresh: async () => {}, create: (item, done) => {menuItems.set(item.id, item); done();}, onClicked: {addListener: fn => events.click = fn}},
+    menus: {remove: async id => {for (const [key,item] of menuItems) if (key === id || item.parentId === id) menuItems.delete(key);}, refresh: async () => {}, create: (item, done) => {menuItems.set(item.id, item); done();}, onClicked: {addListener: fn => events.click = fn}},
     runtime: {onInstalled: {addListener: fn => events.install = fn}, onStartup: {addListener: fn => events.startup = fn}},
     storage: {onChanged: {addListener: fn => events.change = fn}}, i18n: {getUILanguage: () => 'tr'},
     tabs: {create: async details => tabs.push(details)}

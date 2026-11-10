@@ -19,6 +19,7 @@ class RunnerOverlayTests(unittest.TestCase):
             original = b'\x00untouched original native resource\xff'
             with zipfile.ZipFile(archive, 'w') as output:
                 output.writestr('unrelated/native.dat', original)
+                output.writestr(PREFIX + 'built_in_addons.json', '{"builtins":[{"addon_id":"aion@fire-axolotl.browser","addon_version":"0.1.0","res_url":"resource://builtin-addons/aion/"}]}')
                 output.writestr('defaults/preferences/firefox-branding.js', (Path(__file__).resolve().parents[1] / 'browser/preferences/fire-axolotl.js').read_bytes())
                 output.writestr(PREFIX + 'aion-chrome.js', 'old UI')
                 output.writestr(PREFIX + 'preferences/preferences.xhtml', '<window><!-- Fire Axolotl preferences begin --><old/><!-- Fire Axolotl preferences end --></window>')
