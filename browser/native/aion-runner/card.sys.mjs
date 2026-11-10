@@ -78,9 +78,9 @@ export class AionRunnerCard {
       else this.start();
     });
     this.listen(this.canvas, 'keydown', event => {
-      if (event.code === 'Space' && !event.repeat && this.world.status === 'running') {
+      if (event.code === 'Space' && this.world.status === 'running') {
         event.preventDefault();
-        this.world.jump();
+        if (!event.repeat) this.world.jump();
       }
       if (event.key === 'Escape') {event.preventDefault(); this.pause();}
     });

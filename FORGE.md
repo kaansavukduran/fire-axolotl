@@ -1,5 +1,6 @@
 # Aion yeni sekme oyunu / Aion new-tab game
 
+- Görünüm yerleşimi: Lit `setting-pane.name` özelliği HTML niteliğine yansıtılmadığından eski `[name=...]` seçicisi paneli bulamıyordu. JS özelliğiyle seçilir; özel grup artık native Görünüm panelinden sonra yerleşir. Gerçek forkta sıralama ve 11 native smoke geçti; installed smoke bu sıralamayı da denetler. Sekme/font/gizlilik işlevleri korunur. Boşluk basılı tutulurken tekrarlanan olaylar da sayfayı kaydırmaz.
 - Güncel native kaynak `7bbc53a6a388476ecd9c3e4a795f75bf834a2196`; [Windows çalıştırması 42729988254](https://github.com/kaansavukduran/fire-axolotl/actions/runs/42729988254) kısa kök ve cache ile başlatıldı. Yayın JSON ve üç artifact indirme pini bu run’a eşlendi. Bu kayıt sırasında derleme sürüyor; Windows Setup henüz yok. Önceki 5d/427099 derlemesi başarısız tarihsel kayıttır.
 
 - Son gözden geçirmede gerçek bir klavye zıplamasıyla engel aşıldı ve kazanılan rekor yeni sekmede korundu. Arama kutusu kapalıyken oyun görünür; kullanıcının tamamen boş yeni sekme seçimi korunur. `native_runner.py` artık 11 senaryoyu geçti; kurulu Windows yayın kapısı da 11 ister. Son yerel birim toplamı 22 Node + 16 Python; önceki 11 native smoke + 4 restart da oyun katmanıyla geçti.

@@ -7,6 +7,7 @@ import time
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.firefox.service import Service
@@ -71,10 +72,19 @@ try:
     assert canvas.get_attribute('data-state') == 'ready'
     record('Space in the address bar stays ordinary text and does not start the game')
 
+    driver.set_window_size(1440, 800)
     play.click()
     wait.until(lambda _: canvas.get_attribute('data-state') == 'running')
     canvas.send_keys(Keys.SPACE)
     wait.until(lambda _: canvas.get_attribute('data-airborne') == 'true')
+    driver.execute_script('window.aionTestKeys=[];arguments[0].addEventListener("keydown",event=>window.aionTestKeys.push(event));', canvas)
+    scroll = driver.execute_script('return {y:scrollY,maximum:document.scrollingElement.scrollHeight-innerHeight};')
+    assert scroll['maximum'] > scroll['y'] + 50
+    ActionChains(driver).key_down(Keys.SPACE).key_down(Keys.SPACE).key_up(Keys.SPACE).perform()
+    repeats = driver.execute_script('return window.aionTestKeys.filter(event=>event.repeat).map(event=>event.isTrusted);')
+    assert repeats and all(repeats), repeats
+    time.sleep(0.2)
+    assert driver.execute_script('return scrollY') == scroll['y']
     screenshot('newtab-jump.png')
     canvas.send_keys(Keys.ESCAPE)
     wait.until(lambda _: canvas.get_attribute('data-state') == 'paused')
@@ -82,6 +92,7 @@ try:
     time.sleep(0.2)
     assert canvas.get_attribute('data-score') == frozen
     record('Explicit Start, actual Space jump, Esc pause and paused score behave correctly')
+    driver.set_window_size(1440, 1050)
 
     play.click()
     original = driver.current_window_handle

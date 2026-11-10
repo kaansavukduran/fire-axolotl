@@ -12,7 +12,7 @@
     // Keep the native pane heading and controls before our additional group.
     // The preferences search/category machinery manages the group's visibility.
     function placeGroup() {
-      const pane = document.querySelector(`setting-pane[name="${category}"]`);
+      const pane = Array.from(document.querySelectorAll('setting-pane')).find(element => element.name === category);
       if (pane && pane.nextElementSibling !== group) pane.after(group);
     }
     placeGroup();

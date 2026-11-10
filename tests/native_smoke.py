@@ -91,6 +91,8 @@ try:
     record('Compiled built-in sidebar opens and all four packaged character atlases decode')
     driver.get('about:preferences#' + ('appearance' if redesigned else 'general'))
     wait.until(lambda d: d.find_element(By.ID, 'aionLayoutGroup').is_displayed())
+    if redesigned:
+        assert driver.execute_script('const pane=Array.from(document.querySelectorAll("setting-pane")).find(element=>element.name==="paneAppearance");return pane?.nextElementSibling===document.getElementById("aionLayoutGroup");')
     for side in ['left', 'right', 'top']:
         choose_option(driver, 'aion-tab-position', side)
         driver.set_context('chrome')
