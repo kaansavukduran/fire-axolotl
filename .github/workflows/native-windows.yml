@@ -64,13 +64,19 @@ jobs:
           repo=$(cygpath -u "$GITHUB_WORKSPACE")
           cd /d/s/firefox-153.6.0
           python3 "$repo/scripts/windows_mach.py" package
+      - name: Verify the actual offline NSIS installer was packaged
+        run: |
+          $installers = @(Get-ChildItem 'D:/o/dist/*.installer.exe')
+          if ($installers.Count -ne 1 -or $installers[0].Length -lt 50000000) {
+            throw 'The full offline NSIS installer is missing from dist/'
+          }
       - name: Preserve the compiled payload before subsequent installer work
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         with:
           name: fire-axolotl-windows-x64-native-payload
           path: |
-            D:/o/dist/fire-axolotl-*.zip
-            D:/o/dist/install/sea/*.exe
+            D:/o/dist/fire-axolotl-*.win64.zip
+            D:/o/dist/*.installer.exe
           if-no-files-found: error
           retention-days: 14
       - name: Preserve corresponding applied Windows source

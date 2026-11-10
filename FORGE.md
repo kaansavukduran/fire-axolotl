@@ -1,3 +1,9 @@
+# Windows CRLF doğrulaması ve installer artifact yolu
+
+- Native run 42772444157: derleme/paketleme, 11 ilk açılış ve 4 gerçek yeniden başlatma geçti. Entegrasyon başlangıcındaki kaynak karşılaştırması Windows CRLF nedeniyle durdu. Artifact 13745750409 içindeki gerçek root omni.ja modülünde düzeltilmiş kodun bulunduğu, LF normalize edilince eski kodun bulunmadığı doğrulandı. Test yalnızca CRLF→LF normalizasyonu ekler; kod ve davranış denetimleri korunur.
+- Upstream packager.mk make-package hedefi Windows installer'ı zaten üretir. Önceki artifact glob'u eski install/sea yoluna bakıp installer'ı kaçırıyordu. Doğru dosya dist/*.installer.exe; dosya sayısı/boyutu paketleme sonrası ayrıca doğrulanır. XPT yardımcı ZIP'i native tarayıcı ZIP'i olarak yüklenmez.
+- Tam kaynak artifact 13745107512 bu denemede testlerden önce korunmuştur. Yeni native run, yayın JSON ve artifact pinleriyle eşlenmeden yayımlanamaz. Eski başarısız run yayın için kabul edilmez.
+
 - Son yerel doğrulama: snapshot yardımcısıyla native smoke 11 geçti. Dil seçicisi için yalnızca görünürlük beklemek yeterli değildi; test artık UI.init sonrası render edilen sürüm alanını bekler. Ürün verileri/izinleri değiştirilmez.
 
 # Güncel Windows doğrulama çalıştırması

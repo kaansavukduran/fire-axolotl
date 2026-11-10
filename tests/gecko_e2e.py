@@ -103,6 +103,8 @@ try:
     patch = json.loads((ROOT / 'browser/native/service-request-proxy.json').read_text())
     driver.set_context('chrome')
     module_source = driver.execute_async_script('fetch("resource://gre/modules/ServiceRequest.sys.mjs").then(response=>response.text()).then(arguments[0]);')
+    # Windows source preparation writes CRLF; compare the same code on both OSes.
+    module_source = module_source.replace('\r\n', '\n')
     if NATIVE:
         assert patch['new'] in module_source and patch['old'] not in module_source
         assert driver.execute_script('return Services.appinfo.ID;') == '{75450dd9-387d-4289-8b23-7ad6609fa530}'
