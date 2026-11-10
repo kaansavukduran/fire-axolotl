@@ -4,7 +4,7 @@ Windows x64 `v0.1.0-dev.20261110-windows.1` ve Linux `v0.1.0-dev.20261110-linux.
 
 Bütün açık kullanıcı istekleri [ROADMAP](docs/ROADMAP.md) ve [FEATURES](docs/FEATURES.md) içinde kalır. İmzalı otomatik güncelleme/Authenticode, gerçek hesap Sync ve bağımsız hizmet erişimi tamamlanmadı. Eski 153.6 dosyaları üzerine yazılmadı; tarihsel sürüm notlarında uyarıldı. Güncel kurulumlar ve gerçek ekran görüntüleri README/UI_PREVIEW'dedir.
 
-Yayın sonrası ağ kanıtı iyileştirmesi yalnızca testleri değiştirir: HTTP yanıt başlıklarındaki URL'ler bağlantı girişimi sayılmaz, `nsHttp uri=` alanları ayrılır. `network-review.yml` sabit SHA-256 ile aynı yayımlanmış Windows/Linux dosyalarını salt okunur yeniden test eder. Ham HTTP günlükleri/profiller yayınlanmaz. Bu sınırlı yeni sekme örneği sıfır Mozilla bağlantısı veya tam ağ denetimi iddiası değildir.
+Yayın sonrası ağ kanıtı iyileştirmesi yalnızca testleri değiştirir: HTTP yanıt başlıklarındaki URL'ler bağlantı girişimi sayılmaz, `nsHttp uri=` alanları ayrılır. `network-review.yml` run 42854557684 sabit SHA-256 ile aynı yayımlanmış Windows/Linux dosyalarında başarılı oldu. Ham HTTP günlükleri/profiller yayınlanmaz. Bu sınırlı yeni sekme örneği sıfır Mozilla bağlantısı veya tam ağ denetimi iddiası değildir.
 
 Kaynak ZIP/Git bundle ve tam sürüm dosyaları kullanıcının önceden onayladığı özel Drive klasörlerine yedeklenir; geri okuma makbuzları çalışma alanında tutulur. Henüz geri okunmamış yüklemeler tamamlandı sayılmaz. Orijinal kullanıcı WIP'leri, kaynak ağacı ve motor nesne önbellekleri korunur; yalnızca testin ürettiği sentetik profiller ve hashli arşivden geri oluşturulabilen QA kopyası için disk temizliği yapıldı.
 
