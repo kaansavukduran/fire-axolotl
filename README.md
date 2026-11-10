@@ -10,6 +10,8 @@ Free browser project based on Firefox ESR source, with an Aion companion. Fire A
 
 **Durum / Status: Windows x64 ve Linux x86_64 geliştirici ön sürümleri yayımlandı; kararlı günlük kullanım sürümü değildir. Otomatik güncellemeler kapalıdır. / Windows x64 and Linux x86_64 developer prereleases published; not a stable daily-use release. Automatic updates are disabled.**
 
+**Windows ilk ön sürümünde bilinen gereksinim:** Visual C++ runtime önceden kurulu değilse uygulama açılmayabilir. Uygulama klasöründe runtime içeren düzeltme sürümü hazırlanıyor. / The initial Windows preview currently requires an existing Visual C++ runtime; a correction is in progress.
+
 [**Windows x64 Setup.exe indir / Download Windows installer**](https://github.com/kaansavukduran/fire-axolotl/releases/download/v0.1.0-dev.20261110-windows/fire-axolotl-0.1.0-dev.20261110-windows-x86_64-Setup.exe) · [Sürüm notları / Release notes](https://github.com/kaansavukduran/fire-axolotl/releases/tag/v0.1.0-dev.20261110-windows)
 
 Windows'ta Setup.exe dosyasını indirip çift tıkla, kurulum sihirbazını izle ve Başlat menüsünden **Fire Axolotl** aç. ZIP ve kaynak arşivleri kurulum için gerekli değildir. Windows sürümü ana arayüzde Türkçe/English, yeni sekmede isteğe bağlı Aion Koşusu içerir. Yeni profilde sekmeler üsttedir. **Geliştirici ön sürümüdür; Authenticode imzası ve otomatik güncelleme henüz yoktur.** / Download and run Setup.exe, follow the installer, then open Fire Axolotl from Start. Includes Turkish/English native UI and the optional Aion Run new-tab game. Unsigned developer preview; automatic updates remain disabled.

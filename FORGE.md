@@ -1,3 +1,9 @@
+# Son bağımlılık denetimi: Windows CRT
+
+- Yayımlanmış ZIP'teki 40 PE dosyası incelendi. Ana exe/mozglue/xul dahil dosyalar msvcp140.dll, vcruntime140.dll, vcruntime140_1.dll; ONNX ayrıca msvcp140_1.dll içe aktarıyor. Bu DLL'ler ZIP'te yok. CI makinesinde kurulu olduklarından önceki testler yokluklarını ortaya çıkarmadı. Eski release notuna ve README'ye bilinen gereksinim eklendi; yayımlanmış dosya ve etiketler değiştirilmedi.
+- windows-runtime-audit.yml, VS2022 x64 Microsoft.VC143.CRT dağıtılabilir klasörünü, sürüm/hash/Microsoft imzalarını ve lisans dosyalarını inceler. Microsoft'un resmî VS2022 redistribution listesi, VC/redist altındaki dağıtılabilir dosyaların değiştirilmeden uygulamayla dağıtımını koşulları dahilinde listeler; debug_nonredist kullanılmaz.
+- Ayrı bir düzeltme sürümü hazırlanmalı: imzalı, sabit özetli app-local CRT; lisans/dağıtım bildirimi; PE import kapanışı ve kurulu process'te CRT yükleme konumları doğrulanmalı. Önceki release üzerine yazılmaz.
+
 # Windows geliştirici ön sürümü yayımlandı
 
 - **Yayımlandı:** [https://github.com/kaansavukduran/fire-axolotl/releases/tag/v0.1.0-dev.20261110-windows](https://github.com/kaansavukduran/fire-axolotl/releases/tag/v0.1.0-dev.20261110-windows), Pre-release, Latest değildir. Kaynak/etiket `535b6e2a5279bfb7037f20dbda98e0d5afc42b14`; motor `9d564dced55dc4816cc4aeb57387ba1643f007ed`.
