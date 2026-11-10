@@ -28,3 +28,6 @@ pref("xpinstall.signatures.required", true);
 pref("extensions.langpacks.signatures.required", true);
 pref("app.update.url.manual", "https://github.com/kaansavukduran/fire-axolotl/releases");
 pref("app.update.url.details", "https://github.com/kaansavukduran/fire-axolotl/releases");
+// Default toolbar for new profiles; a saved user layout overrides this value.
+pref("browser.uiCustomization.state", "{\"placements\":{\"nav-bar\":[\"back-button\",\"forward-button\",\"stop-reload-button\",\"urlbar-container\",\"search-container\",\"downloads-button\",\"fxa-toolbar-menu-button\",\"unified-extensions-button\"]},\"currentVersion\":24,\"newElementCount\":0,\"seen\":[],\"dirtyAreaCache\":[]}");
+pref("browser.toolbars.bookmarks.visibility", "always");

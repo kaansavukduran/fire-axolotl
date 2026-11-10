@@ -29,6 +29,7 @@ def check_source_delta(base):
     allowed.update('browser/native/aion-runner/' + name for name in ['AionRunnerParent.sys.mjs', 'AionRunnerChild.sys.mjs', 'card.sys.mjs', 'world.sys.mjs', 'aion-runner.png', 'PROVENANCE.json'])
     allowed.update(['localization.json', 'scripts/localization.py', 'browser/preferences/fire-axolotl.js'])
     allowed.update('browser/native/aion-runner/' + name for name in ['AionToolsParent.sys.mjs', 'AionToolsChild.sys.mjs'])
+    allowed.update('browser/native/aion-runner/' + name for name in ['toolbar.sys.mjs', 'aion-wallpaper.png', 'WALLPAPER-PROVENANCE.json', 'ENDLESS-RUN.json'])
     allowed.update('browser/extension/' + name for name in ['manifest.json', 'background.js', 'popup.html', 'popup.js', 'ui.css', 'image-search.js', 'container-menus.js', 'settings.html'])
     if set(changed) - allowed:
         raise ValueError('The compiled core differs from the reviewed build: ' + ', '.join(sorted(set(changed) - allowed)))
@@ -59,12 +60,13 @@ def check_source_delta(base):
     old_preferences = subprocess.check_output(['git', 'show', base + ':browser/preferences/fire-axolotl.js'], cwd=ROOT).decode()
     if 'pref("intl.locale.requested", "");' not in old_preferences:
         old_preferences = old_preferences.replace('/* SPDX-License-Identifier: MPL-2.0 */\n', '/* SPDX-License-Identifier: MPL-2.0 */\n' + LOCALE_DEFAULT)
-    if old_preferences != (ROOT / 'browser/preferences/fire-axolotl.js').read_text():
-        raise ValueError('Only the OS-language default preference addition is reviewed')
+    if old_preferences + TOOLBAR_DEFAULTS != (ROOT / 'browser/preferences/fire-axolotl.js').read_text():
+        raise ValueError('Only the OS-language and reviewed new-profile toolbar defaults are allowed')
     return changed
 
 
 LOCALE_DEFAULT = '// Follow the operating-system language until the user makes a language choice.\npref("intl.locale.requested", "");\n'
+TOOLBAR_DEFAULTS = '// Default toolbar for new profiles; a saved user layout overrides this value.\n' + 'pref("browser.uiCustomization.state", ' + json.dumps(json.dumps({'placements': {'nav-bar': ['back-button', 'forward-button', 'stop-reload-button', 'urlbar-container', 'search-container', 'downloads-button', 'fxa-toolbar-menu-button', 'unified-extensions-button']}, 'currentVersion': 24, 'newElementCount': 0, 'seen': [], 'dirtyAreaCache': []}, separators=(',', ':'))) + ');\n' + 'pref("browser.toolbars.bookmarks.visibility", "always");\n'
 
 
 def sha(data):
@@ -105,13 +107,11 @@ def apply(runtime):
         replacements[catalog_path] = (json.dumps(catalog, ensure_ascii=False) + '\n').encode()
         pref_path = 'defaults/preferences/firefox-branding.js'
         preferences = archive.read(pref_path).decode().replace('\r\n', '\n')
-        if 'pref("intl.locale.requested", "");' not in preferences:
-            expected = (ROOT / 'browser/preferences/fire-axolotl.js').read_text().replace(LOCALE_DEFAULT, '')
-            if preferences != expected:
-                raise ValueError('Unexpected native privacy/security defaults')
-            replacements[pref_path] = (ROOT / 'browser/preferences/fire-axolotl.js').read_bytes()
-        elif preferences != (ROOT / 'browser/preferences/fire-axolotl.js').read_text():
-            raise ValueError('Unexpected native language or privacy defaults')
+        expected = (ROOT / 'browser/preferences/fire-axolotl.js').read_text()
+        if preferences not in [expected, expected.replace(TOOLBAR_DEFAULTS, ''), expected.replace(TOOLBAR_DEFAULTS, '').replace(LOCALE_DEFAULT, '')]:
+            raise ValueError('Unexpected native privacy/security defaults')
+        if preferences != expected:
+            replacements[pref_path] = expected.encode()
         pref = PREFIX + 'preferences/preferences.xhtml'
         text = archive.read(pref).decode()
         begin, end = '<!-- Fire Axolotl preferences begin -->', '<!-- Fire Axolotl preferences end -->'

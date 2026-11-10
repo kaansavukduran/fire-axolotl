@@ -17,6 +17,20 @@
       }
     },
     init() {
+      const toolbar = () => {
+        try {ChromeUtils.importESModule('chrome://browser/content/aion-runner/toolbar.sys.mjs').register(window);}
+        catch (error) {console.error('Aion toolbar initialization failed', error);}
+      };
+      if (window.gBrowserInit?.delayedStartupFinished) toolbar();
+      else {
+        const ready = subject => {
+          if (subject !== window) return;
+          Services.obs.removeObserver(ready, 'browser-delayed-startup-finished');
+          toolbar();
+        };
+        Services.obs.addObserver(ready, 'browser-delayed-startup-finished');
+        window.addEventListener('unload', () => {try {Services.obs.removeObserver(ready, 'browser-delayed-startup-finished');} catch {}}, {once:true});
+      }
       Services.prefs.addObserver(preference, controller);
       controller.observe();
       try {ChromeUtils.importESModule('chrome://browser/content/aion-runner/AionRunnerParent.sys.mjs').register();}

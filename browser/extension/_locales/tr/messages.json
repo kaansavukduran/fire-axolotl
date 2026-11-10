@@ -634,5 +634,11 @@
   },
   "toolVideo": {
     "message": "Video"
+  },
+  "applyToolbarLayout": {
+    "message": "Önerilen üst düzeni uygula"
+  },
+  "newtabWallpaper": {
+    "message": "Yeni sekmede Aion arka planını göster"
   }
 }

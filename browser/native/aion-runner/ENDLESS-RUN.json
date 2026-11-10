@@ -1,0 +1,8 @@
+{
+  "repository": "https://github.com/kaansavukduran/aion_endless_run",
+  "url": "https://aionendlessrun.vercel.app/",
+  "source_commit": "359cd1b3f5db0429a1830e536b127c92b3b8bdca",
+  "observed_live_version": "0.6.0",
+  "observed_live_build": "4c7089f959d79ef2",
+  "mode": "Live user-initiated link; latest deployed game. Separate packaged offline mini game remains available. No network request on new-tab load."
+}

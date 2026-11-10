@@ -634,5 +634,11 @@
   },
   "toolVideo": {
     "message": "Video"
+  },
+  "applyToolbarLayout": {
+    "message": "Apply suggested top toolbar layout"
+  },
+  "newtabWallpaper": {
+    "message": "Show Aion wallpaper on new tabs"
   }
 }

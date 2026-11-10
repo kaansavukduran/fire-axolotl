@@ -25,6 +25,9 @@ for file in (ROOT / 'browser/native').glob('*.js'):
     subprocess.run(['node', '--check', str(file)], check=True)
 for file in (ROOT / 'browser/native/aion-runner').glob('*.mjs'):
     subprocess.run(['node', '--check', str(file)], check=True)
+wallpaper = ROOT / 'browser/native/aion-runner/aion-wallpaper.png'
+wallpaper_receipt = json.loads(wallpaper.with_name('WALLPAPER-PROVENANCE.json').read_text())
+assert hashlib.sha256(wallpaper.read_bytes()).hexdigest() == wallpaper_receipt['sha256'], 'Wallpaper provenance mismatch'
 runner = ROOT / 'browser/native/aion-runner'
 assert hashlib.sha256((runner / 'aion-runner.png').read_bytes()).hexdigest() == json.loads((runner / 'PROVENANCE.json').read_text())['sha256'], 'Runner artwork provenance mismatch'
 native_keys = set(re.findall(r'data-aion-l10n="([^"]+)"', (ROOT / 'browser/native/aion-layout.inc.xhtml').read_text()))

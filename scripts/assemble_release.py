@@ -42,13 +42,19 @@ def main():
     checks['native_translation'] = json.loads((ROOT / 'work/translation-test-artifacts/results.json').read_text(encoding='utf-8'))
     if len(checks['tools_workspace']['passed']) < 9 or not checks['native_translation']['passed'] or not checks['native_translation'].get('offline_inference_verified'):
         raise ValueError('Actual tools UI or native offline translation verification is incomplete')
+    checks['newtab_workspace'] = json.loads((ROOT / 'work/newtab-test-artifacts/results.json').read_text(encoding='utf-8'))
+    checks['external_game'] = json.loads((ROOT / 'work/game-link-verification.json').read_text())
+    if len(checks['newtab_workspace']['passed']) < 9 or checks['external_game']['url'] != 'https://aionendlessrun.vercel.app/' or not checks['external_game']['tls_verification']:
+        raise ValueError('New-tab UX and current official game link must pass')
     (DIST / 'release-manifest.json').write_text(json.dumps(evidence, indent=2) + '\n')
-    notes = f'''Fire Axolotl 0.2.0 geliştirici önizlemesi / developer preview
+    notes = f'''Fire Axolotl 0.3.0 geliştirici önizlemesi / developer preview
 
 **Bu kararlı günlük kullanım sürümü değildir. Otomatik güncellemeler kapalıdır.**
 **Not a stable daily-use release. Automatic updates are disabled.**
 
-Aion0.2:760px araç paneli, üç görev bölümü ve tam sekmede çalışma alanı; oturumluk metin taslağı; sağ tık konteyner/çeviri seçenekleri. Firefox'un yerel çeviri aracını açan düğme; gerçek EN→TR çeviri ve model yüklendikten sonra çevrimdışı tekrar doğrulandı. Ayrı sohbet modeli veya önceden indirilmiş çeviri modeli paketlenmez.
+Aion0.3: Esneyen Aion arka planı, oyun geri getirme, tek tıklamalı geçici sekme düğmesi ve yeni profilde üst sekmeler/ayrı arama/yer imleri. Güncel Aion Endless Run tıklamayla Vercel’de açılır; küçük çevrimdışı oyun ayrı korunur. Her yayın canlı oyun build.json/HTML doğrulamasından geçer.
+
+Önceki0.2:760px araç paneli, üç görev bölümü ve tam sekmede çalışma alanı; oturumluk metin taslağı; sağ tık konteyner/çeviri seçenekleri. Firefox'un yerel çeviri aracını açan düğme; gerçek EN→TR çeviri ve model yüklendikten sonra çevrimdışı tekrar doğrulandı. Ayrı sohbet modeli veya önceden indirilmiş çeviri modeli paketlenmez.
 
 Gerçek Firefox ESR {upstream} derlemesi; ayrı Fire Axolotl kimliği ve profili. Varsayılan koyu görünüm ve üst sekmeler; isteğe bağlı sol/sağ sekmeler, yerleşik Aion/uBlock Origin, konteynerler, video araçları ve yerel karakterler. Ana tarayıcı resmî 103 masaüstü dilini içerir; normal dil seçicisi, Almanca/Japonca/Arapça ve sağdan sola arayüz dahil 10 dil/yeniden başlatma senaryosu geçti. Aion araçlarının ve yeni sekme oyununun dil seçimi ayrıdır.
 

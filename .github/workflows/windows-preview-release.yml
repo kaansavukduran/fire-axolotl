@@ -70,6 +70,10 @@ jobs:
         run: python tests/native_runner.py
       - name: Switch native languages through Settings and preserve user choices across real restarts
         run: python tests/native_localization.py
+      - name: New-tab recovery, wallpaper, default toolbar and isolated temporary tabs
+        run: python3 tests/native_newtab.py
+      - name: Verify current user-owned Aion Endless Run deployment
+        run: python3 scripts/check_game_link.py
       - name: Real toolbar popup, workspace, container menus and two-language accessibility
         run: python tests/native_tools.py
       - name: Real native English-Turkish inference and offline reuse after model download
@@ -78,7 +82,7 @@ jobs:
         run: python tests/native_network.py
       - name: Uninstall while preserving profiles and default-browser choice
         run: ./scripts/windows_install.ps1 Uninstall
-      - name: Upgrade the previous153.7 Setup and verify Aion0.1 to0.2 with data preservation
+      - name: Upgrade the previous153.7 Setup and verify Aion0.2 to0.3 with data preservation
         run: python tests/windows_upgrade.py
       - run: python scripts/windows_release.py assemble
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
@@ -99,6 +103,8 @@ jobs:
             work/runner-test-artifacts/
             work/localization-test-artifacts/
             work/tools-test-artifacts/
+            work/newtab-test-artifacts/
+            work/game-link-verification.json
             work/translation-test-artifacts/*.json
             work/translation-test-artifacts/*.png
             work/network-test-artifacts/results.json

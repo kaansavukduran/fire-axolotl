@@ -1,3 +1,17 @@
+# Aion0.3 yeni sekme çalışması · yayın öncesi
+
+Kapsam: esneyen Aion arka planı, gizli mini oyunu yeni sekmeden geri açma, güncel `aion_endless_run` Vercel bağlantısı, tek tıklamalı yerleşik Yeni geçici sekme düğmesi ve yeni profilde üst sekmeler/ayrı arama/yer imleri çubuğu. Yetkili kaynak `/workspace/work/fire-axolotl-locale`, dal `codex/native-locale-repair`. Önceki yayımlanmış0.2 dosya/etiketleri korunur.
+
+Aion referansı sahibinin Drive ana karakter görselidir; yeni orijinal esneme/orman görseli OpenAI ile üretildi. Fotoğraf veya Firefox logosu kopyalanmadı. Dosya ve hash kaydı `WALLPAPER-PROVENANCE.json` içinde. Arka plan Görünüm'den kapatılabilir. Nova yan widgetları dar ekranda korunarak alt alta yerleşir.
+
+Canlı oyun `https://aionendlessrun.vercel.app/`; 0.6.0 /4c7089f959d79ef2 build.json ve HTML TLS ile doğrulandı. Oyun yalnızca tıklamayla yeni sekmede açılır, kaynak konteyneri korunur. Önceki küçük çevrimdışı oyun ayrı etiketlidir. Her yayın canlı oyun metadata kontrolünden geçer; paketli mini oyunun tam Godot oyunu olduğu iddia edilmez.
+
+Yeni geçici sekme üçüncü taraf eklenti kopyası değildir; aynı tek tıklama işi yerleşik, taşınabilir araç çubuğu düğmesiyle sunulur. Ayrı sahiplik listesi, son sekme temizliği, hata geri alma ve oturum geri yüklemesi sonrası artık alan temizliği vardır. Kalıcı/başka alanlara dokunulmaz. Yeni profil varsayılan CUI24 yerleşimi kullanıcı kayıtlı tercihinden düşük önceliktedir. Eski profilde önerilen düzen açık düğmeyle uygulanır.
+
+Yerel gerçek tarayıcıda9 yeni sekme kontrolü geçti: gizle/geri getir, gerçek Vercel gezinmesi, iki ayrı geçici çerez alanı, yalnızca son ilgili alanın temizlenmesi, duvar kağıdı kontrolü, dar ekran, gerçek restartta kişisel düzenin korunması. Bulut dış HTTPS testi yalnızca sentetik profilde ortam CA/proxy'sini kullanır; ürün TLS/imza/kum havuzu değişmez. Mevcut11 oyun senaryosu da gerçek tarayıcıda tekrar geçti. Kurulu Windows/Linux ve0.2→0.3 gerçek Setup yükseltmesi yayın kapısıdır. Yeni0.3 henüz yayımlandı denmez.
+
+Aşağıdaki aşamalar tarihsel kayıttır.
+
 # Aion 0.2 · geniş araçlar, konteyner menüsü ve yerel çeviri
 
 Windows `v0.2.0-dev.20261110-windows` ve Linux `v0.2.0-dev.20261110-linux`; paketleme kaydı `bde5110227ae29ef054d8471f72b01ed6918d5f4`. Test/yayın Windows42881924559, Linux42881930851. Her kurulu üründe70 mevcut +9 araç senaryosu, gerçek EN→TR ve yeni metinle çevrimdışı çıkarım geçti. Windows0.1→0.2 gerçek Setup yükseltmesi verileri ve yeni native çeviri köprüsünü korudu.

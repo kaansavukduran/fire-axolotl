@@ -50,7 +50,7 @@ try:
     driver.set_context('chrome')
     assert driver.execute_script('return Services.appinfo.ID') == '{75450dd9-387d-4289-8b23-7ad6609fa530}'
     addon = driver.execute_async_script('const done=arguments[0];ChromeUtils.importESModule("resource://gre/modules/AddonManager.sys.mjs").AddonManager.getAddonByID("aion@fire-axolotl.browser").then(a=>done({version:a.version,active:a.isActive}));')
-    assert addon == {'version':'0.2.0','active':True}, addon
+    assert addon == {'version':json.loads((ROOT / 'package.json').read_text())['version'],'active':True}, addon
     uuid = driver.execute_script('return JSON.parse(Services.prefs.getStringPref("extensions.webextensions.uuids"))["aion@fire-axolotl.browser"];')
     base = f'moz-extension://{uuid}/'
     driver.set_context('content')

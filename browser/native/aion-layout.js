@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: MPL-2.0 */
 (() => {
   'use strict';
-  const prefs = ['sidebar.verticalTabs', 'sidebar.position_start', 'layout.css.prefers-color-scheme.content-override', 'fireaxolotl.ui.font', 'fireaxolotl.newtabGame.enabled', 'fireaxolotl.newtabGame.language'];
+  const prefs = ['sidebar.verticalTabs', 'sidebar.position_start', 'layout.css.prefers-color-scheme.content-override', 'fireaxolotl.ui.font', 'fireaxolotl.newtabGame.enabled', 'fireaxolotl.newtabGame.language', 'fireaxolotl.newtab.wallpaper'];
   let initialized = false;
   async function initialize() {
     const group = document.getElementById('aionLayoutGroup');
@@ -40,6 +40,7 @@
       document.getElementById('aion-browser-font').value = Services.prefs.getStringPref(prefs[3], 'system');
       document.getElementById('aion-newtab-game').checked = Services.prefs.getBoolPref(prefs[4], true);
       document.getElementById('aion-game-language').value = Services.prefs.getStringPref(prefs[5], locale);
+      document.getElementById('aion-newtab-wallpaper').checked = Services.prefs.getBoolPref(prefs[6], true);
     }
     select.addEventListener('change', () => {
       // Preference observers can synchronously refresh the select mid-change.
@@ -66,6 +67,14 @@
     });
     document.getElementById('aion-newtab-game').addEventListener('change', event => {
       Services.prefs.setBoolPref(prefs[4], event.target.checked);
+      document.getElementById('aion-layout-status').textContent = messages.saved.message;
+    });
+    document.getElementById('aion-newtab-wallpaper').addEventListener('change', event => {
+      Services.prefs.setBoolPref(prefs[6], event.target.checked);
+      document.getElementById('aion-layout-status').textContent = messages.saved.message;
+    });
+    document.getElementById('aion-apply-layout').addEventListener('click', () => {
+      ChromeUtils.importESModule('chrome://browser/content/aion-runner/toolbar.sys.mjs').applyLayout(Services.wm.getMostRecentWindow('navigator:browser'));
       document.getElementById('aion-layout-status').textContent = messages.saved.message;
     });
     document.getElementById('aion-game-language').addEventListener('change', event => {

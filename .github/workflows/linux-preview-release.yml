@@ -97,6 +97,12 @@ jobs:
         env:
           AION_NATIVE_BINARY: /usr/lib/fire-axolotl-preview/fire-axolotl
         run: python3 tests/native_localization.py
+      - name: New-tab recovery, wallpaper, default toolbar and isolated temporary tabs
+        env:
+          AION_NATIVE_BINARY: /usr/lib/fire-axolotl-preview/fire-axolotl
+        run: python3 tests/native_newtab.py
+      - name: Verify current user-owned Aion Endless Run deployment
+        run: python3 scripts/check_game_link.py
       - name: Real toolbar popup, workspace, container menus and two-language accessibility
         env:
           AION_NATIVE_BINARY: /usr/lib/fire-axolotl-preview/fire-axolotl
@@ -128,6 +134,8 @@ jobs:
             work/runner-test-artifacts/
             work/localization-test-artifacts/
             work/tools-test-artifacts/
+            work/newtab-test-artifacts/
+            work/game-link-verification.json
             work/translation-test-artifacts/*.json
             work/translation-test-artifacts/*.png
             work/network-test-artifacts/results.json
