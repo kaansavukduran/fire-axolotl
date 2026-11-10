@@ -22,7 +22,7 @@ passed = []
 
 class Fixture(http.server.BaseHTTPRequestHandler):
     def do_GET(self):
-        body = b'<!doctype html><meta charset="utf-8"><title>Aion source fixture</title><p id="text" style="display:inline-block">Hello world</p><a id="link" href="/other">Open another page</a><video></video>'
+        body = b'<!doctype html><meta charset="utf-8"><title>Aion source fixture</title><p id="text" style="width:max-content">Hello world</p><a id="link" href="/other">Open another page</a><video></video>'
         self.send_response(200); self.send_header('Content-Type', 'text/html'); self.end_headers(); self.wfile.write(body)
     def log_message(self, *args):
         pass
@@ -119,6 +119,30 @@ try:
     assert 'aion_synthetic=work' in driver.execute_script('return document.cookie')
     driver.close();driver.switch_to.window(control)
     record('Both workspace and real right-click container action preserve the original page and isolate its login cookie')
+    driver.set_context('chrome')
+    driver.execute_script('document.getElementById("contentAreaContextMenu").hidePopup();')
+    wait.until(lambda d: d.execute_script('return document.getElementById("contentAreaContextMenu").state === "closed";'))
+    driver.set_context('content');driver.switch_to.window(source)
+    ActionChains(driver).reset_actions()
+    paragraph = driver.find_element(By.ID,'text')
+    width = int(paragraph.rect['width'])
+    ActionChains(driver).move_to_element_with_offset(paragraph, -width // 2 + 2, 0).click_and_hold().move_by_offset(width - 4, 0).release().perform()
+    wait.until(lambda d: d.execute_script('return window.getSelection().toString().trim();'))
+    ActionChains(driver).context_click(paragraph).perform()
+    selected_text = driver.execute_script('return getSelection().toString();')
+    assert selected_text.strip()
+    driver.set_context('chrome')
+    wait.until(lambda d: d.execute_script('return gContextMenu.isTextSelected;'))
+    item = wait.until(lambda d: d.find_element(By.CSS_SELECTOR,'#contentAreaContextMenu menuitem[id*="aion-translate-selection"]'))
+    item.click();driver.set_context('content')
+    selected = wait.until(lambda d: next((h for h in d.window_handles if h not in {source,control}),None))
+    driver.switch_to.window(selected);ready()
+    assert driver.find_element(By.ID,'source-text').get_attribute('value').strip()
+    assert driver.execute_script('return UI.settings.endpoint') == ''
+    capture_screenshot(driver, OUT / 'selection-translation.png')
+    record('Real selection context menu opens a sourced workspace and pre-fills text without configuring or contacting an external translator')
+    driver.close();driver.switch_to.window(control)
+
     driver.find_element(By.ID,'tab-translation').click()
     driver.find_element(By.ID,'native-translation').click()
     local = wait.until(lambda d: next((h for h in d.window_handles if h not in {source,control}),None))
@@ -155,25 +179,13 @@ try:
     Select(driver.find_element(By.ID,'font')).select_by_value('system')
     wait.until(lambda d: d.execute_script('return UI.settings.scale === 100;'))
     driver.close();driver.switch_to.window(source);driver.set_window_size(1440,1050)
+    driver.get(f'http://127.0.0.1:{server.server_port}/')
+    driver.execute_async_script('const done=arguments[0];requestAnimationFrame(()=>requestAnimationFrame(done));')
     before = set(driver.window_handles)
     driver.execute_script('document.dispatchEvent(new CustomEvent("Aion:OpenTranslator",{bubbles:true}));')
     driver.execute_async_script('const done=arguments[0];requestAnimationFrame(()=>requestAnimationFrame(done));')
     assert set(driver.window_handles) == before
     record('An ordinary website cannot invoke the privileged native translation bridge')
-    paragraph = driver.find_element(By.ID,'text')
-    width = int(paragraph.rect['width'])
-    ActionChains(driver).move_to_element_with_offset(paragraph, -width // 2 + 2, 0).click_and_hold().move_by_offset(width - 4, 0).release().perform()
-    wait.until(lambda d: d.execute_script('return window.getSelection().toString().trim();'))
-    ActionChains(driver).context_click(paragraph).perform()
-    driver.set_context('chrome')
-    item = wait.until(lambda d: d.find_element(By.CSS_SELECTOR,'#contentAreaContextMenu menuitem[id*="aion-translate-selection"]'))
-    item.click();driver.set_context('content')
-    selected = wait.until(lambda d: next((h for h in d.window_handles if h not in {source,control}),None))
-    driver.switch_to.window(selected);ready()
-    assert driver.find_element(By.ID,'source-text').get_attribute('value').strip()
-    assert driver.execute_script('return UI.settings.endpoint') == ''
-    capture_screenshot(driver, OUT / 'selection-translation-tr.png')
-    record('Real selection context menu opens a sourced workspace and pre-fills text without configuring or contacting an external translator')
 
 finally:
     try:

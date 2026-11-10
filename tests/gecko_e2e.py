@@ -169,7 +169,7 @@ try:
     assert server.blocked_requests == before, 'The blocked request must not reach the local server'
     record('Official hash-pinned uBlock Origin blocks a real script request while the normal page still runs')
     # This test covers the official component engine, not native built-in loading.
-    package = ROOT / 'dist/fire-axolotl-0.1.0-developer-addon.xpi'
+    package = ROOT / f'dist/fire-axolotl-{json.loads((ROOT / "package.json").read_text())["version"]}-developer-addon.xpi'
     addon_id = 'aion@fire-axolotl.browser' if NATIVE else driver.install_addon(str(package), temporary=True)
     driver.set_context('chrome')
     assert driver.execute_script("return Services.policies.getActivePolicies().DisableTelemetry") is True
