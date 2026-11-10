@@ -14,7 +14,7 @@ Sitelerin kendi teması korunur. Tarayıcıya uyan sitelerin açık/koyu tercihi
 
 Yeni profilde sekmeler üstte, adres çubuğunun yanında ayrı arama alanı ve yer imleri çubuğu bulunur. Eski profilde kişisel düzenin korunur. Aynı görünümü seçmek için **Menü → Ayarlar → Görünüm → Önerilen üst düzeni uygula** düğmesine bas. Bu düğme üst sekmeleri, arama alanını ve yer imleri çubuğunu seçer; yer imlerini veya diğer araçlarını silmez.
 
-Esneyen Aion arka planı paketle gelir ve çevrimdışı açılır. **Ayarlar → Görünüm → Yeni sekmede Aion arka planını göster** kutusuyla kapatabilirsin. Firefox'un kendi duvar kağıdı seçimi varsa önceliği korunur. Dar pencerede yan widgetlar ana içeriğin altına yerleşir.
+Aion, kurt, kuzu ve baykuşun birlikte mutlu olduğu orman arka planı paketle gelir ve çevrimdışı açılır. **Ayarlar → Görünüm → Yeni sekmede Aion arka planını göster** kutusuyla kapatabilirsin. Firefox'un kendi duvar kağıdı seçimi varsa önceliği korunur. Dar pencerede yan widgetlar ana içeriğin altına yerleşir.
 
 - **Aion Endless Run · Güncel oyunu aç:** [Vercel'deki oyunu](https://aionendlessrun.vercel.app/) ayrı sekmede açar. İnternet ilk yüklemede gerekir; yeni sekme açılır açılmaz oyun sunucusuna bağlantı yapılmaz. Bu adres oyunun güncel yayınını izler. Oyun eski bir çevrimdışı kopya gösteriyorsa kendi **Yeni sürüm hazır · Güncelle** düğmesini kullan. Her Fire Axolotl yayını canlı oyunun sürüm dosyasını ve sayfasını doğrular.
 - **Çevrimdışı mini oyun:** Tarayıcıyla paketlenen küçük engel atlama oyunudur. **Başlat**, oyun alanında **Boşluk** veya dokunmayla zıpla, **Esc** ile duraklat. Buzda donma, ateşte çizgi film tarzı kül, sekme değiştirince duraklama ve yerel rekor vardır. Tam Godot oyununun paketlenmiş kopyası değildir.

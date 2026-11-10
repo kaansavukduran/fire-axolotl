@@ -1,4 +1,10 @@
-#0.3.1 arka plan düzeltmesi · yayın öncesi
+# 0.3.1 · Mutlu Aion ve arkadaşları
+
+Windows `v0.3.1-dev.20261110-windows`, Linux `v0.3.1-dev.20261110-linux`; paketleme kaydı `fba6d2aec65b0e5f415d79bf53892510a0975694`. Başarılı yayın akışları Windows42899517402, Linux42899523587. Mevcut88 senaryo, gerçek çeviri/çevrimdışı çıkarım ve Windows0.3.0→0.3.1 profil/özel araç çubuğu koruması geçti.
+
+Yeni varsayılan görselde Aion, kurt, kuzu ve baykuş birlikte mutlu/normal ifadelerle aynı ormanda durur. Dört karakter masaüstü kontrollerinin solunda kalır; gerçek Türkçe tarayıcı görüntüsü UI_PREVIEW'dedir. Çalışan oyun ve araç davranışları değiştirilmedi. Eski dosya/etiketler, kullanıcı WIP'leri ve motor önbelleği korunur. Kaynak ZIP/tam Git/etiket ve doğrulama makbuzu onaylı özel Drive hedefine yedeklenir; geri okuma durumu çalışma alanındaki makbuzda tutulur. Önceki aşamalar aşağıdadır.
+
+# 0.3.1 arka plan düzeltmesi · yayın öncesi
 
 Kullanıcı esneyen tek Aion yerine aynı orman ortamında Aion, kurt, kuzu ve baykuşu normal, mutlu/güler yüzlü hallerinde istedi. Yeni orijinal PNG üretildi; karakterler sol tarafta ve kontrollerin dışında kalır. Sadece varsayılan görsel/varlık makbuzu ve yama sürüm bilgileri değişir. Önceki yayınlar korunur. Windows0.3.0→0.3.1 gerçek yükseltmesi ve mevcut88 senaryo yayın kapısıdır.
 

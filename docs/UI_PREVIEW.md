@@ -1,3 +1,11 @@
+# 0.3.1 · Mutlu Aion ve arkadaşları
+
+Yeni varsayılan arka planda aynı orman ortamında Aion, kurt, kuzu ve baykuş birlikte, normal ve mutlu ifadelerle yer alır. Dört karakter de arama alanı ve oyun kartlarının dışında kalır. Aşağıdaki görüntü gerçek Linux tarayıcısının Türkçe yeni sekmesinden alındı; çizgili adres çubuğu otomasyon işaretidir.
+
+![Mutlu Aion ve arkadaşlarıyla gerçek yeni sekme](screenshots/031-newtab-tr.png)
+
+Önceki0.3 ve daha eski ekranlar aşağıda tarihsel kayıt olarak korunur.
+
 # Aion0.3 yeni sekme
 
 Gerçek153.7 Linux tarayıcısı ve incelenmiş0.3 UI katmanı. Fotoğraf veya arayüz maketi değildir. Türkçe yeni sekme ve araç çubuğu, esneyen Aion, ayrı arama ve yer imleri çubuğu görülür. Çizgili adres çubuğu WebDriver otomasyon göstergesidir; veri ve skorlar sentetiktir.

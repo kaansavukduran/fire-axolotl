@@ -1,3 +1,9 @@
+# 0.3.1 · Mutlu arkadaşlar varsayılan arka planı
+
+Yalnızca varsayılan görsel, varlık makbuzu ve yama sürümü bilgileri değişti. Aynı ormanda Aion, kurt, kuzu ve baykuş normal/gülümseyen ifadelerle birlikte yer alır. Gerçek Türkçe yeni sekmede bütün karakterlerin kontrollerin dışında kaldığı görsel olarak doğrulandı. Görselin hash kontrolü geçti; yeni davranış testi eklenmedi.
+
+Paketleme kaydı `fba6d2aec65b0e5f415d79bf53892510a0975694`. [Windows kurulum/yayın](https://github.com/kaansavukduran/fire-axolotl/actions/runs/42899517402) ve [Linux kurulum/yayın](https://github.com/kaansavukduran/fire-axolotl/actions/runs/42899523587) mevcut88 senaryoyu, yerel/çevrimdışı çeviriyi ve Windows0.3.0→0.3.1 gerçek Setup veri/araç çubuğu korumasını başarıyla geçti. Önceki sürümler korunur; eski sonuçlar aşağıdadır.
+
 # Aion0.3 doğrulaması
 
 [Windows kurulum/yayın](https://github.com/kaansavukduran/fire-axolotl/actions/runs/42892753032) ve [Linux kurulum/yayın](https://github.com/kaansavukduran/fire-axolotl/actions/runs/42892758797) başarılı. Paketleme kaydı `b6f39f35ccdb2ff7f00b0fb790c0f22ba41745b9`;153.7 motorları aynı sabit kaynaklardan korunur.
