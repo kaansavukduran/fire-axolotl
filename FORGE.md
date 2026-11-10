@@ -1,3 +1,9 @@
+# Gerçek çevrimdışı Windows sürüm yükseltme testi
+
+- İlk yayımlanmış153.6 Setup SHA-256 ile sabitlenir; yeni ve ayrı test kurulum dizinine kurulur. Taze sentetik profilde native parola/Places yer imi, Türkçe, sekme/font/oyun rekoru ve normal Aion UI üzerinden konteyner/kelime/kişiselPNG oluşturulur. Gerçek kullanıcı hesabı veya parolası kullanılmaz.
+- Aynı kurulum dizinine yeni153.7 Setup uygulanır, her kurulu dosya kesin nativeZIP ile tekrar karşılaştırılır. Aynı profil yeni motorla açılarak tüm sentetik veriler ve default-browser seçimi denetlenir. Son kaldırmada veri/varsayılan seçim korunması da zorunludur. Bu, MAR veya otomatik güncelleme testi değildir.
+- Windows yayın akışı bu kanıtı zorunlu tutar. Bu kayıt anında gerçek Windows denemesi henüz koşmadı. Linux153.7 motoru42827574889 başarılı; 103dilli paketleme/kurulum42840814021 başladı.
+
 # Varsayılan ağ örneklemesi için yayın kapısı
 
 - İlk kurulum kabuğunun da harici x86 VC runtime gerektirmemesi denetlendi: önceki gerçek Setup PE'si yalnızca kernel32/oleaut32/shell32/user32 kullanıyor. Yeni SFX ve iç NSIS programı normal/gecikmeli importlarında herhangi bir Visual C++ CRT isterse paketleme durur; bu iki doğrulama yayın makbuzuna eklenir. Sistem Microsoft bileşenleri kaldırılmaz/değiştirilmez.

@@ -119,6 +119,9 @@ def assemble():
     overlay = json.loads((DIST / 'newtab-ui-overlay.json').read_text())
     languages = json.loads((ROOT / 'work/localization-test-artifacts/results.json').read_text(encoding='utf-8'))
     network = json.loads((ROOT / 'work/network-test-artifacts/results.json').read_text())
+    upgrade = json.loads((ROOT / 'work/windows-upgrade/results.json').read_text(encoding='utf-8'))
+    if not all(upgrade.get(key) for key in ['passed', 'fixture_only', 'profile_data_preserved', 'password_fixture_preserved', 'companion_data_preserved', 'default_browser_preserved', 'same_install_directory', 'upgrade_uninstallation_preserved_data']) or not upgrade['installed_payload']['all_packaged_payload_bytes_match']:
+        raise ValueError('The actual cross-version offline Setup upgrade did not preserve synthetic user data')
     if not network['passed'] or not network['log_canary_verified'] or network['forbidden_hosts']:
         raise ValueError('Default-network sampling failed or did not capture the local HTTP canary')
     if languages['mode'] != 'compiled-fork-native-languages' or len(languages['passed']) < 10:
@@ -136,7 +139,7 @@ def assemble():
         raise ValueError('Clean installation/uninstallation data protection not verified')
     commit = gh('api', f'repos/{CONFIG["repository"]}/git/commits/{os.environ["GITHUB_SHA"]}', '--jq', '.sha')
     subprocess.run(['git', 'archive', '--format=zip', '--prefix=fire-axolotl/', f'--output={DIST / (STEM + "-packaging-source.zip")}', commit], cwd=ROOT, check=True)
-    (DIST / 'release-manifest.json').write_text(json.dumps({'browser_source_commit': CONFIG['source_commit'], 'packaging_commit': commit, 'native_run': CONFIG['native_run_id'], 'installer_run': os.environ['GITHUB_RUN_ID'], 'authenticode_signed': False, 'automatic_updates': False, 'checks': checks, 'installation': installer, 'uninstallation': uninstall, 'installer_wrapper': sfx, 'ui_overlay': overlay, 'newtab_game': game, 'native_languages': languages, 'windows_runtime': runtime, 'profile_probe': profile, 'runtime_fallback_probe': fallback, 'network_sample': network}, indent=2) + '\n')
+    (DIST / 'release-manifest.json').write_text(json.dumps({'browser_source_commit': CONFIG['source_commit'], 'packaging_commit': commit, 'native_run': CONFIG['native_run_id'], 'installer_run': os.environ['GITHUB_RUN_ID'], 'authenticode_signed': False, 'automatic_updates': False, 'checks': checks, 'installation': installer, 'uninstallation': uninstall, 'installer_wrapper': sfx, 'ui_overlay': overlay, 'newtab_game': game, 'native_languages': languages, 'windows_runtime': runtime, 'profile_probe': profile, 'runtime_fallback_probe': fallback, 'network_sample': network, 'manual_setup_upgrade': upgrade}, indent=2) + '\n')
     notes = f'''Fire Axolotl Windows x64 geliştirici ön sürümü / developer preview
 
 **Kararlı günlük kullanım sürümü değildir. Windows Authenticode imzası ve otomatik güncelleme henüz yoktur.**
@@ -160,6 +163,8 @@ Yeni sekmede **Aion Koşusu**: Başlat → oyun alanında Boşluk ile zıpla, Es
 **Aion Run** is an original offline pixel-art new-tab game. Press Start, focus the play area, then Space to jump or Esc to pause. Switching tabs pauses gameplay. Settings → Appearance controls visibility, Turkish/English and the local record.
 
 Windows, imzasız geliştirici paketi için tanınmayan yayımcı/SmartScreen bildirimi gösterebilir. Güvenlik korumalarını kapatma. Bu ön sürümün Authenticode imzası yoktur; SHA-256 özeti dosya bütünlüğünü denetler, yayımcı imzasının yerine geçmez. Windows may identify this unsigned developer build as an unknown publisher. Keep security protections enabled. Checksums verify integrity, not publisher signing.
+
+Önceki153.6 Setup → bu153.7 Setup geçişi aynı kurulum dizininde, yalnızca sentetik test verileriyle denetlendi. Native parola ve yer imi, dil, font/sekme, yerel rekor, konteyner/kelime/kişiselPNG korundu. Bu, elle Setup çalıştırma yoludur; imzalı MAR ve otomatik güncelleyici henüz yoktur.
 
 Kurulum mevcut Firefox'un yerine geçmez ve Firefox profilini kullanmaz. Kaldırma testi örnek profil verisini korudu. Kişisel Firefox profilini bu ön sürüme elle yönlendirme. Güncelleme elle yapılır; tarayıcıdaki kararlı kanal denetimi bu ön sürümü otomatik kurmaz.
 

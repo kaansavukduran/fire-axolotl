@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: MPL-2.0
 """Compare the real installed payload with the source-built Windows archive."""
 import hashlib
+import argparse
 import json
 import os
 from pathlib import Path
@@ -8,6 +9,9 @@ import zipfile
 from windows_release import DIST, STEM, digest
 
 ROOT = Path(__file__).resolve().parents[1]
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--evidence-file', type=Path, default=ROOT / 'work/windows-installer-test/payload.json')
+args = parser.parse_args()
 destination = Path(os.environ['AION_INSTALLED_DIRECTORY']).resolve()
 package = DIST / f'{STEM}.zip'
 overlay = json.loads((DIST / 'newtab-ui-overlay.json').read_text())
@@ -32,5 +36,6 @@ with zipfile.ZipFile(package) as archive:
         count += 1
 if count < 20:
     raise ValueError('Incomplete native payload')
-(ROOT / 'work/windows-installer-test/payload.json').write_text(json.dumps({'verified_files': count, 'all_packaged_payload_bytes_match': True}, indent=2) + '\n')
+args.evidence_file.parent.mkdir(parents=True, exist_ok=True)
+args.evidence_file.write_text(json.dumps({'verified_files': count, 'all_packaged_payload_bytes_match': True, 'install_directory': str(destination), 'native_zip_sha256': digest(package)}, indent=2) + '\n')
 print(f'Actual installed native payload matches all {count} packaged files')
