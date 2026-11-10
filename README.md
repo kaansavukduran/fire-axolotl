@@ -10,15 +10,17 @@ Free browser project based on Firefox ESR source, with an Aion companion. Fire A
 
 **Durum / Status: ESR 153.7.0esr tabanlı Windows x64 ve Linux x86_64 geliştirici ön sürümleri yayımlandı. Kararlı günlük kullanım sürümü değildir; Authenticode imzası ve otomatik güncelleme yoktur. / Published developer previews; unsigned, automatic updates disabled.**
 
-[Windows x64 Setup.exe indir](https://github.com/kaansavukduran/fire-axolotl/releases/download/v0.2.0-dev.20261110-windows/fire-axolotl-0.2.0-dev.20261110.1-windows-x86_64-Setup.exe) · [Windows sürüm notları](https://github.com/kaansavukduran/fire-axolotl/releases/tag/v0.2.0-dev.20261110-windows) · [Linux AppImage / Ubuntu .deb](https://github.com/kaansavukduran/fire-axolotl/releases/tag/v0.2.0-dev.20261110-linux)
+[Windows x64 Setup.exe indir](https://github.com/kaansavukduran/fire-axolotl/releases/download/v0.3.0-dev.20261110-windows/fire-axolotl-0.3.0-dev.20261110.1-windows-x86_64-Setup.exe) · [Windows sürüm notları](https://github.com/kaansavukduran/fire-axolotl/releases/tag/v0.3.0-dev.20261110-windows) · [Linux AppImage / Ubuntu .deb](https://github.com/kaansavukduran/fire-axolotl/releases/tag/v0.3.0-dev.20261110-linux)
 
 Windows'ta yalnızca **Setup.exe** dosyasını indirip kurulum sihirbazını izle; Başlat menüsünden **Fire Axolotl** aç. Gerekli Microsoft x64 Visual C++ runtime dosyaları bu pakete lisans bildirimleriyle dahil edildi. Kaynak ZIP'lerini indirmen gerekmez. Önceki 153.6 önizlemeleri tarihsel dosyalardır; üzerlerine yazılmadı.
 
 Yeni profilde koyu görünüm ve **üst sekmeler** bulunur. Ayarlar'dan üst/sol/sağ sekmeleri, tarayıcı fontunu ve site renk tercihini seçebilirsin. Ana tarayıcı Firefox'un **103 resmî masaüstü dilini** içerir; yeni Aion metinleri Türkçe/İngilizcedir. Yerleşik Aion/uBlock Origin, konteynerler, video araçları, isteğe bağlı karakterler ve çevrimdışı Aion Koşusu kullanıcı kurulumu olmadan gelir.
 
-Aion **0.2**: 760px panel, tam sekme araç alanı, sağ tıkla konteyner açma ve görünür cihazda çeviri düğmesi. **Aion → Çeviri → Cihazda çeviri aracını aç** yolunu izle; dil modelleri ilk kullanımda indirilir. Ayrı sohbet modeli kurulu değildir.
+Aion **0.3**: yeni sekmede esneyen Aion arka planı, gizli mini oyunu geri getirme düğmesi, güncel [Aion Endless Run](https://aionendlessrun.vercel.app/) bağlantısı ve tek tıklamalı **Yeni geçici sekme** aracı. Yeni profilde üst sekmeler, ayrı arama ve yer imleri çubuğu; eski profilde kişisel düzen korunur. Canlı oyun yalnızca tıklamayla açılır, küçük çevrimdışı oyun ayrı tutulur.
 
-Her iki platformda kurulu tarayıcı üzerinde **70 mevcut senaryo + 9 yeni araç senaryosu**, ayrıca gerçek İngilizce–Türkçe çıkarım ve internet kapalıyken yeni metin çevirisi geçti. Windows'ta gerçek 0.1 Setup → 0.2 Setup yükseltmesinde sentetik parola, yer imi, konteyner, kelimeler, karakter PNG'si ve ayarlar korundu. Bu elle kurulum testidir; imzalı otomatik güncelleme değildir. [Doğrulama ve sınırlar](docs/VALIDATION.md) · [Kullanım kılavuzu](docs/QUICK_START.md).
+0.2 araçları korunur: 760px panel, tam sekme araç alanı, sağ tıkla konteyner açma ve görünür cihazda çeviri düğmesi. **Aion → Çeviri → Cihazda çeviri aracını aç** yolunu izle; dil modelleri ilk kullanımda indirilir. Ayrı sohbet modeli kurulu değildir.
+
+Her iki platformda kurulu tarayıcı üzerinde **70 mevcut + 9 araç + 9 yeni sekme senaryosu**, ayrıca gerçek İngilizce–Türkçe çıkarım ve internet kapalıyken yeni metin çevirisi geçti. Windows'ta gerçek 0.2 Setup → 0.3 Setup yükseltmesinde sentetik parola, yer imi, konteyner, kelimeler, karakter PNG'si ve ayarlar korundu. Bu elle kurulum testidir; imzalı otomatik güncelleme değildir. [Doğrulama ve sınırlar](docs/VALIDATION.md) · [Kullanım kılavuzu](docs/QUICK_START.md).
 
 [Çalışan arayüzün ekran görüntüleri / Screenshots of the running interface](docs/UI_PREVIEW.md)
 
@@ -67,7 +69,7 @@ npm run package
 1. Güncel Firefox'u aç. / Open an up-to-date Firefox installation.
 2. Adres çubuğuna `about:debugging#/runtime/this-firefox` yaz. / Enter `about:debugging#/runtime/this-firefox` in the address bar.
 3. **Geçici Eklenti Yükle / Load Temporary Add-on** düğmesine bas.
-4. `dist/fire-axolotl-0.2.0-developer-addon.xpi` dosyasını seç. / Select that file.
+4. `dist/` içindeki `-developer-addon.xpi` dosyasını seç. / Select the generated developer add-on file in `dist/`.
 5. Eklentiler menüsünden Aion'u araç çubuğuna sabitle, simgesine bas. / Pin Aion to the toolbar from the Extensions menu, then click its icon.
 6. Normal bir web sekmesinde konteyner veya video aracını dene. Ayarlar düğmesi dil ve görünümü açar. / Test on a regular web tab. The Settings button opens language and appearance controls.
 

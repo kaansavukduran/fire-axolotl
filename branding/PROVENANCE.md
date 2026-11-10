@@ -8,3 +8,7 @@
 - Public production branding still requires an appropriate name/logo similarity review. A generated image and a GitHub repository name do not constitute trademark clearance.
 
 References reviewed: https://openai.com/policies/terms-of-use/ and https://www.mozilla.org/en-US/foundation/trademarks/policy/
+
+## New-tab wallpaper · 2026-11-10
+
+`browser/native/aion-runner/aion-wallpaper.png` is a new OpenAI-generated yawning Aion/forest composition. Character identity follows the owner-provided Aion main reference in Drive. The red-panda screenshot was a pose/layout example; its photograph was not copied into this asset. Reference URL, source and SHA-256 are recorded in `WALLPAPER-PROVENANCE.json` alongside the packaged image. The same rights/clearance limits above apply.

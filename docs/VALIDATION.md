@@ -1,3 +1,16 @@
+# Aion0.3 doğrulaması
+
+[Windows kurulum/yayın](https://github.com/kaansavukduran/fire-axolotl/actions/runs/42892753032) ve [Linux kurulum/yayın](https://github.com/kaansavukduran/fire-axolotl/actions/runs/42892758797) başarılı. Paketleme kaydı `b6f39f35ccdb2ff7f00b0fb790c0f22ba41745b9`;153.7 motorları aynı sabit kaynaklardan korunur.
+
+- Her kurulu üründe **70 mevcut +9 araç +9 yeni sekme =88 senaryo**, ayrıca gerçek yerel/çevrimdışı EN→TR çıkarımı geçti.
+- Yeni9: üst/arama/yer imleri varsayılanı, paketli arka plan, gizle/geri getir ve yeniden açma, gerçek Vercel düğmesi, iki ayrı geçici çerez alanı, yalnızca sahip olunan son alanın temizliği, gerçek duvar kağıdı ayarı, dar pencere ve gerçek restartta kişisel düzenin korunması.
+- Her iki CI kurulumunda normal ağ/TLS ile yeni sekme kontrolleri geçti. Buluttaki ayrı yerel kontrolde sadece sentetik profile sağlanan proxy/CA kullanıldı; ürün güvenliği değiştirilmedi. Vercel kontrolü gerçek gezinmeyi doğrular; tüm Godot oynanışını Firefox'ta sınadığı iddia edilmez. Her yayın canlı build.json/HTML eşleşmesini ayrıca denetler. Linux yayın denetiminde canlı oyun0.7.0 /a538d77aa9f43a53 idi.
+- Windows gerçek0.2→0.3 Setup yükseltmesi NSS parola, yer imi, konteyner, kelime, PNG, dil/font/sekme/rekoru korudu. Önceki profilde kaldırılmış indirme düğmesi de geri eklenmedi; yeni varsayılanlar kişisel araç çubuğunun üstüne yazmadı. Yeni native çeviri bağlantısı da çalıştı.
+- Türkçe Görünüm ekranındaki **Önerilen üst düzeni uygula** düğmesi yerelde gerçek tıklamayla sınandı; üst/arama/yer imleri dönerken bağımsız font tercihi korundu. Gerçek TR ve dar ekran görüntüleri [UI_PREVIEW](UI_PREVIEW.md) içinde.
+- 27 Node +39 Python ve kaynak/izin/varlık kontrolleri geçti. İki yeni Node kontrolü: yalnızca sahip olunan geçici alanların temizliği/hata geri alma ve sıradan sitenin oyun köprüsünü kullanamaması/sabit URL/kaynak konteyneri.
+
+İmzalı otomatik güncelleme, Authenticode, gerçek hesap Sync ve özellik eşlemesindeki diğer açıklar sürer. Aşağıdaki kayıtlar önceki aşamalardır.
+
 # Aion 0.2 doğrulaması · 2026-11-10
 
 - [Windows kurulum/yayın](https://github.com/kaansavukduran/fire-axolotl/actions/runs/42881924559) ve [Linux kurulum/yayın](https://github.com/kaansavukduran/fire-axolotl/actions/runs/42881930851). Paketleme kaydı `bde5110227ae29ef054d8471f72b01ed6918d5f4`; aynı 153.7 motor pinleri korunur.

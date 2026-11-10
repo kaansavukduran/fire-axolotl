@@ -25,7 +25,7 @@ PREFIX = 'chrome/browser/content/browser/'
 def check_source_delta(base):
     protected = ['browser', 'branding', 'components.json', 'upstream.json', 'localization.json', 'scripts/localization.py', 'scripts/prepare_source.py', 'scripts/package_extension.py', 'scripts/fetch_components.py']
     changed = subprocess.check_output(['git', 'diff', '--name-only', base, 'HEAD', '--', *protected], cwd=ROOT, text=True).splitlines()
-    allowed = {'browser/native/aion-chrome.js', 'browser/native/aion-layout.js', 'browser/native/aion-layout.inc.xhtml', 'scripts/prepare_source.py', 'browser/extension/_locales/tr/messages.json', 'browser/extension/_locales/en/messages.json'}
+    allowed = {'branding/PROVENANCE.md', 'browser/native/aion-chrome.js', 'browser/native/aion-layout.js', 'browser/native/aion-layout.inc.xhtml', 'scripts/prepare_source.py', 'browser/extension/_locales/tr/messages.json', 'browser/extension/_locales/en/messages.json'}
     allowed.update('browser/native/aion-runner/' + name for name in ['AionRunnerParent.sys.mjs', 'AionRunnerChild.sys.mjs', 'card.sys.mjs', 'world.sys.mjs', 'aion-runner.png', 'PROVENANCE.json'])
     allowed.update(['localization.json', 'scripts/localization.py', 'browser/preferences/fire-axolotl.js'])
     allowed.update('browser/native/aion-runner/' + name for name in ['AionToolsParent.sys.mjs', 'AionToolsChild.sys.mjs'])

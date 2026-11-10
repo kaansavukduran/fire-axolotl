@@ -42,3 +42,9 @@ Açılır panel ve tam sekme çalışma alanı seçilen kaynak sekmenin kimliği
 Cihazda çeviri düğmesi Firefox'un `about:translations` aracını açar. İlk kullanımda desteklenen dil modelleri indirilebilir; modeller hazır olduğunda çeviri cihazda çalışır. Ayrı bir sohbet modeli paketlenmez. HTTPS hizmetiyle Aion çevirisi ayrı ve isteğe bağlıdır; hizmet ve hedef dil kullanıcı tarafından seçilir.
 
 Yerel açılış bağlantısı yalnızca kendi `aion@fire-axolotl.browser` kimliğindeki `popup.html` belgesini kabul eder. Sabit `about:translations` adresini açar; çağırandan URL, kod, dosya yolu veya metin kabul etmez. Diğer eklentiler ve web siteleri bu bağlantıyı kullanamaz. Mevcut eklenti izinleri ve imza kontrolleri değiştirilmez.
+
+## New-tab wallpaper, live game and temporary tabs
+
+The Aion wallpaper and small offline runner load from the installed browser package. Opening a new tab does not contact the Vercel game. Clicking **Aion Endless Run · Open latest game** opens `https://aionendlessrun.vercel.app/` as a normal website in the source container. That user-initiated visit sends ordinary HTTPS request data to the game host; the game's own storage and update controls apply. Release CI checks its public build metadata and HTML without user browser data. The packaged mini runner is a separate game.
+
+The native **New temporary tab** widget stores only the IDs of the disposable identities it created in the local profile. It removes an owned identity after its final tab closes and checks for orphaned owned identities after session restoration. Permanent identities and other containers are preserved. This is separate from Aion's existing current-page temporary-container action. The normal + button is unchanged.

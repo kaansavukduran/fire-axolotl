@@ -1,3 +1,19 @@
+# Aion0.3 yeni sekme
+
+Gerçek153.7 Linux tarayıcısı ve incelenmiş0.3 UI katmanı. Fotoğraf veya arayüz maketi değildir. Türkçe yeni sekme ve araç çubuğu, esneyen Aion, ayrı arama ve yer imleri çubuğu görülür. Çizgili adres çubuğu WebDriver otomasyon göstergesidir; veri ve skorlar sentetiktir.
+
+![Türkçe yeni sekme ve yerleşik geçici sekme düğmesi](screenshots/03-newtab-tr.png)
+
+Güncel Aion Endless Run yalnızca düğmeye basılınca Vercel'de açılır. Alttaki küçük çevrimdışı oyun ayrı seçenektir. Gizlenince aynı yeni sekmede **Çevrimdışı mini oyunu göster** düğmesi belirir. Arka plan bağımsız olarak Görünüm'den kapatılabilir.
+
+Dar pencerede yan widgetlar tek sütuna yerleşir. Aşağıdaki görüntüde arka plan kullanıcı ayarıyla kapalıdır; oyun açık kalır.
+
+![Dar görünümde erişilebilir yeni sekme kontrolleri](screenshots/03-newtab-narrow.png)
+
+[Kullanım kılavuzu](QUICK_START.md) · [Doğrulama](VALIDATION.md)
+
+Aşağıdaki0.2 araç görüntüleri önceki aşamanın kayıtlarıdır; araçlar0.3'te korunur.
+
 # Aion 0.2 araçları
 
 Aşağıdaki görüntüler gerçek 153.7 Linux tarayıcısında yeni 0.2 UI katmanından alındı; çizim veya arayüz maketi değildir. Sayfa, metin ve konteyner adları sentetik test verileridir. Adres çubuğundaki çizgili işaret otomasyon göstergesidir.

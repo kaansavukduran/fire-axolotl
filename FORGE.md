@@ -1,3 +1,13 @@
+# Aion0.3 yayımlandı
+
+Windows `v0.3.0-dev.20261110-windows` ve Linux `v0.3.0-dev.20261110-linux`; paketleme kaydı `b6f39f35ccdb2ff7f00b0fb790c0f22ba41745b9`. Başarılı kurulum/yayın Windows42892753032, Linux42892758797. Her kurulu üründe88 senaryo ve gerçek yerel/çevrimdışı çeviri geçti. Windows0.2→0.3 gerçek Setup yükseltmesinde profil ve kişisel araç çubuğu korundu.
+
+Yeni sekme Aion arka planı, görünür oyun geri getirme, tıklamayla canlı Endless Run, yerleşik tek tıklamalı geçici sekme ve yeni profil üst/arama/yer imleri düzeni tamamlandı. Eski profil önerilen düzeni açık düğmeyle uygular. Canlı oyun geliştirme sırasında0.6'dan0.7'ye ilerledi; yayın kontrolü0.7.0 /a538d77aa9f43a53'ü doğruladı. Bağlantı güncel yayını izler; paketli küçük oyun ayrı çevrimdışı seçenektir. Oyun projesi bu görevde değiştirilmedi.
+
+Kaynak/profil WIP ve motor önbellekleri korunur. Kaynak ZIP/tam Git/etiket ve doğrulama makbuzu önceden onaylanmış özel Drive hedefine ayrıca yedeklenir; geri okuma sonucu çalışma alanındaki makbuzda tutulur. Eski büyük binary staging klasörleri tamamlandı sayılmaz. İmzalı otomatik güncelleme/Authenticode, gerçek Sync ve diğer FEATURES açıkları sürer.
+
+Aşağıdaki bölümler tarihsel kayıttır.
+
 # Aion0.3 yeni sekme çalışması · yayın öncesi
 
 Kapsam: esneyen Aion arka planı, gizli mini oyunu yeni sekmeden geri açma, güncel `aion_endless_run` Vercel bağlantısı, tek tıklamalı yerleşik Yeni geçici sekme düğmesi ve yeni profilde üst sekmeler/ayrı arama/yer imleri çubuğu. Yetkili kaynak `/workspace/work/fire-axolotl-locale`, dal `codex/native-locale-repair`. Önceki yayımlanmış0.2 dosya/etiketleri korunur.

@@ -4,17 +4,28 @@ Bu kılavuz Windows geliştirici ön sürümünde bulunan işlevleri anlatır. G
 
 ## İlk açılış ve görünüm
 
-Windows'ta **Setup.exe** dosyasını çalıştırıp kurulum sihirbazını izle; Başlat menüsünden **Fire Axolotl** aç. Kaynak ZIP'lerini veya motor arşivini indirmen gerekmez. Program kendi profilini kullanır.
+Windows'ta **Setup.exe** dosyasını çalıştırıp kurulum sihirbazını izle; Başlat menüsünden **Fire Axolotl** aç. Kaynak ZIP'lerini veya motor arşivini indirmen gerekmez. Program kendi profilini kullanır. Aion → Ayarlar bölümündeki modül sürümünden yeni kurulumunu kontrol edebilirsin; motorun sürüm numarası ayrıca 153.7 olarak kalır.
 
 Yeni profilde tarayıcı koyu temada ve sekmeler üstte açılır. **Menü → Ayarlar → Görünüm** içindeki Fire Axolotl kontrollerinden üst, sol veya sağ sekmeleri seçebilirsin. Aynı yerde araç çubuğu düzenleyicisini açabilir, tarayıcı yazı tipini OpenDyslexic veya Lexend yapabilirsin. Font değişikliği sitelerin yazılarını kendiliğinden değiştirmez.
 
 Sitelerin kendi teması korunur. Tarayıcıya uyan sitelerin açık/koyu tercihini Görünüm'den seçebilirsin; sayfalar zorla karartılmaz. Ana arayüz dilini **Ayarlar → Diller** üzerinden değiştir. 153.7 tabanlı ön sürüm, Firefox'un yayımladığı 103 masaüstü dilini içerir; seçici dilleri kendi adlarıyla gösterir. Tarayıcı isterse **Uygula ve yeniden başlat** düğmesini kullan. Aion araçları ve eklediğimiz yeni Görünüm kontrolleri şu an Türkçe/İngilizcedir; oyunun dili ayrıca seçilir.
 
-## Aion Koşusu
+## Yeni sekme, Aion arka planı ve oyunlar
 
-Yeni sekmede **Başlat** düğmesine bas. Oyun alanındayken **Boşluk** veya dokunma ile zıpla, **Esc** ile duraklat. Sekme değiştirdiğinde oyun duraklar. Buzda donma ve ateşte çizgi film tarzı kül animasyonu bulunur. İnternet gerekmez; rekor bu tarayıcı profilinde saklanır.
+Yeni profilde sekmeler üstte, adres çubuğunun yanında ayrı arama alanı ve yer imleri çubuğu bulunur. Eski profilde kişisel düzenin korunur. Aynı görünümü seçmek için **Menü → Ayarlar → Görünüm → Önerilen üst düzeni uygula** düğmesine bas. Bu düğme üst sekmeleri, arama alanını ve yer imleri çubuğunu seçer; yer imlerini veya diğer araçlarını silmez.
 
-**Ayarlar → Görünüm** bölümünde oyunu gizleyebilir, dilini değiştirebilir ve rekoru sıfırlayabilirsin. Başka bir yeni sekme eklentisi seçersen onun sayfası açılır.
+Esneyen Aion arka planı paketle gelir ve çevrimdışı açılır. **Ayarlar → Görünüm → Yeni sekmede Aion arka planını göster** kutusuyla kapatabilirsin. Firefox'un kendi duvar kağıdı seçimi varsa önceliği korunur. Dar pencerede yan widgetlar ana içeriğin altına yerleşir.
+
+- **Aion Endless Run · Güncel oyunu aç:** [Vercel'deki oyunu](https://aionendlessrun.vercel.app/) ayrı sekmede açar. İnternet ilk yüklemede gerekir; yeni sekme açılır açılmaz oyun sunucusuna bağlantı yapılmaz. Bu adres oyunun güncel yayınını izler. Oyun eski bir çevrimdışı kopya gösteriyorsa kendi **Yeni sürüm hazır · Güncelle** düğmesini kullan. Her Fire Axolotl yayını canlı oyunun sürüm dosyasını ve sayfasını doğrular.
+- **Çevrimdışı mini oyun:** Tarayıcıyla paketlenen küçük engel atlama oyunudur. **Başlat**, oyun alanında **Boşluk** veya dokunmayla zıpla, **Esc** ile duraklat. Buzda donma, ateşte çizgi film tarzı kül, sekme değiştirince duraklama ve yerel rekor vardır. Tam Godot oyununun paketlenmiş kopyası değildir.
+
+**Mini oyunu yanlışlıkla gizlediysen:** Yeni sekmedeki **Çevrimdışı mini oyunu göster** düğmesine bas. **Ayarlar → Görünüm → Yeni sekmede Aion Koşusu'nu göster** kutusundan da açabilirsin. Aynı bölümde oyun dilini ve rekoru yönet. Başka yeni sekme eklentisi seçtiğinde onun normal yeni sekme sayfası korunur.
+
+## Tek tıklamayla yeni geçici sekme
+
+Araç çubuğunda **Yeni geçici sekme** düğmesine bas. Her tıklama ayrı ve boş bir konteyner açar; aynı sitede farklı bir oturum kullanabilirsin. Normal **+** düğmesi standart yeni sekme açmaya devam eder.
+
+Bir geçici alanın son sekmesi kapanınca yalnızca o alan kaldırılır. Başka geçici veya kalıcı konteynerler, indirmeler ve geçmiş korunur. Düğme özel gezinme penceresinde devre dışıdır. **Araç çubuğunu özelleştir** ekranından taşıyabilir veya kaldırabilirsin. Bu işlev tarayıcının kendi yerleşik aracıdır; üçüncü taraf bir eklentinin kopyası veya yüklemesi olarak sunulmaz.
 
 ## Yerleşik araçlar
 

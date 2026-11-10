@@ -4,7 +4,7 @@ Sıra, ilk konuşmadaki tarayıcı isteklerini izler. “Kısmi”, kullanılabi
 
 | Sıra | İstek | Durum ve sonraki adım |
 | --- | --- | --- |
-| 1 | Ücretsiz, açık kaynak gerçek Firefox forku ve güvenlik korumaları | 153.7 Windows/Linux gerçek kurulumları yayımlandı; her birinde 70 mevcut + 9 araç senaryosu ve gerçek çevrimdışı çeviri geçti. Kararlı dağıtım için imzalı güncelleme ve hizmet/ağ denetimi açık. |
+| 1 | Ücretsiz, açık kaynak gerçek Firefox forku ve güvenlik korumaları | 153.7 Windows/Linux gerçek kurulumları yayımlandı; her birinde 70 mevcut + 9 araç + 9 yeni sekme senaryosu ve gerçek çevrimdışı çeviri geçti. Kararlı dağıtım için imzalı güncelleme ve hizmet/ağ denetimi açık. |
 | 2 | Eklenti kurmadan konteynerler | Kalıcı/geçici alanlar, açıklamalı panel ve sayfa/bağlantıya sağ tıkla alan seçme var; siteye otomatik alan atama kuralları açık. |
 | 3 | Video hızlandırma | Erişilebilir ana belge videosunda var; ses, kısayollar ve bütün iframe'ler açık. |
 | 4 | Video altyazısı, metin ve açılır içerik çevirisi | Yerel çift altyazı, mevcut satırı alma ve açık eylemle seçili metin çeviri akışı var. Otomatik altyazı çevirisi, canlı ses ve tüm açılır içerikler açık. |
@@ -23,7 +23,9 @@ Sıra, ilk konuşmadaki tarayıcı isteklerini izler. “Kısmi”, kullanılabi
 | 17 | Kullanılabilir paket ve gerçek arayüz | Derlenmiş tarayıcı ekranları var. Günlük kullanım için kararlı sürüm henüz yok. Platformlar [BUILD.md](BUILD.md) içinde. |
 | 18 | İsteğe bağlı karakterler ve kullanıcı karakteri ekleme | Aion/kuzu/kurt/baykuş resim kareleri, duraklatma, azaltılmış hareket, yerel PNG, silme ve yedek geri alma geçti. |
 | 19 | Yeni sekmede özgün piksel Aion zıplama oyunu | 48 karelik pafta; Başlat, Boşluk/dokunma, Esc, buz/ateş/kül, yerel rekor, gizleme ve TR/EN. Gerçek engel aşma ve kazanılmış rekor dahil normal derlenmiş tarayıcıda 11 kontrol geçti. Arama/boş yeni sekme tercihleri korunur. Windows kurulu paket testi yayın kapısıdır. |
-| 20 | Windows Setup.exe | [Windows x64 geliştirici ön sürümü](https://github.com/kaansavukduran/fire-axolotl/releases/tag/v0.2.0-dev.20261110-windows) yayımlandı. Gerçek Setup kurulumu, bütün paket dosyalarının eşleşmesi, kurulu uygulamada 70 mevcut + 9 yeni araç senaryosu ve gerçek yerel/çevrimdışı çeviri, ayrı profil ve veri koruyan kaldırma geçti. Authenticode ve otomatik güncelleme açık. |
+| 20 | Windows Setup.exe | [Windows x64 geliştirici ön sürümü](https://github.com/kaansavukduran/fire-axolotl/releases/tag/v0.3.0-dev.20261110-windows) yayımlandı. Gerçek Setup kurulumu, bütün paket dosyalarının eşleşmesi, kurulu uygulamada 70 mevcut + 9 yeni araç senaryosu ve gerçek yerel/çevrimdışı çeviri, ayrı profil ve veri koruyan kaldırma geçti. Authenticode ve otomatik güncelleme açık. |
+| 21 | Gizli oyunu geri açma, güncel aion_endless_run bağlantısı ve esneyen Aion arka planı | Yeni sekmeden geri açma ve bağımsız duvar kağıdı seçimi var. Canlı oyun tıklamayla Vercel’de açılır; her yayın build/HTML sürüm kontrolünden geçer. Paketli küçük oyun ayrı çevrimdışı seçenektir. |
+| 22 | Tek tıklamalı yeni geçici sekme ve örnek üst düzen | Yerleşik araç çubuğu düğmesi ayrı alan açar; son ilgili sekmede alan kaldırılır. Yeni profil üst/arama/yer imleri varsayılanı; eski profilde koruma ve açık preset düğmesi doğrulandı. |
 
 Yanlışlıkla başka uygulama için gönderilen spor, besin seçici ve RPG menüsü değişiklikleri bu projeye taşınmaz. Kullanıcının son düzeltmesiyle yalnızca tarayıcıya uygun karakter fikri kapsamda kaldı.
 
