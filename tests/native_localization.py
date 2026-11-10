@@ -69,7 +69,6 @@ def choose(code):
         driver.set_window_size(1440, 1050)
     wait.until(lambda _: state()['locale'] == code)
     expected = json.loads((ROOT / f'browser/extension/_locales/{"tr" if code == "tr" else "en"}/messages.json').read_text(encoding='utf-8'))['tabLayout']['message']
-    wait.until(lambda _: driver.execute_script('return document.querySelector("[data-aion-l10n=tabLayout]")?.textContent') == expected)
     driver.get('about:preferences#appearance')
     wait.until(lambda _: driver.find_element(By.CSS_SELECTOR, '[data-aion-l10n="tabLayout"]').text == expected)
     driver.set_context('chrome')
