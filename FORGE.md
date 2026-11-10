@@ -1,3 +1,9 @@
+# Derlenmiş Windows paketinin ayrı yeniden doğrulaması
+
+- 42791204074: gerçek NSIS installer, 11 açılış ve 4 restart başarılı. Windows OS hareket azaltma tercihi açıkken E2E animasyon beklediği için 434. satırda durdu. Test profili normal hareketi 0, azaltılmış hareketi 1 ile ayrı ve açıkça doğrular; ürün/OS tercihi değiştirilmez.
+- `windows-revalidate.yml` sabit 42791204074/9d564dc paketini ve kaynaklarını indirir. `windows_revalidate.py` depo/dal/commit/workflow, başarılı compile/package/installer/source adımları, değişmemiş motor girdileri, native paket güvenliği ve tam kaynak makbuzunu denetler. 11/4/34/11/5 testleri bu gerçek pakette yeniden koşar. Motor yeniden derlenmez.
+- Yayın yalnızca başarılı, kesin SHA/ID ile sabitlenen yeniden doğrulama çalıştırmasını kabul eder. İndirilen ZIP, Setup ve motor kaynağının özetleri bu çalıştırmanın makbuzuyla birebir eşleşmelidir. Kaynak/paket eski build run’ından, başarılı test kanıtı yeni doğrulama run’ından gelir. Kurulu Windows paketinin ayrı testleri de zorunlu kalır.
+
 # Güncel Windows run: 42791204074
 
 - Native kaynak `9d564dced55dc4816cc4aeb57387ba1643f007ed`; [42791204074](https://github.com/kaansavukduran/fire-axolotl/actions/runs/42791204074). CRLF testi ve gerçek installer artifact yolu düzeltildi; JSON ve üç artifact pini bu yeni çalıştırmaya eşlendi.

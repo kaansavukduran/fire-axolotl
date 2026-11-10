@@ -2,7 +2,7 @@ name: Publish tested Windows developer preview
 on:
   workflow_dispatch:
   workflow_run:
-    workflows: [Native Windows x64 developer build]
+    workflows: [Native Windows x64 developer build, Validate preserved Windows x64 payload]
     types: [completed]
     branches: [main]
 permissions:

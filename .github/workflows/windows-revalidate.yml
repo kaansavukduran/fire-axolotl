@@ -1,0 +1,64 @@
+name: Validate preserved Windows x64 payload
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: windows-preserved-validation
+  cancel-in-progress: false
+jobs:
+  validate:
+    runs-on: windows-2022
+    timeout-minutes: 35
+    env:
+      PYTHONUTF8: '1'
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: '22'
+      - run: npm run check; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }; npm test
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131
+        with:
+          name: fire-axolotl-windows-x64-native-payload
+          path: work/windows-inputs
+          run-id: 42791204074
+          github-token: ${{ github.token }}
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131
+        with:
+          name: fire-axolotl-windows-x64-corresponding-source
+          path: work/windows-inputs
+          run-id: 42791204074
+          github-token: ${{ github.token }}
+      - run: python -m pip install -r tests/requirements-gecko.txt zstandard==0.25.0
+      - run: python scripts/windows_revalidate.py
+      - run: python scripts/fetch_test_runtime.py
+      - run: python -m unittest discover -s tests -p capture_checks.py
+      - name: Fresh-profile native identity, built-ins and appearance
+        run: python tests/native_smoke.py
+      - name: Real process restart and profile preservation
+        run: python tests/native_restart.py
+      - name: Full native browser integration
+        run: python tests/gecko_e2e.py
+      - name: Normal new-tab game and native controls
+        run: python tests/native_runner.py
+      - name: Native language selection and real restarts
+        run: python tests/native_localization.py
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        if: always()
+        with:
+          name: windows-native-test-evidence
+          path: |
+            work/native-test-artifacts/
+            work/native-e2e-artifacts/
+            work/runner-test-artifacts/
+            work/localization-test-artifacts/
+          retention-days: 14

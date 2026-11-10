@@ -34,6 +34,9 @@ options.binary_location = str(runtime_copy / original_binary.name)
 options.add_argument('-headless')
 options.accept_insecure_certs = False
 options.set_preference('remote.prefs.recommended', False)
+# Exercise normal animation and reduced motion explicitly in this test profile;
+# Windows CI can inherit an OS preference that disables animations by default.
+options.set_preference('ui.prefersReducedMotion', 0)
 # Marionette's uploadFiles uses File.createFromFileName in its privileged
 # content actor. Opt into this one automation capability, not the recommended
 # preference bundle that also disables browser security services.
@@ -438,7 +441,7 @@ try:
     driver.set_context('chrome'); driver.execute_script('Services.prefs.setIntPref("ui.prefersReducedMotion",1);'); driver.set_context('content')
     wait.until(lambda d: not d.find_element(By.ID, 'character-pause').is_enabled())
     assert driver.execute_async_script('const c=document.getElementById("character-canvas"),f=c.dataset.frame;setTimeout(()=>arguments[0](c.dataset.frame===f),550);')
-    driver.set_context('chrome'); driver.execute_script('Services.prefs.clearUserPref("ui.prefersReducedMotion");'); driver.set_context('content')
+    driver.set_context('chrome'); driver.execute_script('Services.prefs.setIntPref("ui.prefersReducedMotion",0);'); driver.set_context('content')
     record('Companion frames advance, pause through the normal button/keyboard and honor OS reduced motion')
     driver.find_element(By.ID, 'character-file').send_keys(str(ROOT / 'browser/extension/characters/aion.png'))
     wait.until(lambda d: d.find_element(By.ID, 'character-import').is_enabled())

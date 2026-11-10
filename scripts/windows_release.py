@@ -31,7 +31,7 @@ def digest(path):
 
 def preflight():
     run = json.loads(gh('api', f'repos/{CONFIG["repository"]}/actions/runs/{CONFIG["native_run_id"]}'))
-    expected = {'status': 'completed', 'conclusion': 'success', 'head_branch': 'main', 'head_sha': CONFIG['source_commit'], 'workflow_id': CONFIG['native_workflow_id'], 'path': '.github/workflows/native-windows.yml'}
+    expected = {'status': 'completed', 'conclusion': 'success', 'head_branch': 'main', 'head_sha': CONFIG.get('validation_commit', CONFIG['source_commit']), 'workflow_id': CONFIG['native_workflow_id'], 'path': CONFIG.get('native_workflow_path', '.github/workflows/native-windows.yml')}
     if run.get('event') not in {'workflow_dispatch', 'push'} or any(run.get(key) != value for key, value in expected.items()) or run['repository']['id'] != CONFIG['repository_id'] or run['head_repository']['id'] != CONFIG['repository_id']:
         raise ValueError('The reviewed successful Windows source build is required')
     if os.environ.get('GITHUB_EVENT_NAME') == 'workflow_run':
@@ -76,6 +76,11 @@ def inputs():
     if not receipt or receipt['overlay_commit'] != CONFIG['source_commit'] or receipt['overlay_dirty'] or receipt['upstream'] != expected:
         raise ValueError('Applied source does not match the reviewed native build')
     evidence = ROOT / 'work/windows-evidence'
+    if 'engine_run_id' in CONFIG:
+        validation = json.loads((evidence / 'native-test-artifacts/validation-inputs.json').read_text())
+        expected = {'engine_run_id': CONFIG['engine_run_id'], 'source_commit': CONFIG['source_commit'], 'validation_commit': CONFIG['validation_commit'], 'native_zip_sha256': digest(zips[0]), 'installer_sha256': digest(installers[0]), 'source_sha256': digest(source), 'engine_inputs_unchanged': True}
+        if validation != expected:
+            raise ValueError('Native revalidation evidence does not match these exact preserved packages')
     checks = {key: json.loads((evidence / path).read_text()) for key, path in {'native': 'native-test-artifacts/results.json', 'restart': 'native-test-artifacts/restart-results.json', 'integration': 'native-e2e-artifacts/results.json'}.items()}
     validate_checks(checks)
     overlay = windows_archive(native)
