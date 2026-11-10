@@ -71,9 +71,9 @@ jobs:
       - name: Switch native languages through Settings and preserve user choices across real restarts
         run: python tests/native_localization.py
       - name: New-tab recovery, wallpaper, default toolbar and isolated temporary tabs
-        run: python3 tests/native_newtab.py
+        run: python tests/native_newtab.py
       - name: Verify current user-owned Aion Endless Run deployment
-        run: python3 scripts/check_game_link.py
+        run: python scripts/check_game_link.py
       - name: Real toolbar popup, workspace, container menus and two-language accessibility
         run: python tests/native_tools.py
       - name: Real native English-Turkish inference and offline reuse after model download
