@@ -3,16 +3,14 @@
   "repository_id": 1451383337,
   "tag": "v0.1.0-dev.20261110-windows.1",
   "version": "0.1.0-dev.20261110.1",
-  "source_commit": "9d564dced55dc4816cc4aeb57387ba1643f007ed",
-  "native_run_id": 42808841079,
-  "native_workflow_id": 413213938,
+  "source_commit": "a6560b7fe2a42d7602001d11641e722ac087d297",
+  "native_run_id": 42828049949,
+  "native_workflow_id": 412586894,
   "native_artifact": "fire-axolotl-windows-x64-native-payload",
   "source_artifact": "fire-axolotl-windows-x64-corresponding-source",
   "evidence_artifact": "windows-native-test-evidence",
   "stage": "developer-preview",
   "automatic_updates": false,
   "authenticode_signed": false,
-  "engine_run_id": 42791204074,
-  "native_workflow_path": ".github/workflows/windows-revalidate.yml",
-  "validation_commit": "6ca1932d36605aa327ea005c2474aa8f0cae1ec4"
+  "native_workflow_path": ".github/workflows/native-windows.yml"
 }

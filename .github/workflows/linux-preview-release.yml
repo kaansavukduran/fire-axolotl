@@ -4,7 +4,7 @@ on:
     inputs:
       native_run_id:
         description: Successful reviewed native main-branch build
-        default: '42666129157'
+        default: '42827574889'
         required: true
         type: string
 permissions:
@@ -29,13 +29,21 @@ jobs:
         with:
           node-version: '22'
       - run: npm run check && npm test
+      - name: Read the reviewed package version
+        run: |
+          python3 - <<'PY'
+          import json, os
+          version = json.load(open('release.json'))['version']
+          with open(os.environ['GITHUB_ENV'], 'a') as output:
+              output.write(f'AION_PACKAGE_VERSION={version}\n')
+          PY
       - name: Verify source-run provenance before downloading binaries
         env:
           GH_TOKEN: ${{ github.token }}
           AION_NATIVE_RUN_ID: ${{ inputs.native_run_id }}
         run: |
           python3 scripts/release_validation.py preflight
-          git diff --exit-code 0f94fea2429d578015acc0a6494fe8c2dbd5223a HEAD -- browser branding components.json upstream.json scripts/prepare_source.py scripts/package_extension.py
+          git diff --exit-code ec13e3f64fe973ead7f2b14381e2d3a08c7e1bd6 HEAD -- browser branding components.json upstream.json localization.json scripts/localization.py scripts/prepare_source.py scripts/package_extension.py
       - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
           name: fire-axolotl-linux-developer-build-with-source-NOT-STABLE
@@ -51,13 +59,18 @@ jobs:
       - name: Verify full source, native identity, privacy and test reports
         run: python3 scripts/release_validation.py inputs
       - name: Build actual Linux installer files with pinned tooling
-        run: python3 scripts/linux_packages.py work/release-inputs/fire-axolotl-153.6.0.en-US.linux-x86_64.tar.xz
+        run: |
+          python3 - <<'PY'
+          import json, subprocess, sys
+          version = json.load(open('upstream.json'))['version'].removesuffix('esr')
+          subprocess.run([sys.executable, 'scripts/linux_packages.py', f'work/release-inputs/fire-axolotl-{version}.en-US.linux-x86_64.tar.xz'], check=True)
+          PY
       - run: python3 -m pip install -r tests/requirements-gecko.txt
       - run: python3 scripts/fetch_test_runtime.py
       - name: Launch the AppImage and compare both installer payloads
-        run: python3 scripts/test_linux_installers.py dist/fire-axolotl-0.1.0-dev.20261109-linux-x86_64.AppImage dist/fire-axolotl-0.1.0-dev.20261109-linux-amd64.deb
+        run: python3 scripts/test_linux_installers.py "dist/fire-axolotl-$AION_PACKAGE_VERSION-linux-x86_64.AppImage" "dist/fire-axolotl-$AION_PACKAGE_VERSION-linux-amd64.deb"
       - name: Install the actual Debian package
-        run: sudo apt-get install -y ./dist/fire-axolotl-0.1.0-dev.20261109-linux-amd64.deb
+        run: sudo apt-get install -y "./dist/fire-axolotl-$AION_PACKAGE_VERSION-linux-amd64.deb"
       - name: Test first startup from the installed browser
         env:
           AION_NATIVE_BINARY: /usr/lib/fire-axolotl-preview/fire-axolotl
@@ -67,6 +80,18 @@ jobs:
         env:
           AION_NATIVE_BINARY: /usr/lib/fire-axolotl-preview/fire-axolotl
         run: python3 tests/native_restart.py
+      - name: Full integration on the installed Linux browser
+        env:
+          AION_NATIVE_BINARY: /usr/lib/fire-axolotl-preview/fire-axolotl
+        run: python3 tests/gecko_e2e.py
+      - name: New-tab game on the installed Linux browser
+        env:
+          AION_NATIVE_BINARY: /usr/lib/fire-axolotl-preview/fire-axolotl
+        run: python3 tests/native_runner.py
+      - name: Native languages and user choices across installed-browser restarts
+        env:
+          AION_NATIVE_BINARY: /usr/lib/fire-axolotl-preview/fire-axolotl
+        run: python3 tests/native_localization.py
       - name: Assemble complete source, notices, evidence and checksums
         run: python3 scripts/assemble_release.py
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
@@ -82,6 +107,9 @@ jobs:
             work/installer-test-artifacts/
             work/installed-native-test-artifacts/
             work/native-test-artifacts/
+            work/native-e2e-artifacts/
+            work/runner-test-artifacts/
+            work/localization-test-artifacts/
           retention-days: 14
   publish:
     needs: package

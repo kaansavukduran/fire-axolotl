@@ -43,8 +43,10 @@ def main():
     if existing and existing['target_commitish'] not in [CONFIG['source_commit'], os.environ['GITHUB_SHA']]:
         raise ValueError('Existing draft belongs to a different source revision')
     if not existing:
-        gh('release', 'create', tag, '--repo', repo, '--draft', '--prerelease', '--target', os.environ['GITHUB_SHA'], '--title', 'Fire Axolotl 0.1.0 · Linux geliştirici önizlemesi', '--notes-file', str(dist / 'RELEASE-NOTES.md'))
-        existing = next(r for r in json.loads(gh('api', f'repos/{repo}/releases?per_page=100')) if r['tag_name'] == tag)
+        request = ROOT / 'work/linux-release-draft-create.json'
+        request.parent.mkdir(parents=True, exist_ok=True)
+        request.write_text(json.dumps({'tag_name': tag, 'target_commitish': os.environ['GITHUB_SHA'], 'name': f'Fire Axolotl {CONFIG["version"]} · Linux geliştirici önizlemesi', 'body': (dist / 'RELEASE-NOTES.md').read_text(), 'draft': True, 'prerelease': True, 'make_latest': 'false'}))
+        existing = json.loads(gh('api', '--method', 'POST', f'repos/{repo}/releases', '--input', str(request)))
     for asset in existing['assets']:
         if asset['name'] not in expected or asset.get('digest') != 'sha256:' + expected[asset['name']]:
             raise ValueError('Existing draft asset differs; refusing to overwrite')

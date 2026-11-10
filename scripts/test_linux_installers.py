@@ -31,7 +31,8 @@ def test(image, deb):
         temporary = Path(temporary)
         environment = dict(os.environ, APPIMAGE_EXTRACT_AND_RUN='1')
         version = subprocess.check_output([str(image), '--version'], env=environment, text=True, timeout=60)
-        if '153.6.0' not in version:
+        expected_version = json.loads((ROOT / 'upstream.json').read_text())['version'].removesuffix('esr')
+        if expected_version not in version:
             raise ValueError('AppImage does not run the expected native browser')
         launch_image(image, temporary / 'profile', artifacts, environment)
         subprocess.run([str(image), '--appimage-extract'], cwd=temporary, check=True, stdout=subprocess.DEVNULL, timeout=90)

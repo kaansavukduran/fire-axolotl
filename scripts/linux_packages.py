@@ -15,7 +15,7 @@ from verify_native_package import verify
 
 ROOT = Path(__file__).resolve().parents[1]
 PIN = json.loads((ROOT / 'linux-packaging.json').read_text())
-VERSION = '0.1.0-dev.20261109'
+VERSION = json.loads((ROOT / 'release.json').read_text())['version']
 
 
 def digest(path):
@@ -159,8 +159,8 @@ exec "$aion_appdir/usr/lib/fire-axolotl-preview/fire-axolotl" "$@"
     debroot.chmod(0o755)
     control = debroot / 'DEBIAN'
     control.mkdir()
-    (control / 'control').write_text('''Package: fire-axolotl-preview
-Version: 0.1.0~dev20261109
+    (control / 'control').write_text(f'''Package: fire-axolotl-preview
+Version: {VERSION.replace('-dev.', '~dev')}
 Section: web
 Priority: optional
 Architecture: amd64

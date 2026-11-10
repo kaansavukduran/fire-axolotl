@@ -1,5 +1,8 @@
 # ESR 153.7 güvenlik güncellemesi
 
+- Kaynak overlay/idempotence ve uBO karşılaştırması 42827568627 üzerinde geçti. Linux native 42827574889/ec13e3f; Windows native 42828049949/a6560b7. Önceki ec13 Windows denemesi yalnızca test aracı ağı nedeniyle başarısızdı; yeni deneme izole kontrollerle başlar.
+- İki paketleme yapılandırması bu kesin kaynak/run'lara bağlanır; eski motor reuse/validation alanları Windows'tan çıkarılır. Her iki motorun başarılı tamamlanması ve gerçek kurulu üründe 65 senaryo hâlâ zorunludur. Windows CRT/modül/profil/kaldırma kapıları korunur. Linux AppImage/deb sürümleri yeni release.json sürümünden üretilir; eski yayımlanmış etiketler değiştirilmez. Linux taslak oluşturma yanıtı doğrudan ID kaynağıdır.
+
 - Windows ilk 153.7 denemesi 42827565818, mevcut yayın-provenance birim testinin yeni güncellik kapısına gerçek ağ çağrısı yapıp ortak CI GitHub kotasına takılmasıyla durdu; motor indirilmedi/derlenmedi. Birim testindeki harici güncellik kapısı artık izole edilir, ayrıca başarısız güncellik kontrolünün artifact işlemlerinden önce yayını reddettiği test edilir. Gerçek yayın/schedule kontrolü GitHub için yalnızca kendi Actions token'ını kullanabilir; kontroller atlanmaz. Linux/source ec13 derlemeleri aynı motor kaynaklarıyla devam eder.
 
 - Resmî sürüm kontrolü 153.7.0esr bildirdi. 42825922166 Windows düzeltme yayını, henüz paketleme aşamasındayken iptal edildi; .1 etiketi/yayını oluşturulmadı. Eski 153.6 varlıkları tarihsel kayıt olarak korunur, güncel motor diye önerilmez.

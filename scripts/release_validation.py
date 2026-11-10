@@ -40,10 +40,11 @@ def preflight():
 
 
 def inputs(directory, evidence, output):
-    native = directory / 'fire-axolotl-153.6.0.en-US.linux-x86_64.tar.xz'
+    upstream = json.loads((ROOT / 'upstream.json').read_text())
+    native = directory / f'fire-axolotl-{upstream["version"].removesuffix("esr")}.en-US.linux-x86_64.tar.xz'
     source = directory / 'fire-axolotl-applied-source.tar.zst'
     receipt = json.loads((directory / 'fire-axolotl-build.json').read_text())
-    if receipt['overlay_commit'] != CONFIG['source_commit'] or receipt['overlay_dirty']:
+    if receipt['overlay_commit'] != CONFIG['source_commit'] or receipt['overlay_dirty'] or receipt['upstream'] != upstream:
         raise ValueError('Native source receipt differs from the reviewed commit')
     if source.stat().st_size < 100_000_000:
         raise ValueError('Expected the full applied engine source, not a smoke archive')

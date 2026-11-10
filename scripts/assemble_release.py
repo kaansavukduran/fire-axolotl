@@ -18,7 +18,9 @@ def main():
         if path.is_file():
             shutil.copyfile(path, DIST / path.name)
     release_commit = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
-    source = DIST / 'fire-axolotl-0.1.0-dev.20261109-packaging-source.zip'
+    version = CONFIG['version']
+    upstream = json.loads((ROOT / 'upstream.json').read_text())['version']
+    source = DIST / f'fire-axolotl-{version}-packaging-source.zip'
     subprocess.run(['git', 'archive', '--format=zip', '--prefix=fire-axolotl/', f'--output={source}', release_commit], cwd=ROOT, check=True)
     files = {}
     for path in sorted(DIST.iterdir()):
@@ -26,23 +28,26 @@ def main():
             with path.open('rb') as stream:
                 files[path.name] = {'sha256': hashlib.file_digest(stream, 'sha256').hexdigest(), 'bytes': path.stat().st_size}
     evidence = {'browser_source_commit': CONFIG['source_commit'], 'packaging_commit': release_commit, 'native_run': CONFIG['native_run_id'], 'release_workflow_run': os.environ.get('GITHUB_RUN_ID'), 'files': files, 'checks': {}}
-    for name, path in {'appimage': 'work/installer-test-artifacts/results.json', 'installed_browser': 'work/installed-native-test-artifacts/results.json', 'installed_restart': 'work/native-test-artifacts/restart-results.json'}.items():
+    for name, path in {'appimage': 'work/installer-test-artifacts/results.json', 'installed_browser': 'work/installed-native-test-artifacts/results.json', 'installed_restart': 'work/native-test-artifacts/restart-results.json', 'integration': 'work/native-e2e-artifacts/results.json', 'game': 'work/runner-test-artifacts/results.json', 'languages': 'work/localization-test-artifacts/results.json'}.items():
         evidence['checks'][name] = json.loads((ROOT / path).read_text())
     if len(evidence['checks']['appimage']['passed']) < 4 or len(evidence['checks']['installed_browser']['passed']) < 11 or len(evidence['checks']['installed_restart']['passed']) < 4:
         raise ValueError('Installer validation is incomplete')
+    checks = evidence['checks']
+    if checks['integration']['mode'] != 'compiled-fork' or len(checks['integration']['passed']) < 34 or checks['game']['mode'] != 'compiled-fork-normal-newtab' or len(checks['game']['passed']) < 11 or checks['languages']['mode'] != 'compiled-fork-native-languages' or len(checks['languages']['passed']) < 5:
+        raise ValueError('Installed integration, game or native-language validation is incomplete')
     (DIST / 'release-manifest.json').write_text(json.dumps(evidence, indent=2) + '\n')
     notes = f'''Fire Axolotl 0.1.0 geliştirici önizlemesi / developer preview
 
 **Bu kararlı günlük kullanım sürümü değildir. Otomatik güncellemeler kapalıdır.**
 **Not a stable daily-use release. Automatic updates are disabled.**
 
-Gerçek Firefox ESR 153.6.0esr derlemesi; ayrı Fire Axolotl kimliği ve profili. Varsayılan koyu görünüm ve üst sekmeler; isteğe bağlı sol/sağ sekmeler, yerleşik Aion/uBlock Origin, konteynerler, video araçları ve yerel karakterler. Aion Türkçe/İngilizce; ana tarayıcı bu sürümde en-US. Yerleşik Türkçe paketin taslak denemesi bu sürüme dahil değildir.
+Gerçek Firefox ESR {upstream} derlemesi; ayrı Fire Axolotl kimliği ve profili. Varsayılan koyu görünüm ve üst sekmeler; isteğe bağlı sol/sağ sekmeler, yerleşik Aion/uBlock Origin, konteynerler, video araçları ve yerel karakterler. Ana tarayıcı Türkçe/English içerir; dil seçicisi ve iki gerçek yeniden başlatmada tercih koruması doğrulandı. Aion araçlarının ve yeni sekme oyununun dil seçimi ayrıdır.
 
 | Platform | İndirme / Download | Durum / Status |
 | --- | --- | --- |
-| Linux x86_64 | `fire-axolotl-0.1.0-dev.20261109-linux-x86_64.AppImage` | Ubuntu 24.04 test hedefi; GTK/masaüstü kitaplıkları gerekir. / Tested target: Ubuntu 24.04 with desktop libraries. |
-| Ubuntu 24.04 amd64 | `fire-axolotl-0.1.0-dev.20261109-linux-amd64.deb` | Gerçek paket kurulumu, ilk açılış ve yeniden başlatma test edildi. / Actual installation, first launch and restart tested. |
-| Windows | Henüz yok / Not available | Setup.exe ve Windows testi bekliyor. |
+| Linux x86_64 | `fire-axolotl-{version}-linux-x86_64.AppImage` | Ubuntu 24.04 test hedefi; GTK/masaüstü kitaplıkları gerekir. / Tested target: Ubuntu 24.04 with desktop libraries. |
+| Ubuntu 24.04 amd64 | `fire-axolotl-{version}-linux-amd64.deb` | Gerçek paket kurulumu, ilk açılış ve yeniden başlatma test edildi. / Actual installation, first launch and restart tested. |
+| Windows x64 | [Ayrı Windows sürümleri](https://github.com/{CONFIG["repository"]}/releases) | Bu Linux paketi Windows kurulumu değildir. Eski 153.6 motoru güncel güvenlik sürümü sayılmaz. |
 | macOS | Henüz yok / Not available | Mac derlemesi, Developer ID ve notarization bekliyor. |
 | Android | Henüz yok / Not available | Mobil ön yüz ve imzalı APK bekliyor. |
 | iPhone | Henüz yok / Not available | iOS ön yüz, Apple hesabı ve TestFlight/App Store akışı bekliyor. |
@@ -52,14 +57,14 @@ Gerçek Firefox ESR 153.6.0esr derlemesi; ayrı Fire Axolotl kimliği ve profili
 AppImage'i indir. İndirilen dosyanın bulunduğu klasörde sağ tıkla, **Terminalde aç** seçeneğini seç ve çalıştır:
 
 ```sh
-chmod +x fire-axolotl-0.1.0-dev.20261109-linux-x86_64.AppImage
-./fire-axolotl-0.1.0-dev.20261109-linux-x86_64.AppImage
+chmod +x fire-axolotl-{version}-linux-x86_64.AppImage
+./fire-axolotl-{version}-linux-x86_64.AppImage
 ```
 
 FUSE kullanılamıyorsa / If FUSE is unavailable:
 
 ```sh
-APPIMAGE_EXTRACT_AND_RUN=1 ./fire-axolotl-0.1.0-dev.20261109-linux-x86_64.AppImage
+APPIMAGE_EXTRACT_AND_RUN=1 ./fire-axolotl-{version}-linux-x86_64.AppImage
 ```
 
 ### Ubuntu .deb
@@ -67,7 +72,7 @@ APPIMAGE_EXTRACT_AND_RUN=1 ./fire-axolotl-0.1.0-dev.20261109-linux-x86_64.AppIma
 `.deb` dosyasını indir, aynı klasörde terminali aç ve kur:
 
 ```sh
-sudo apt install ./fire-axolotl-0.1.0-dev.20261109-linux-amd64.deb
+sudo apt install ./fire-axolotl-{version}-linux-amd64.deb
 fire-axolotl-preview
 ```
 
@@ -75,9 +80,11 @@ Başarı kontrolü: pencere Fire Axolotl adıyla açılmalı; yeni profilde sekm
 
 Verify that Fire Axolotl opens with top tabs and a working Aion toolbar action. Use a new Fire Axolotl profile; do not point this preview at a personal Firefox profile. Close open work before manually changing packages. Package checksums provide integrity information; a project-signed automatic update channel is not implemented.
 
+Yeni sekmede Aion Koşusu: Başlat, Boşluk/dokunma ile zıpla, Esc ile duraklat. Buz ve ateş engelleri, çizilmiş piksel animasyonları, çevrimdışı yerel rekor, Görünüm ayarlarından gizleme/dil/rekor sıfırlama vardır. Native Settings and the game passed installed-browser tests; no temporary add-on is required.
+
 ### Kaynaklar ve doğrulama / Source and validation
 
-Tam uygulanmış motor kaynağı `fire-axolotl-applied-source.tar.zst`; launcher/paketleme kaynakları `fire-axolotl-0.1.0-dev.20261109-packaging-source.zip`; AppImage runtime, LGPL FUSE kaynağı ve derleme/yine bağlama betikleri `fire-axolotl-0.1.0-dev.20261109-appimage-support-source.tar.gz` içindedir. uBO'nun ilgili kaynakları ve GPL bildirimi ayrıca tarayıcının `distribution/sources` dizinindedir. Bileşen lisansları korunur.
+Tam uygulanmış motor kaynağı `fire-axolotl-applied-source.tar.zst`; launcher/paketleme kaynakları `fire-axolotl-{version}-packaging-source.zip`; AppImage runtime, LGPL FUSE kaynağı ve derleme/yine bağlama betikleri `fire-axolotl-{version}-appimage-support-source.tar.gz` içindedir. uBO'nun ilgili kaynakları ve GPL bildirimi ayrıca tarayıcının `distribution/sources` dizinindedir. Türkçe özgün XPI, MPL lisansı ve türetme makbuzu aynı kaynak dizinindedir; değişiklik betikleri paketleme kaynaklarına dahildir. Bileşen lisansları korunur.
 
 Complete applied engine source, separate packaging/launcher source, and AppImage runtime/library source materials accompany the binaries. Runtime/library notices are embedded in both Linux packages. `SHA256SUMS` and `release-manifest.json` record sizes, digests and test evidence. `sha256sum -c SHA256SUMS --ignore-missing` checks the files downloaded into the same directory.
 
