@@ -147,7 +147,7 @@ try:
     driver.find_element(By.ID,'native-translation').click()
     local = wait.until(lambda d: next((h for h in d.window_handles if h not in {source,control}),None))
     driver.switch_to.window(local)
-    wait.until(lambda d: d.current_url == 'about:translations')
+    wait.until(lambda d: d.current_url.split('#', 1)[0] == 'about:translations')
     wait.until(lambda d: d.find_elements(By.CSS_SELECTOR,'textarea, [contenteditable=true]'))
     capture_screenshot(driver, OUT / 'native-translator.png')
     record('Normal Aion button opens the actual on-device Firefox translation UI')

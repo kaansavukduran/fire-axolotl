@@ -6,6 +6,8 @@ import os
 import platform
 from pathlib import Path
 import tarfile
+import time
+import urllib.error
 import urllib.request
 import zipfile
 
@@ -18,9 +20,21 @@ environment = {}
 for name, record in manifest.items():
     archive = destination / Path(record['url']).name
     if not archive.exists():
-        with urllib.request.urlopen(record['url'], timeout=60) as response, archive.open('wb') as output:
-            while block := response.read(1024 * 1024):
-                output.write(block)
+        partial = archive.with_name(archive.name + '.download')
+        for attempt in range(4):
+            try:
+                with urllib.request.urlopen(record['url'], timeout=60) as response, partial.open('wb') as output:
+                    while block := response.read(1024 * 1024):
+                        output.write(block)
+                partial.replace(archive)
+                break
+            except (urllib.error.URLError, TimeoutError, ConnectionError) as error:
+                partial.unlink(missing_ok=True)
+                transient = not isinstance(error, urllib.error.HTTPError) or error.code == 429 or 500 <= error.code < 600
+                if not transient or attempt == 3:
+                    raise
+                print(f'Retrying {name} download after {type(error).__name__} (attempt {attempt + 2}/4)', flush=True)
+                time.sleep(2 ** attempt)
     algorithm = 'sha512' if 'sha512' in record else 'sha256'
     with archive.open('rb') as stream:
         digest = hashlib.file_digest(stream, algorithm).hexdigest()

@@ -149,7 +149,7 @@ try:
     driver.find_element(By.ID, 'native-translation').click()
     translated_window = wait.until(lambda d: next((h for h in d.window_handles if h not in before_windows), None))
     driver.switch_to.window(translated_window)
-    wait.until(lambda d: d.current_url == 'about:translations')
+    wait.until(lambda d: d.current_url.split('#', 1)[0] == 'about:translations')
     bridge_after_upgrade_verified = True
     driver.quit()
     driver = None
