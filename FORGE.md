@@ -1,3 +1,8 @@
+# Güncel Windows run: 42791204074
+
+- Native kaynak `9d564dced55dc4816cc4aeb57387ba1643f007ed`; [42791204074](https://github.com/kaansavukduran/fire-axolotl/actions/runs/42791204074). CRLF testi ve gerçek installer artifact yolu düzeltildi; JSON ve üç artifact pini bu yeni çalıştırmaya eşlendi.
+- 42772444157 başarısız tarihsel kayıttır; native 11 ve restart 4 geçmesine rağmen integration başlangıcında durduğundan yayıma uygun değildir. Yeni run ve kurulu Windows kontrolleri tamamlanmadan Setup hazır sayılmaz.
+
 # Windows CRLF doğrulaması ve installer artifact yolu
 
 - Native run 42772444157: derleme/paketleme, 11 ilk açılış ve 4 gerçek yeniden başlatma geçti. Entegrasyon başlangıcındaki kaynak karşılaştırması Windows CRLF nedeniyle durdu. Artifact 13745750409 içindeki gerçek root omni.ja modülünde düzeltilmiş kodun bulunduğu, LF normalize edilince eski kodun bulunmadığı doğrulandı. Test yalnızca CRLF→LF normalizasyonu ekler; kod ve davranış denetimleri korunur.
