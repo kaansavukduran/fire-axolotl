@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Fire Axolotl · Aion",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Containers, video controls, captions and translation with explicit consent.",
   "default_locale": "tr",
   "browser_specific_settings": {

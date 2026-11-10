@@ -128,7 +128,7 @@ def assemble():
         raise ValueError('New-tab UX, temporary tabs or current game link was not verified')
     if len(tools['passed']) < 9 or tools['mode'] != 'actual-compiled-fork-tools' or not translation['passed'] or not translation.get('offline_inference_verified'):
         raise ValueError('Actual tools UX or native on-device/offline translation validation is incomplete')
-    if upgrade.get('from_tools_version') != '0.2.0' or upgrade.get('to_tools_version') != '0.3.0' or (not upgrade.get('bridge_after_upgrade_verified') or not upgrade.get('toolbar_customization_preserved')):
+    if upgrade.get('from_tools_version') != '0.3.0' or upgrade.get('to_tools_version') != '0.3.1' or (not upgrade.get('bridge_after_upgrade_verified') or not upgrade.get('toolbar_customization_preserved')):
         raise ValueError('The same-engine tools upgrade was not verified')
     if not all(upgrade.get(key) for key in ['passed', 'fixture_only', 'profile_data_preserved', 'password_fixture_preserved', 'companion_data_preserved', 'default_browser_preserved', 'same_install_directory', 'upgrade_uninstallation_preserved_data']) or not upgrade['installed_payload']['all_packaged_payload_bytes_match']:
         raise ValueError('The actual cross-version offline Setup upgrade did not preserve synthetic user data')
@@ -166,7 +166,7 @@ This correction includes the unmodified, hash-pinned Microsoft x64 CRT alongside
 3. Başlat menüsünde **Fire Axolotl** yazıp tarayıcıyı aç. Yeni profilde sekmeler üstte ve tarayıcı koyu temada açılmalı. Araç çubuğundaki Aion düğmesi yerleşik araçları açar.
 4. Ayarlar → Görünüm sekme konumu ve arayüz fontunu içerir. Aion ayarlarında Türkçe/English seçilebilir. Ana tarayıcı resmî 103 masaüstü dilini içerir; native Ayarlar → Diller ekranından seçilebilir. Aion araçları ve oyunun yeni metinleri TR/EN ile sınırlıdır.
 
-Aion0.3: yeni sekmede özgün esneyen Aion arka planı, görünür oyun geri getirme düğmesi, tek tıklamalı yerleşik Yeni geçici sekme aracı, yeni profilde üst sekmeler/ayrı arama/yer imleri. Güncel Aion Endless Run kullanıcı tıklamasıyla Vercel’de açılır; paketli mini oyun ayrı çevrimdışı seçenektir. Her yayın sırasında canlı oyunun build.json ve HTML sürümü TLS ile kontrol edilir. / Original wallpaper, recovery, isolated temporary-tab toolbar action and explicit live-game link.
+Aion0.3: yeni sekmede birlikte mutlu Aion, kurt, kuzu ve baykuş arka planı, görünür oyun geri getirme düğmesi, tek tıklamalı yerleşik Yeni geçici sekme aracı, yeni profilde üst sekmeler/ayrı arama/yer imleri. Güncel Aion Endless Run kullanıcı tıklamasıyla Vercel’de açılır; paketli mini oyun ayrı çevrimdışı seçenektir. Her yayın sırasında canlı oyunun build.json ve HTML sürümü TLS ile kontrol edilir. / Original wallpaper, recovery, isolated temporary-tab toolbar action and explicit live-game link.
 
 Önceki0.2 araçları: genişletilmiş760px araç paneli; Çeviri/Konteyner/Video görevleri; tam sekmede çalışma alanı; tarayıcı oturumunda tutulan metin taslağı; sağ tıkla kalıcı/geçici konteyner ve seçili metin çeviri girişi. Cihazda çeviri düğmesi Firefox'un kendi aracını açar. Gerçek EN→TR çeviri ve model indirildikten sonra çevrimdışı ikinci çeviri test edildi; ayrı sohbet yapay zekâsı veya önceden indirilmiş modeller paketlenmez. / Wider task-based tools, full workspace, session-only draft and native context menus. Actual native and offline translation tested; no separate chat model is preinstalled.
 
@@ -178,7 +178,7 @@ Yeni sekmede **Aion Koşusu**: Başlat → oyun alanında Boşluk ile zıpla, Es
 
 Windows, imzasız geliştirici paketi için tanınmayan yayımcı/SmartScreen bildirimi gösterebilir. Güvenlik korumalarını kapatma. Bu ön sürümün Authenticode imzası yoktur; SHA-256 özeti dosya bütünlüğünü denetler, yayımcı imzasının yerine geçmez. Windows may identify this unsigned developer build as an unknown publisher. Keep security protections enabled. Checksums verify integrity, not publisher signing.
 
-Önceki153.7/Aion0.2 Setup → bu153.7/Aion0.3 Setup geçişi aynı kurulum dizininde, yalnızca sentetik test verileriyle denetlendi. Native parola ve yer imi, dil, font/sekme, yerel rekor, konteyner/kelime/kişiselPNG korundu. Bu, elle Setup çalıştırma yoludur; imzalı MAR ve otomatik güncelleyici henüz yoktur.
+Önceki153.7/Aion0.3.0 Setup → bu153.7/Aion0.3.1 Setup geçişi aynı kurulum dizininde, yalnızca sentetik test verileriyle denetlendi. Native parola ve yer imi, dil, font/sekme, yerel rekor, konteyner/kelime/kişiselPNG korundu. Bu, elle Setup çalıştırma yoludur; imzalı MAR ve otomatik güncelleyici henüz yoktur.
 
 Kurulum mevcut Firefox'un yerine geçmez ve Firefox profilini kullanmaz. Kaldırma testi örnek profil verisini korudu. Kişisel Firefox profilini bu ön sürüme elle yönlendirme. Güncelleme elle yapılır; tarayıcıdaki kararlı kanal denetimi bu ön sürümü otomatik kurmaz.
 
@@ -186,7 +186,7 @@ Kurulum mevcut Firefox'un yerine geçmez ve Firefox profilini kullanmaz. Kaldır
 | --- | --- |
 | Windows x64, Windows 10+ | Bu Setup.exe; temiz kurulum ve ilk açılış Windows Server 2022 CI üzerinde doğrulandı. / Installer/startup validated on Windows Server 2022. Human Windows 10/11 accessibility and SmartScreen review remains pending. |
 | Windows ARM64 | Henüz yok / Not available |
-| Linux x86_64 | [Önceki AppImage ve Ubuntu .deb sürümü](https://github.com/{CONFIG['repository']}/releases/tag/v0.3.0-dev.20261110-linux) |
+| Linux x86_64 | [Önceki AppImage ve Ubuntu .deb sürümü](https://github.com/{CONFIG['repository']}/releases/tag/v0.3.1-dev.20261110-linux) |
 | macOS | Henüz yok / Not available |
 | Android | Henüz yok / Not available |
 | iPhone | Henüz yok / Not available |
@@ -199,7 +199,7 @@ Tam derleme sonrası ve kurulu tarayıcı üzerinde 11 açılış, 4 yeniden ba�
 
 Native source: `{CONFIG['source_commit']}`. Packaging source: `{commit}`. [Native Windows build](https://github.com/{CONFIG['repository']}/actions/runs/{CONFIG['native_run_id']}). [Installed-browser validation](https://github.com/{CONFIG['repository']}/actions/runs/{os.environ['GITHUB_RUN_ID']}).
 
-Yeni sekme ve Aion araç arayüzü, aynı derlenmiş motorun `browser/omni.ja` kaynaklarına uygulanmış incelenebilir katmandır. `newtab-ui-overlay.json` değişen her kaynak özetini ve değişmeden kalan native dosya sayısını kaydeder; tercih edilen kaynak ve yeniden üretme betikleri `*-packaging-source.zip` içindedir. Motor kaynağını açıp bu paketin `scripts/prepare_source.py` betiğini uygulayarak kaynak derlemesi yapılabilir. SFX kaynakları `windows-sfx-corresponding-source.zip` içindedir. Native executables, engine, policies and signed uBlock Origin are preserved; our built-in Aion is updated to0.3 with the same identity and permissions. Pinned resource-only data for all 103 desktop locales (including base en-US), catalog entries and the OS-language default are retained. Ten installed native-language/persistence checks, including Arabic RTL, and the game checks gate publication. `fire-axolotl-localization-source.zip` includes original translations, MPL license, derivation recipe, pins and branding. The modified built-in does not retain Mozilla signature files; external language-package signature checks remain enabled.
+Yeni sekme ve Aion araç arayüzü, aynı derlenmiş motorun `browser/omni.ja` kaynaklarına uygulanmış incelenebilir katmandır. `newtab-ui-overlay.json` değişen her kaynak özetini ve değişmeden kalan native dosya sayısını kaydeder; tercih edilen kaynak ve yeniden üretme betikleri `*-packaging-source.zip` içindedir. Motor kaynağını açıp bu paketin `scripts/prepare_source.py` betiğini uygulayarak kaynak derlemesi yapılabilir. SFX kaynakları `windows-sfx-corresponding-source.zip` içindedir. Native executables, engine, policies and signed uBlock Origin are preserved; our built-in Aion is updated to0.3.1 with the same identity and permissions. Pinned resource-only data for all 103 desktop locales (including base en-US), catalog entries and the OS-language default are retained. Ten installed native-language/persistence checks, including Arabic RTL, and the game checks gate publication. `fire-axolotl-localization-source.zip` includes original translations, MPL license, derivation recipe, pins and branding. The modified built-in does not retain Mozilla signature files; external language-package signature checks remain enabled.
 
 Signed updates, complete localization of new Aion strings, actual account Sync, live DRM/Netflix quality adapters and other [feature-map gaps](https://github.com/{CONFIG['repository']}/blob/{commit}/docs/FEATURES.md) remain incomplete. No malware-immunity or universal resolution-forcing claim. Fire Axolotl is independent of Mozilla; third-party licenses are preserved.
 '''
@@ -234,7 +234,7 @@ def publish():
         # behind a newly created draft and must not decide its identity.
         request = ROOT / 'work/release-draft-create.json'
         request.parent.mkdir(parents=True, exist_ok=True)
-        request.write_text(json.dumps({'tag_name': tag, 'target_commitish': os.environ['GITHUB_SHA'], 'draft': True, 'prerelease': True, 'name': 'Fire Axolotl 0.3.0 · Windows x64 geliştirici ön sürümü', 'body': (DIST / 'RELEASE-NOTES.md').read_text(encoding='utf-8')}, ensure_ascii=False), encoding='utf-8')
+        request.write_text(json.dumps({'tag_name': tag, 'target_commitish': os.environ['GITHUB_SHA'], 'draft': True, 'prerelease': True, 'name': 'Fire Axolotl 0.3.1 · Windows x64 geliştirici ön sürümü', 'body': (DIST / 'RELEASE-NOTES.md').read_text(encoding='utf-8')}, ensure_ascii=False), encoding='utf-8')
         release = json.loads(gh('api', f'repos/{repo}/releases', '--method', 'POST', '--input', str(request)))
     present = {a['name']: a for a in release['assets']}
     for name, asset in present.items():

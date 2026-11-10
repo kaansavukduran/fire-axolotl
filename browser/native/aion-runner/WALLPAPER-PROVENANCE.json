@@ -1,8 +1,13 @@
 {
-  "source": "OpenAI image generation,2026-11-10; original yawning pose and forest composition",
+  "source": "OpenAI image generation,2026-11-10; cheerful Aion, wolf, lamb and owl in the existing forest composition",
   "reference": "https://drive.google.com/file/d/1pJvIAjU-CT9c3WXWUonxnCIttuzz296W/view",
   "reference_owner": "Project owner, prior AI-generated Aion character",
   "asset": "aion-wallpaper.png",
-  "sha256": "6ae6eb879947f9e033d226b3cd5218743ec0fcc7b3d99ea6a56e211f5836c023",
-  "license": "Project source license applies to extent owner has licensable rights; no Firefox/red-panda photograph copied."
+  "sha256": "a248f5f279856411bcec114310244014da4bc54900540ea33beb22221ab6e18a",
+  "license": "Project source license applies to extent owner has licensable rights; no Firefox/red-panda photograph copied.",
+  "character_references": [
+    "browser/extension/characters/wolf.png",
+    "browser/extension/characters/sheep.png",
+    "browser/extension/characters/owl.png"
+  ]
 }

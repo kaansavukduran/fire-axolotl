@@ -19,8 +19,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 ROOT = Path(__file__).resolve().parents[1]
 WORK = ROOT / 'work/windows-upgrade'
 WORK.mkdir(parents=True, exist_ok=True)
-OLD_URL = 'https://github.com/kaansavukduran/fire-axolotl/releases/download/v0.2.0-dev.20261110-windows/fire-axolotl-0.2.0-dev.20261110.1-windows-x86_64-Setup.exe'
-OLD_SHA = '7754f7bd3b8fa58ce4128473e225bb8544b1dffc9b8889d486bdbab71a1992aa'
+OLD_URL = 'https://github.com/kaansavukduran/fire-axolotl/releases/download/v0.3.0-dev.20261110-windows/fire-axolotl-0.3.0-dev.20261110.1-windows-x86_64-Setup.exe'
+OLD_SHA = '2c24160d02556be0cdf1fb7f0a15f2ffb617c746b870dada6cf61ecf927545dc'
 destination = Path(os.environ['RUNNER_TEMP']) / 'FireAxolotlUpgrade'
 assert not destination.exists(), 'The synthetic upgrade installation target must be fresh'
 binary = destination / 'fire-axolotl.exe'
@@ -93,7 +93,7 @@ try:
     driver = start()
     before = identity()
     before_tools = driver.execute_async_script('const done=arguments[0];ChromeUtils.importESModule("resource://gre/modules/AddonManager.sys.mjs").AddonManager.getAddonByID("aion@fire-axolotl.browser").then(a=>done(a.version));')
-    assert before_tools == "0.2.0"
+    assert before_tools == "0.3.0"
     driver.execute_script('CustomizableUI.removeWidgetFromArea("downloads-button");')
     assert before['version'].removesuffix('esr') == '153.7.0'
     driver.execute_script('Services.prefs.setIntPref("fireaxolotl.newtabGame.best",37); Services.prefs.setStringPref("fireaxolotl.ui.font","opendyslexic"); Services.prefs.setBoolPref("sidebar.position_start",true); Services.prefs.setBoolPref("sidebar.verticalTabs",true); Services.locale.requestedLocales=["tr"];')
@@ -130,7 +130,7 @@ try:
     driver = start()
     after = identity()
     after_tools = driver.execute_async_script('const done=arguments[0];ChromeUtils.importESModule("resource://gre/modules/AddonManager.sys.mjs").AddonManager.getAddonByID("aion@fire-axolotl.browser").then(a=>done(a.version));')
-    assert after_tools == "0.3.0"
+    assert after_tools == "0.3.1"
     assert after['version'].removesuffix('esr') == json.loads((ROOT / 'upstream.json').read_text())['version'].removesuffix('esr')
     state = driver.execute_async_script('const done=arguments[0];(async()=>{const b=await ChromeUtils.importESModule("resource://gre/modules/PlacesUtils.sys.mjs").PlacesUtils.bookmarks.fetch({url:"https://example.invalid/fire-axolotl-upgrade"});const logins=await Services.logins.getAllLogins();return {bookmark:b?.title,password:logins.some(l=>l.username==="upgrade-fixture"&&l.password==="local-fixture-not-a-user-password"),best:Services.prefs.getIntPref("fireaxolotl.newtabGame.best"),font:Services.prefs.getStringPref("fireaxolotl.ui.font"),vertical:Services.prefs.getBoolPref("sidebar.verticalTabs"),locale:Services.locale.appLocaleAsBCP47,toolbarCustomized:!CustomizableUI.getWidgetIdsInArea("nav-bar").includes("downloads-button")};})().then(done);')
     assert state == {'bookmark': 'Güncelleme · Yer imi', 'password': True, 'best': 37, 'font': 'opendyslexic', 'vertical': True, 'locale': 'tr', 'toolbarCustomized': True}
@@ -175,4 +175,4 @@ finally:
     finally:
         (WORK / 'results.json').write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
 assert report['passed']
-print('Actual Setup upgrade Aion0.2 →0.3 on ESR153.7 preserved synthetic native passwords, bookmarks, language, appearance, local record, containers, vocabulary and custom PNG without changing the default browser')
+print('Actual Setup upgrade Aion0.3.0 →0.3.1 on ESR153.7 preserved synthetic native passwords, bookmarks, language, appearance, local record, containers, vocabulary and custom PNG without changing the default browser')

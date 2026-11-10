@@ -47,12 +47,12 @@ def main():
     if len(checks['newtab_workspace']['passed']) < 9 or checks['external_game']['url'] != 'https://aionendlessrun.vercel.app/' or not checks['external_game']['tls_verification']:
         raise ValueError('New-tab UX and current official game link must pass')
     (DIST / 'release-manifest.json').write_text(json.dumps(evidence, indent=2) + '\n')
-    notes = f'''Fire Axolotl 0.3.0 geliştirici önizlemesi / developer preview
+    notes = f'''Fire Axolotl 0.3.1 geliştirici önizlemesi / developer preview
 
 **Bu kararlı günlük kullanım sürümü değildir. Otomatik güncellemeler kapalıdır.**
 **Not a stable daily-use release. Automatic updates are disabled.**
 
-Aion0.3: Esneyen Aion arka planı, oyun geri getirme, tek tıklamalı geçici sekme düğmesi ve yeni profilde üst sekmeler/ayrı arama/yer imleri. Güncel Aion Endless Run tıklamayla Vercel’de açılır; küçük çevrimdışı oyun ayrı korunur. Her yayın canlı oyun build.json/HTML doğrulamasından geçer.
+Aion0.3: Mutlu Aion ve arkadaşları arka planı, oyun geri getirme, tek tıklamalı geçici sekme düğmesi ve yeni profilde üst sekmeler/ayrı arama/yer imleri. Güncel Aion Endless Run tıklamayla Vercel’de açılır; küçük çevrimdışı oyun ayrı korunur. Her yayın canlı oyun build.json/HTML doğrulamasından geçer.
 
 Önceki0.2:760px araç paneli, üç görev bölümü ve tam sekmede çalışma alanı; oturumluk metin taslağı; sağ tık konteyner/çeviri seçenekleri. Firefox'un yerel çeviri aracını açan düğme; gerçek EN→TR çeviri ve model yüklendikten sonra çevrimdışı tekrar doğrulandı. Ayrı sohbet modeli veya önceden indirilmiş çeviri modeli paketlenmez.
 

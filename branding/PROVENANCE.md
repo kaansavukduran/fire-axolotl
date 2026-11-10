@@ -12,3 +12,7 @@ References reviewed: https://openai.com/policies/terms-of-use/ and https://www.m
 ## New-tab wallpaper · 2026-11-10
 
 `browser/native/aion-runner/aion-wallpaper.png` is a new OpenAI-generated yawning Aion/forest composition. Character identity follows the owner-provided Aion main reference in Drive. The red-panda screenshot was a pose/layout example; its photograph was not copied into this asset. Reference URL, source and SHA-256 are recorded in `WALLPAPER-PROVENANCE.json` alongside the packaged image. The same rights/clearance limits above apply.
+
+## Happy friends wallpaper ·0.3.1
+
+The default forest wallpaper now depicts Aion, the lavender wolf, cream lamb and orange owl together with cheerful normal expressions. OpenAI generated the new composition using the existing wallpaper, owner Aion reference and original character sheets as identity references. All four are placed on the left so browser controls remain clear. `WALLPAPER-PROVENANCE.json` records the new image hash.
