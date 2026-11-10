@@ -118,6 +118,9 @@ def assemble():
     game = json.loads((ROOT / 'work/runner-test-artifacts/results.json').read_text())
     overlay = json.loads((DIST / 'newtab-ui-overlay.json').read_text())
     languages = json.loads((ROOT / 'work/localization-test-artifacts/results.json').read_text(encoding='utf-8'))
+    network = json.loads((ROOT / 'work/network-test-artifacts/results.json').read_text())
+    if not network['passed'] or not network['log_canary_verified'] or network['forbidden_hosts']:
+        raise ValueError('Default-network sampling failed or did not capture the local HTTP canary')
     if languages['mode'] != 'compiled-fork-native-languages' or len(languages['passed']) < 10:
         raise ValueError('Installed-browser native language and persistence checks missing')
     profile = json.loads((ROOT / 'work/windows-installer-test/profile-probe.json').read_text())
@@ -133,7 +136,7 @@ def assemble():
         raise ValueError('Clean installation/uninstallation data protection not verified')
     commit = gh('api', f'repos/{CONFIG["repository"]}/git/commits/{os.environ["GITHUB_SHA"]}', '--jq', '.sha')
     subprocess.run(['git', 'archive', '--format=zip', '--prefix=fire-axolotl/', f'--output={DIST / (STEM + "-packaging-source.zip")}', commit], cwd=ROOT, check=True)
-    (DIST / 'release-manifest.json').write_text(json.dumps({'browser_source_commit': CONFIG['source_commit'], 'packaging_commit': commit, 'native_run': CONFIG['native_run_id'], 'installer_run': os.environ['GITHUB_RUN_ID'], 'authenticode_signed': False, 'automatic_updates': False, 'checks': checks, 'installation': installer, 'uninstallation': uninstall, 'installer_wrapper': sfx, 'ui_overlay': overlay, 'newtab_game': game, 'native_languages': languages, 'windows_runtime': runtime, 'profile_probe': profile, 'runtime_fallback_probe': fallback}, indent=2) + '\n')
+    (DIST / 'release-manifest.json').write_text(json.dumps({'browser_source_commit': CONFIG['source_commit'], 'packaging_commit': commit, 'native_run': CONFIG['native_run_id'], 'installer_run': os.environ['GITHUB_RUN_ID'], 'authenticode_signed': False, 'automatic_updates': False, 'checks': checks, 'installation': installer, 'uninstallation': uninstall, 'installer_wrapper': sfx, 'ui_overlay': overlay, 'newtab_game': game, 'native_languages': languages, 'windows_runtime': runtime, 'profile_probe': profile, 'runtime_fallback_probe': fallback, 'network_sample': network}, indent=2) + '\n')
     notes = f'''Fire Axolotl Windows x64 geliştirici ön sürümü / developer preview
 
 **Kararlı günlük kullanım sürümü değildir. Windows Authenticode imzası ve otomatik güncelleme henüz yoktur.**

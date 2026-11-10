@@ -1,3 +1,9 @@
+# Varsayılan ağ örneklemesi için yayın kapısı
+
+- Kurulu 153.7 ürününde taze sentetik profille nsHttp günlükleri örneklenir; yerel HTTP canary isteğinin hem sunucuya ulaşması hem tarayıcı günlüğünde görünmesi zorunludur. Ardından 30 saniye normal yeni sekme izlenir. TLS, önerilen otomasyon tercihlerini kapatma ve ürün güvenlik politikaları değiştirilmez; güvensiz sertifika kabul edilmez.
+- Bilinen telemetri/studies/sponsor uçlarına HTTP başlatma girişimi veya çalışmayan günlük yakalama yayını durdurur. Güvenlik/hizmet uçları ayrı tutulur. Rapor sorguları ve uzun URL kimliklerini atar; ham günlükler özel çalışma dizinindedir ve yayın kanıtına alınmaz. Bu sınırlı örnekleme sonraki zamanlanmış trafik/hesap/gerçek kullanıcı gezintisini veya başarılı ağ teslimini doğrulamaz.
+- Yerel sınıflandırıcı için üç gerileme eklendi. Gerçek 153.7 ağ örneklemesi kurulum akışında koşmadan başarılı denmez. 103 dil kaynak overlay çalıştırması 42834629329 geçti; iki motor derlemesi devam ediyor.
+
 # Resmî 103 dil kataloğu ve incelenebilir veri katmanı
 
 - ESR153.7 SHA512SUMS içinde Linux-x86_64/win64 katalogları aynı 103 dil/özet kümesine sahip. en-US motorda; 102 özgün imzalı XPI indirildi, SHA-512/CRC/manifest/bağımsız ID ve kaynak-only izin denetiminden geçti. localization.json native adları ve kesin sürümleri içerir. `update_localization_pins.py` elle çalıştırılan yeniden inceleme tarifidir; sessiz yükseltme yapmaz.

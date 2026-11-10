@@ -16,7 +16,7 @@ Windows düzeltme paketindeki Microsoft runtime dosyaları değiştirilmeden, ke
 
 ## Mozilla Firefox / Gecko
 
-Upstream: https://archive.mozilla.org/pub/firefox/releases/153.6.0esr/source/firefox-153.6.0esr.source.tar.xz
+Upstream: https://archive.mozilla.org/pub/firefox/releases/153.7.0esr/source/firefox-153.7.0esr.source.tar.xz
 
 Mozilla source code is primarily under Mozilla Public License 2.0, with additional component licenses. The complete pinned source retains its `LICENSE`, `browser/LICENSE`, `about:license` resources, copyright headers and third-party notices. This overlay does not relicense those components or remove the source notices. Modified files remain available with the overlay and exact upstream source reference.
 

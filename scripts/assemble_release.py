@@ -33,6 +33,9 @@ def main():
     if len(evidence['checks']['appimage']['passed']) < 4 or len(evidence['checks']['installed_browser']['passed']) < 11 or len(evidence['checks']['installed_restart']['passed']) < 4:
         raise ValueError('Installer validation is incomplete')
     checks = evidence['checks']
+    checks['network'] = json.loads((ROOT / 'work/network-test-artifacts/results.json').read_text())
+    if not checks['network']['passed'] or not checks['network']['log_canary_verified'] or checks['network']['forbidden_hosts']:
+        raise ValueError('Installed default-network sampling failed or lacked a real local HTTP canary')
     if checks['integration']['mode'] != 'compiled-fork' or len(checks['integration']['passed']) < 34 or checks['game']['mode'] != 'compiled-fork-normal-newtab' or len(checks['game']['passed']) < 11 or checks['languages']['mode'] != 'compiled-fork-native-languages' or len(checks['languages']['passed']) < 10:
         raise ValueError('Installed integration, game or native-language validation is incomplete')
     (DIST / 'release-manifest.json').write_text(json.dumps(evidence, indent=2) + '\n')

@@ -70,6 +70,8 @@ jobs:
         run: python tests/native_runner.py
       - name: Switch native languages through Settings and preserve user choices across real restarts
         run: python tests/native_localization.py
+      - name: Sample actual default new-tab network attempts without TLS exceptions
+        run: python tests/native_network.py
       - name: Uninstall while preserving profiles and default-browser choice
         run: ./scripts/windows_install.ps1 Uninstall
       - run: python scripts/windows_release.py assemble
@@ -90,6 +92,7 @@ jobs:
             work/native-e2e-artifacts/
             work/runner-test-artifacts/
             work/localization-test-artifacts/
+            work/network-test-artifacts/results.json
           retention-days: 14
   publish:
     needs: package
