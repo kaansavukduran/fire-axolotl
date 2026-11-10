@@ -23,7 +23,13 @@ try:
     assert driver.execute_script('return Services.appinfo.ID;') == '{75450dd9-387d-4289-8b23-7ad6609fa530}'
     assert driver.execute_script('return Cc["@mozilla.org/default-agent;1"].getService(Ci.nsIDefaultAgent).agentDisabled();') is True
     browser_pid = int(driver.execute_script('return Services.appinfo.processID;'))
-    command = f'$ErrorActionPreference="Stop"; ConvertTo-Json -Compress -InputObject @((Get-Process -Id {browser_pid}).Modules | Where-Object {{$_.ModuleName -match "^(msvcp140|vcruntime140|vcruntime140_1)\\.dll$"}} | Select-Object ModuleName,FileName)'
+    command = r'''$ErrorActionPreference="Stop";
+      $items=@(); foreach ($m in (Get-Process -Id __PID__).Modules) {
+        if ($m.ModuleName -match "^(msvcp140|vcruntime140|vcruntime140_1)\.dll$") {
+          $signature=Get-AuthenticodeSignature $m.FileName; $v=(Get-Item $m.FileName).VersionInfo;
+          $items+=@{ModuleName=$m.ModuleName;FileName=$m.FileName;Signature=[string]$signature.Status;Signer=$signature.SignerCertificate.Subject;Version=@($v.FileMajorPart,$v.FileMinorPart,$v.FileBuildPart,$v.FilePrivatePart)}
+        }
+      }; ConvertTo-Json -Compress -InputObject @($items)'''.replace('__PID__', str(browser_pid))
     modules = json.loads(subprocess.check_output(['powershell', '-NoProfile', '-NonInteractive', '-Command', command], text=True))
     expected = {'msvcp140.dll', 'vcruntime140.dll', 'vcruntime140_1.dll'}
     assert {m['ModuleName'].lower() for m in modules} == expected
@@ -31,10 +37,18 @@ try:
     runtime = {}
     for module in modules:
         local = Path(module['FileName']).resolve()
-        assert local.parent == Path(options.binary_location).resolve().parent, local
         digest = hashlib.sha256(local.read_bytes()).hexdigest()
-        assert digest == pins['files'][local.name.lower()]['sha256']
-        runtime[local.name.lower()] = {'path': str(local), 'sha256': digest}
+        if local.parent == Path(options.binary_location).resolve().parent:
+            assert digest == pins['files'][local.name.lower()]['sha256']
+            source = 'application-local'
+        else:
+            # Firefox deliberately prefers compatible newer System32 images.
+            # Keep that mitigation; verify the system selection instead.
+            assert local.parent == (Path(os.environ['WINDIR']) / 'System32').resolve()
+            assert module['Signature'] == 'Valid' and 'O=Microsoft Corporation' in module['Signer']
+            assert tuple(module['Version']) >= tuple(int(n) for n in pins['version'].split('.'))
+            source = 'compatible-microsoft-system-runtime'
+        runtime[local.name.lower()] = {'path': str(local), 'sha256': digest, 'source': source}
     path = Path(driver.execute_script('return Services.dirsvc.get("DefProfRt",Ci.nsIFile).path;')).resolve()
     firefox = Path(os.environ['APPDATA']) / 'Mozilla/Firefox'
     assert not path.is_relative_to(firefox.resolve())
@@ -42,7 +56,7 @@ try:
     path.mkdir(parents=True, exist_ok=True)
     marker = path / f'installer-data-check-{uuid.uuid4()}.txt'
     marker.write_text('Kullanıcı verisi: Çç Ğğ İı Öö Şş Üü', encoding='utf-8')
-    (ROOT / 'work/windows-installer-test/profile-probe.json').write_text(json.dumps({'default_profile_root': str(path), 'marker': str(marker), 'marker_sha256': hashlib.sha256(marker.read_bytes()).hexdigest(), 'application_local_crt': runtime}, indent=2) + '\n')
+    (ROOT / 'work/windows-installer-test/profile-probe.json').write_text(json.dumps({'default_profile_root': str(path), 'marker': str(marker), 'marker_sha256': hashlib.sha256(marker.read_bytes()).hexdigest(), 'verified_crt_modules': runtime}, indent=2) + '\n')
     print('Installed product has an independent default profile; user-data sentinel created')
 finally:
     driver.quit()

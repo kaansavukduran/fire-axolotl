@@ -117,7 +117,8 @@ def assemble():
     if languages['mode'] != 'compiled-fork-native-languages' or len(languages['passed']) < 5:
         raise ValueError('Installed-browser native language and persistence checks missing')
     profile = json.loads((ROOT / 'work/windows-installer-test/profile-probe.json').read_text())
-    if len(profile.get('application_local_crt', {})) != 3 or not runtime['crt_imports']:
+    fallback = json.loads((ROOT / 'work/windows-installer-test/runtime-fallback.json').read_text())
+    if len(profile.get('verified_crt_modules', {})) != 3 or not runtime['crt_imports'] or not all(fallback.get(key) for key in ['local_crt_fallback_verified', 'core_library_loaded', 'prefer_system32_mitigation_enabled', 'probe_has_no_dynamic_crt_imports']):
         raise ValueError('Actual application-local Windows runtime loading was not verified')
     setup = DIST / f'{STEM}-Setup.exe'
     if sfx['frontend_zip_sha256'] != overlay['native_zip_sha256'] or not sfx['inner_nsis_preserved'] or sfx['installer_sha256'] != digest(setup) or sfx['icon_sha256'] != digest(ROOT / 'branding/aion.ico'):
@@ -128,15 +129,15 @@ def assemble():
         raise ValueError('Clean installation/uninstallation data protection not verified')
     commit = gh('api', f'repos/{CONFIG["repository"]}/git/commits/{os.environ["GITHUB_SHA"]}', '--jq', '.sha')
     subprocess.run(['git', 'archive', '--format=zip', '--prefix=fire-axolotl/', f'--output={DIST / (STEM + "-packaging-source.zip")}', commit], cwd=ROOT, check=True)
-    (DIST / 'release-manifest.json').write_text(json.dumps({'browser_source_commit': CONFIG['source_commit'], 'packaging_commit': commit, 'native_run': CONFIG['native_run_id'], 'installer_run': os.environ['GITHUB_RUN_ID'], 'authenticode_signed': False, 'automatic_updates': False, 'checks': checks, 'installation': installer, 'uninstallation': uninstall, 'installer_wrapper': sfx, 'ui_overlay': overlay, 'newtab_game': game, 'native_languages': languages, 'windows_runtime': runtime, 'profile_probe': profile}, indent=2) + '\n')
+    (DIST / 'release-manifest.json').write_text(json.dumps({'browser_source_commit': CONFIG['source_commit'], 'packaging_commit': commit, 'native_run': CONFIG['native_run_id'], 'installer_run': os.environ['GITHUB_RUN_ID'], 'authenticode_signed': False, 'automatic_updates': False, 'checks': checks, 'installation': installer, 'uninstallation': uninstall, 'installer_wrapper': sfx, 'ui_overlay': overlay, 'newtab_game': game, 'native_languages': languages, 'windows_runtime': runtime, 'profile_probe': profile, 'runtime_fallback_probe': fallback}, indent=2) + '\n')
     notes = f'''Fire Axolotl Windows x64 geliştirici ön sürümü / developer preview
 
 **Kararlı günlük kullanım sürümü değildir. Windows Authenticode imzası ve otomatik güncelleme henüz yoktur.**
 **Not a stable daily-use release. No Windows Authenticode signature or automatic updater yet.**
 
-Bu düzeltme sürümü, ilk Windows ön sürümündeki eksik Visual C++ runtime bağımlılığını giderir. Sabit sürüm/özet ve geçerli Microsoft imzaları doğrulanan x64 CRT dosyaları uygulama klasöründedir. Kurulu tarayıcının CRT dosyalarını kendi klasöründen yüklediği ayrıca doğrulanır. Sistem runtime'ını değiştirmez. Lisans/atıflar `distribution/sources/windows-runtime/` ve `about:license` içindedir.
+Bu düzeltme sürümü, ilk Windows ön sürümündeki eksik Visual C++ runtime bağımlılığını giderir. Sabit sürüm/özet ve geçerli Microsoft imzaları doğrulanan x64 CRT dosyaları uygulama klasöründedir. Statik CRT kullanan bağımsız bir yükleyici, gerçek xul.dll dosyasının paket içindeki CRT kopyalarıyla yüklenebildiğini doğrular. Normal tarayıcının uyumlu, daha yeni System32 kopyasını tercih eden Firefox güvenlik ilkesi korunur ve yüklediği Microsoft modülleri ayrıca denetlenir. Sistem runtime'ını değiştirmez. Lisans/atıflar `distribution/sources/windows-runtime/` ve `about:license` içindedir.
 
-This correction includes the unmodified, hash-pinned Microsoft x64 CRT alongside the application. Its Microsoft signatures, native PE import closure and actual loaded module paths are checked. The original preview required a preinstalled runtime; this package includes the required files locally. These Windows components have their own Microsoft redistribution terms and are not MPL source code.
+This correction includes the unmodified, hash-pinned Microsoft x64 CRT alongside the application. Its Microsoft signatures, native PE import closure and actual loaded module paths are checked. A static-CRT probe loads the real xul.dll using the bundled dynamic CRT copies with PreferSystem32 enabled; normal Firefox may prefer a compatible newer signed system copy. The original preview required a preinstalled runtime; this package includes the required files locally. These Windows components have their own Microsoft redistribution terms and are not MPL source code.
 
 ### Windows'ta kurulum / Install on Windows
 

@@ -54,6 +54,8 @@ jobs:
       - name: Install the actual offline Setup.exe and verify its files
         run: ./scripts/windows_install.ps1 Install
       - run: python scripts/fetch_test_runtime.py
+      - name: Prove bundled CRT fallback with the real XUL and a static-CRT loader
+        run: python tests/windows_runtime_fallback.py
       - name: Fresh-profile tests from the installed browser
         env:
           AION_NATIVE_ARTIFACTS: ${{ github.workspace }}/work/installed-windows-test-artifacts

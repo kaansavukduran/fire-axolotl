@@ -1,3 +1,9 @@
+# CRT fallback doğrulaması ve Firefox System32 tercihi
+
+- İlk CRT paketi 42819455725 kuruldu ve native smoke geçti. Profile testi System32 kullanımını reddetti. Kaynak incelemesi (LauncherProcessWin.cpp EnablePreferLoadFromSystem32IfCompatible) Firefox'un uyumlu eşit/yeni sistem runtime'ını güvenlik amacıyla tercih ettiğini doğruladı. Bu davranış değiştirilmez; sistem kopyası seçilmişse konum, geçerli Microsoft imzası ve asgari sürüm kontrol edilir.
+- Statik CRT ile derlenen bağımsız yükleyici probe'u eklendi. Probe'un kendisinde dinamik VC CRT importu olmamalı; PreferSystem32 mitigation etkin kalır. Gerçek xul.dll, pinli uygulama-yerel CRT dosyaları önceden tam yoldan yüklenerek açılır; process'te tüm runtime modüllerinin yerel dosya/hashleri doğrulanır. Sistem dosyaları silinmez/yeniden adlandırılmaz, güvenlik azaltılmaz.
+- windows-runtime-fallback.yml bu probe'u önce korunmuş gerçek Windows paketinde dener. Aynı probe kurulu yeni Setup'ta zorunlu yayın kapısıdır. Bu, temiz Windows 10/11 insan testinin yerine geçen bir sertifika değildir; uygulama-yerel CRT'nin gerçek binary importlarını çözebildiğine dair denetimdir.
+
 # Windows düzeltme paketi: app-local CRT
 
 - Yeni hedef v0.1.0-dev.20261110-windows.1; eski release/etiket ve dosyalar korunur. Aynı derlenmiş motor 9d564dc ve başarılı native validation 42808841079 kullanılır. Değişiklik paketleme bileşenidir.
