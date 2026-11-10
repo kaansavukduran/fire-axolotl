@@ -1,3 +1,8 @@
+# Güncel başarılı test kapısı hedefi: Windows yeniden doğrulama
+
+- Motor ve kaynak run 42791204074, kaynak SHA 9d564dced55dc4816cc4aeb57387ba1643f007ed olarak korunur. Testler [42808841079](https://github.com/kaansavukduran/fire-axolotl/actions/runs/42808841079) üzerinde, 6ca1932d36605aa327ea005c2474aa8f0cae1ec4 doğrulama kaynaklarıyla yeniden koşar. Workflow ID 413213938; path windows-revalidate.yml. Yayın başarılı doğrulama SHA/run’ını ve aynı ZIP/Setup/source hashlerini zorunlu tutar.
+- Yayın indiricisi native payload ve tam kaynağı 42791204074’ten, test kanıtını 42808841079’dan alır. Motor girdileri değişmemiştir. Doğrulama tamamlanmadan Windows hazır/yayımlandı denmez.
+
 # Derlenmiş Windows paketinin ayrı yeniden doğrulaması
 
 - 42791204074: gerçek NSIS installer, 11 açılış ve 4 restart başarılı. Windows OS hareket azaltma tercihi açıkken E2E animasyon beklediği için 434. satırda durdu. Test profili normal hareketi 0, azaltılmış hareketi 1 ile ayrı ve açıkça doğrular; ürün/OS tercihi değiştirilmez.
