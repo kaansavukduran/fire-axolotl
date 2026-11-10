@@ -1,3 +1,11 @@
+# Windows x64 yayımlanmış ön sürüm · 2026-11-10
+
+- [Sürüm](https://github.com/kaansavukduran/fire-axolotl/releases/tag/v0.1.0-dev.20261110-windows); motor kaynağı `9d564dced55dc4816cc4aeb57387ba1643f007ed`, paketleme/etiket hedefi `535b6e2a5279bfb7037f20dbda98e0d5afc42b14`.
+- Motor run 42791204074; değiştirilmemiş motor girdileri ve kesin ZIP/Setup/source özetleriyle başarılı native yeniden doğrulama 42808841079. Native 11 açılış + 4 restart + 34 entegrasyon + 11 oyun + 5 dil senaryosu geçti.
+- Gerçek temiz NSIS kurulumu [42810293175](https://github.com/kaansavukduran/fire-axolotl/actions/runs/42810293175) içinde yapıldı. Bütün kurulu paket dosyaları güncel ZIP ile eşleşti. Kurulu programda aynı 65 senaryo, bağımsız profil kökü ve devre dışı default-agent doğrulandı. Kaldırma, profil verisini ve varsayılan tarayıcı seçimini korudu.
+- İlk yayın denemesinde taslak yeni oluşturulduktan sonra liste okuması gecikti; yalnızca yayın işi yeniden koştu. Son akış başarılı, 14 asset sunucu SHA-256 özetleriyle yayımlandı. Gelecek yayınlarda taslak kimliği doğrudan oluşturma API yanıtından alınır.
+- Authenticode imzası, otomatik güncelleyici, gerçek Windows 10/11 insan testi, gerçek hesap Sync/CDM/Safe Browsing hizmet erişimi ve diğer diller henüz tamamlanmadı. Testler kötü amaçlı yazılımlardan bağışıklık garantisi değildir.
+
 # Doğrulama / Validation
 
 2026-11-09, Europe/Istanbul. Geliştirici önizlemesi; güvenlik sertifikasyonu veya kararlı sürüm değildir.
@@ -38,7 +46,7 @@ Testler yerel/sentetik içerikle çalışır. Görsel arama URL'si çevrimdış�
 
 ## Açık işler / Remaining verification
 
-Güvenli imzalı güncelleme ve iki sürüm arasında veri koruma; Windows/macOS/ARM/mobil paketler; bütün Firefox dilleri ve dil paketi değiştirme; gerçek Mozilla hesabı/Sync; Safe Browsing/CDM hizmet erişimi; canlı YouTube/Netflix kalite davranışı; dış HTTPS çeviri hizmetiyle uçtan uca işlem; bütün iframe oynatıcıları; ekran okuyucuyla insan testi; bağımsız güvenlik/ağ incelemesi. Eksik özellikler [FEATURES.md](FEATURES.md) içinde saklanır.
+Güvenli imzalı güncelleme ve iki sürüm arasında veri koruma; macOS/ARM/mobil paketler; bütün Firefox dilleri ve dil paketi değiştirme; gerçek Mozilla hesabı/Sync; Safe Browsing/CDM hizmet erişimi; canlı YouTube/Netflix kalite davranışı; dış HTTPS çeviri hizmetiyle uçtan uca işlem; bütün iframe oynatıcıları; ekran okuyucuyla insan testi; bağımsız güvenlik/ağ incelemesi. Eksik özellikler [FEATURES.md](FEATURES.md) içinde saklanır.
 
 Signed upgrades, other platforms, complete locales, actual account/service access, live streaming adapters, external translation, all-frame support, human accessibility review and independent security review remain pending. Passing tests does not certify a browser as malware-proof.
 

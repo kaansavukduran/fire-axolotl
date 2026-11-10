@@ -1,3 +1,11 @@
+# Windows geliştirici ön sürümü yayımlandı
+
+- **Yayımlandı:** [https://github.com/kaansavukduran/fire-axolotl/releases/tag/v0.1.0-dev.20261110-windows](https://github.com/kaansavukduran/fire-axolotl/releases/tag/v0.1.0-dev.20261110-windows), Pre-release, Latest değildir. Kaynak/etiket `535b6e2a5279bfb7037f20dbda98e0d5afc42b14`; motor `9d564dced55dc4816cc4aeb57387ba1643f007ed`.
+- Başarılı native yeniden doğrulama 42808841079 ve kurulum/yayın 42810293175. Native ve kurulu üründe 65'er senaryo geçti; bütün kurulu dosyalar eşleşti, bağımsız profil ve veri koruyan kaldırma doğrulandı. 14 asset, SHA-256 ve tam ilgili kaynaklar yayımlandı. Otomatik güncelleme ve Authenticode yok.
+- Yayın ilk taslak oluşturma sonrası liste gecikmesinde durdu; yalnızca publish işi tekrar koşularak tamamlandı. Gelecekte oluşturma yanıtındaki kesin ID kullanılır; yayımlanmış asset/etiketler korunur.
+- Özel Windows sürüm yedeği, indirmeler/özetler ve geri okuma sonuçları çalışma alanındaki doğrulama makbuzlarıyla takip edilir.
+- Sıradaki ürün işleri: imzalı otomatik güncelleme, gerçek hizmet/Sync doğrulaması, tüm diller ve FEATURES.md açıkları. Bu ön sürüm bütün kullanıcı isteklerinin tamamlandığı anlamına gelmez.
+
 # Kurulum doğrulayıcısında native ZIP seçimi
 
 - Windows validation 42808841079 bütün 65 senaryoyu geçti: 11 açılış, 4 restart, 34 integration, 11 oyun, 5 dil. Motor/source 42791204074/9d564dc korunur.

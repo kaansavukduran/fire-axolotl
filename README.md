@@ -8,11 +8,15 @@ Firefox ESR kaynak kodunu temel alan, Aion karakteriyle kişiselleştirilen ücr
 
 Free browser project based on Firefox ESR source, with an Aion companion. Fire Axolotl is not officially associated with Mozilla or its products. Firefox is a trademark of the Mozilla Foundation.
 
-**Durum / Status: Linux x86_64 geliştirici ön sürümü yayımlandı; kararlı günlük kullanım sürümü değildir. Otomatik güncellemeler kapalıdır. / Linux x86_64 developer prerelease published; not a stable daily-use release. Automatic updates are disabled.**
+**Durum / Status: Windows x64 ve Linux x86_64 geliştirici ön sürümleri yayımlandı; kararlı günlük kullanım sürümü değildir. Otomatik güncellemeler kapalıdır. / Windows x64 and Linux x86_64 developer prereleases published; not a stable daily-use release. Automatic updates are disabled.**
+
+[**Windows x64 Setup.exe indir / Download Windows installer**](https://github.com/kaansavukduran/fire-axolotl/releases/download/v0.1.0-dev.20261110-windows/fire-axolotl-0.1.0-dev.20261110-windows-x86_64-Setup.exe) · [Sürüm notları / Release notes](https://github.com/kaansavukduran/fire-axolotl/releases/tag/v0.1.0-dev.20261110-windows)
+
+Windows'ta Setup.exe dosyasını indirip çift tıkla, kurulum sihirbazını izle ve Başlat menüsünden **Fire Axolotl** aç. ZIP ve kaynak arşivleri kurulum için gerekli değildir. Windows sürümü ana arayüzde Türkçe/English, yeni sekmede isteğe bağlı Aion Koşusu içerir. Yeni profilde sekmeler üsttedir. **Geliştirici ön sürümüdür; Authenticode imzası ve otomatik güncelleme henüz yoktur.** / Download and run Setup.exe, follow the installer, then open Fire Axolotl from Start. Includes Turkish/English native UI and the optional Aion Run new-tab game. Unsigned developer preview; automatic updates remain disabled.
 
 [**Linux için indir ve kur / Download and install for Linux — v0.1.0-dev.20261109**](https://github.com/kaansavukduran/fire-axolotl/releases/tag/v0.1.0-dev.20261109)
 
-Release sayfasında AppImage ve Ubuntu 24.04 amd64 `.deb` kurulumu, tam motor/paketleme kaynakları, lisanslar ve SHA-256 özetleri bulunur. Yeni profilde sekmeler üsttedir. Ana tarayıcı bu sürümde en-US; Aion ayarları Türkçe/İngilizcedir. Windows/macOS/mobil kurulumları henüz yoktur. / The release includes AppImage and Ubuntu 24.04 amd64 `.deb` instructions, complete engine/packaging source, notices and checksums. Fresh profiles use top tabs. Browser chrome is en-US; Aion settings support Turkish/English. Windows/macOS/mobile installers are not available yet.
+Release sayfasında AppImage ve Ubuntu 24.04 amd64 `.deb` kurulumu, tam motor/paketleme kaynakları, lisanslar ve SHA-256 özetleri bulunur. Yeni profilde sekmeler üsttedir. Ana tarayıcı bu sürümde en-US; Aion ayarları Türkçe/İngilizcedir. Windows için yukarıdaki ayrı sürümü kullan; macOS/mobil kurulumları henüz yoktur. / The release includes AppImage and Ubuntu 24.04 amd64 `.deb` instructions, complete engine/packaging source, notices and checksums. Fresh profiles use top tabs. Browser chrome is en-US; Aion settings support Turkish/English. Use the separate Windows release above; macOS/mobile installers are not available yet.
 
 [Çalışan arayüzün ekran görüntüleri / Screenshots of the running interface](docs/UI_PREVIEW.md)
 

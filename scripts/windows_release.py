@@ -192,8 +192,12 @@ def publish():
     if release and (not release['draft'] or release['target_commitish'] != os.environ['GITHUB_SHA']):
         raise ValueError('Preserve the existing release; do not overwrite it')
     if not release:
-        gh('release', 'create', tag, '--repo', repo, '--draft', '--prerelease', '--target', os.environ['GITHUB_SHA'], '--title', 'Fire Axolotl 0.1.0 · Windows x64 geliştirici ön sürümü', '--notes-file', str(DIST / 'RELEASE-NOTES.md'))
-        release = next(r for r in json.loads(gh('api', f'repos/{repo}/releases?per_page=100')) if r['tag_name'] == tag)
+        # Use the creation response directly: the collection can briefly lag
+        # behind a newly created draft and must not decide its identity.
+        request = ROOT / 'work/release-draft-create.json'
+        request.parent.mkdir(parents=True, exist_ok=True)
+        request.write_text(json.dumps({'tag_name': tag, 'target_commitish': os.environ['GITHUB_SHA'], 'draft': True, 'prerelease': True, 'name': 'Fire Axolotl 0.1.0 · Windows x64 geliştirici ön sürümü', 'body': (DIST / 'RELEASE-NOTES.md').read_text(encoding='utf-8')}, ensure_ascii=False), encoding='utf-8')
+        release = json.loads(gh('api', f'repos/{repo}/releases', '--method', 'POST', '--input', str(request)))
     present = {a['name']: a for a in release['assets']}
     for name, asset in present.items():
         if name not in expected or asset.get('digest') != 'sha256:' + expected[name]:
