@@ -75,6 +75,16 @@ try:
         assert driver.execute_script('return Services.prefs.getBoolPref(arguments[0])', pref)
     driver.set_context('content')
     record('Fresh own-product profile automatically enables the pinned built-in Turkish language with external signature checks and OS-language default intact')
+    expected_locales = set(json.loads((ROOT / 'localization.json').read_text(encoding='utf-8'))['official_locales'])
+    WebDriverWait(driver, 60).until(lambda _: expected_locales <= set(state()['available']))
+    driver.set_context('chrome')
+    addons = driver.execute_async_script('ChromeUtils.importESModule("resource://gre/modules/AddonManager.sys.mjs").AddonManager.getAddonsByTypes(["locale"]).then(list=>arguments[0](list.map(a=>({id:a.id,builtin:a.isBuiltin,disabled:a.appDisabled}))));')
+    actual = {a['id']: a for a in addons}
+    for code in expected_locales - {'en-US'}:
+        addon = actual[f'langpack-{code}@fire-axolotl.browser']
+        assert addon['builtin'] and not addon['disabled']
+    driver.set_context('content')
+    record(f'All {len(expected_locales)} official desktop languages are locally available; every added language has an independent built-in identity')
     driver.get('about:preferences#appearance')
     wait = WebDriverWait(driver, 30)
     wait.until(lambda _: driver.find_element(By.ID, 'aionLayoutGroup').get_attribute('data-aion-ready') == 'true')
@@ -84,6 +94,22 @@ try:
     driver.set_context('chrome')
     driver.execute_script('Services.prefs.setIntPref("fireaxolotl.newtabGame.best",13);')
     driver.set_context('content')
+    for code in ['de', 'ja', 'ar']:
+        choose(code)
+        driver.set_context('chrome')
+        title = driver.execute_async_script('new Localization(["browser/preferences/preferences.ftl"],true).formatValue("settings-page-title").then(arguments[0]);')
+        assert title and title != 'Settings'
+        driver.set_context('content')
+        record(f'Native Settings selects {code} from the normal language picker and resolves its own translated strings')
+    driver.quit()
+    driver = start()
+    after = state()
+    assert after['locale'] == 'ar' and after['best'] == 13 and after['font'] == 'opendyslexic' and after['vertical']
+    driver.set_context('chrome')
+    assert driver.execute_script('return getComputedStyle(document.documentElement).direction') == 'rtl'
+    driver.set_context('content')
+    states.append(after)
+    record('Arabic survives a real restart with right-to-left native chrome and existing user choices preserved')
     choose('tr')
     driver.set_context('chrome')
     strings = driver.execute_async_script('new Localization(["browser/preferences/preferences.ftl","branding/brand.ftl"],true).formatValues([{id:"settings-page-title"},{id:"pane-about-firefox-title"}]).then(arguments[0]);')
@@ -107,6 +133,6 @@ try:
     assert after['locale'] == 'en-US' and after['best'] == 13 and after['font'] == 'opendyslexic' and after['vertical']
     record('A second actual process restart preserves English and existing user choices')
 finally:
-    (OUT / 'results.json').write_text(json.dumps({'mode': 'compiled-fork-native-languages', 'passed': passed, 'states': states, 'limits': 'Packaged en-US/tr only; remote language downloads and signed two-version updates are not covered.'}, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+    (OUT / 'results.json').write_text(json.dumps({'mode': 'compiled-fork-native-languages', 'passed': passed, 'states': states, 'limits': 'Complete official desktop locale availability and representative de/ja/ar/tr/en-US switching are covered. New Aion strings remain TR/EN. Remote language downloads and signed two-version updates are not covered.'}, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     if driver:
         driver.quit()

@@ -1,3 +1,10 @@
+# Resmî 103 dil kataloğu ve incelenebilir veri katmanı
+
+- ESR153.7 SHA512SUMS içinde Linux-x86_64/win64 katalogları aynı 103 dil/özet kümesine sahip. en-US motorda; 102 özgün imzalı XPI indirildi, SHA-512/CRC/manifest/bağımsız ID ve kaynak-only izin denetiminden geçti. localization.json native adları ve kesin sürümleri içerir. `update_localization_pins.py` elle çalıştırılan yeniden inceleme tarifidir; sessiz yükseltme yapmaz.
+- Bütün 102 türetme yerelde sınandı: manifesto ve iki marka kaynağı dışında her kaynak baytı, author ve telif yorumları korunur. Fluent dilbilgisi nitelikleri tutulur; resmî imzalar yalnızca değiştirilmemiş özgün XPI'larda kalır. `experiment_apis`, script/yetki ve güvensiz locale kimliği reddedilir. Derlenmiş kullanıcı metinlerinin Aion'a özgü kısmı hâlâ TR/EN.
+- Windows'un mevcut UI/veri katmanı genişletildi; Linux native tar için aynı sınırlı omni.ja katmanı eklendi. Linux çalıştırılabilir dosyaları, kip/UID/GID/zaman ve symlink hedefleri korunur; sadece listelenen browser/omni.ja değişir. Tam motor arşivine ek `fire-axolotl-localization-source.zip` 102 özgün kaynak, MPL, katalog ve türetme betiklerini verir. Native motor yeniden derlenmeden incelenebilir kaynak veri katmanı olarak uygulanır.
+- Kurulu ürünün dil testi 10 senaryoya çıkarıldı: bütün103 kaydın mevcut/yerleşik olması, DE/JA/AR seçimi, Arapça RTL gerçek restart, TR/EN ve font/sekme/rekor koruması. İki platformda kurulu70 senaryo zorunlu. Bu kayıt anında gerçek native153.7 derlemeleri sürüyor; 103 dilin kurulu ürün doğrulaması henüz tamamlanmadı. Kaynak matrisi ve 22 Node +35 Python testleri geçti.
+
 # ESR 153.7 güvenlik güncellemesi
 
 - Kaynak overlay/idempotence ve uBO karşılaştırması 42827568627 üzerinde geçti. Linux native 42827574889/ec13e3f; Windows native 42828049949/a6560b7. Önceki ec13 Windows denemesi yalnızca test aracı ağı nedeniyle başarısızdı; yeni deneme izole kontrollerle başlar.

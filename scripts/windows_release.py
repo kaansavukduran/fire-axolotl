@@ -118,7 +118,7 @@ def assemble():
     game = json.loads((ROOT / 'work/runner-test-artifacts/results.json').read_text())
     overlay = json.loads((DIST / 'newtab-ui-overlay.json').read_text())
     languages = json.loads((ROOT / 'work/localization-test-artifacts/results.json').read_text(encoding='utf-8'))
-    if languages['mode'] != 'compiled-fork-native-languages' or len(languages['passed']) < 5:
+    if languages['mode'] != 'compiled-fork-native-languages' or len(languages['passed']) < 10:
         raise ValueError('Installed-browser native language and persistence checks missing')
     profile = json.loads((ROOT / 'work/windows-installer-test/profile-probe.json').read_text())
     fallback = json.loads((ROOT / 'work/windows-installer-test/runtime-fallback.json').read_text())
@@ -148,9 +148,9 @@ This correction includes the unmodified, hash-pinned Microsoft x64 CRT alongside
 1. Aşağıdaki dosyalardan `{STEM}-Setup.exe` dosyasını indir. ZIP veya kaynak arşivleri kurulum için gerekli değildir.
 2. İndirilenler klasörünü aç ve Setup.exe'ye çift tıkla. Fire Axolotl kurulum sihirbazındaki adımları izle.
 3. Başlat menüsünde **Fire Axolotl** yazıp tarayıcıyı aç. Yeni profilde sekmeler üstte ve tarayıcı koyu temada açılmalı. Araç çubuğundaki Aion düğmesi yerleşik araçları açar.
-4. Ayarlar → Görünüm sekme konumu ve arayüz fontunu içerir. Aion ayarlarında Türkçe/English seçilebilir. Ana tarayıcı Türkçe/English içerir; native Ayarlar ekranından seçilen dil yeniden başlatmada korunur.
+4. Ayarlar → Görünüm sekme konumu ve arayüz fontunu içerir. Aion ayarlarında Türkçe/English seçilebilir. Ana tarayıcı resmî 103 masaüstü dilini içerir; native Ayarlar → Diller ekranından seçilebilir. Aion araçları ve oyunun yeni metinleri TR/EN ile sınırlıdır.
 
-Download and double-click the Setup.exe, follow the native installer, then open Fire Axolotl from Start. Fresh profiles use top tabs and dark chrome. Aion and uBlock Origin are built in. Native Settings switches main chrome between Turkish and English; Aion tools and game language remain independent choices.
+Download and double-click the Setup.exe, follow the native installer, then open Fire Axolotl from Start. Fresh profiles use top tabs and dark chrome. Aion and uBlock Origin are built in. Native Settings offers all 103 official desktop languages. Representative German, Japanese, Arabic/RTL, Turkish and English switching and real restarts gate publication. Aion tools and game text remain TR/EN.
 
 Yeni sekmede **Aion Koşusu**: Başlat → oyun alanında Boşluk ile zıpla, Esc ile duraklat. Buzda donma ve ateşte çizgi film tarzı kül animasyonları vardır. Oyun çevrimdışı çalışır; rekor bu cihazda tutulur. Ayarlar → Görünüm’den gizle/göster, Türkçe/English seç veya rekoru sıfırla. Arama ve kısayollar korunur. Yeni sekmeyi değiştiren başka bir eklenti seçersen onun sayfası kullanılır.
 
@@ -177,9 +177,9 @@ Tam derleme sonrası ve kurulu tarayıcı üzerinde 11 açılış, 4 yeniden ba�
 
 Native source: `{CONFIG['source_commit']}`. Packaging source: `{commit}`. [Native Windows build](https://github.com/{CONFIG['repository']}/actions/runs/{CONFIG['native_run_id']}). [Installed-browser validation](https://github.com/{CONFIG['repository']}/actions/runs/{os.environ['GITHUB_RUN_ID']}).
 
-Yeni sekme arayüzü, aynı derlenmiş motorun `browser/omni.ja` kaynaklarına uygulanmış incelenebilir veri katmanıdır. `newtab-ui-overlay.json` değişen her kaynak özetini ve değişmeden kalan native dosya sayısını kaydeder; tercih edilen kaynak ve yeniden üretme betikleri `*-packaging-source.zip` içindedir. Motor kaynağını açıp bu paketin `scripts/prepare_source.py` betiğini uygulayarak kaynak derlemesi yapılabilir. SFX kaynakları `windows-sfx-corresponding-source.zip` içindedir. Native executables, engine, policies, Aion and signed uBlock Origin are preserved. Pinned Turkish language data, its catalog entry and the OS-language default are added. Five installed native-language/persistence checks and the game checks gate publication. `fire-axolotl-localization-source.zip` includes original translations, MPL license, derivation recipe, pins and branding. The modified built-in does not retain Mozilla signature files; external language-package signature checks remain enabled.
+Yeni sekme arayüzü, aynı derlenmiş motorun `browser/omni.ja` kaynaklarına uygulanmış incelenebilir veri katmanıdır. `newtab-ui-overlay.json` değişen her kaynak özetini ve değişmeden kalan native dosya sayısını kaydeder; tercih edilen kaynak ve yeniden üretme betikleri `*-packaging-source.zip` içindedir. Motor kaynağını açıp bu paketin `scripts/prepare_source.py` betiğini uygulayarak kaynak derlemesi yapılabilir. SFX kaynakları `windows-sfx-corresponding-source.zip` içindedir. Native executables, engine, policies, Aion and signed uBlock Origin are preserved. Pinned resource-only data for all 103 desktop locales (including base en-US), catalog entries and the OS-language default are retained. Ten installed native-language/persistence checks, including Arabic RTL, and the game checks gate publication. `fire-axolotl-localization-source.zip` includes original translations, MPL license, derivation recipe, pins and branding. The modified built-in does not retain Mozilla signature files; external language-package signature checks remain enabled.
 
-Signed updates, complete locales, actual account Sync, live DRM/Netflix quality adapters and other [feature-map gaps](https://github.com/{CONFIG['repository']}/blob/{commit}/docs/FEATURES.md) remain incomplete. No malware-immunity or universal resolution-forcing claim. Fire Axolotl is independent of Mozilla; third-party licenses are preserved.
+Signed updates, complete localization of new Aion strings, actual account Sync, live DRM/Netflix quality adapters and other [feature-map gaps](https://github.com/{CONFIG['repository']}/blob/{commit}/docs/FEATURES.md) remain incomplete. No malware-immunity or universal resolution-forcing claim. Fire Axolotl is independent of Mozilla; third-party licenses are preserved.
 '''
     (DIST / 'RELEASE-NOTES.md').write_text(notes, encoding='utf-8')
     (DIST / 'SHA256SUMS').write_text(''.join(f'{digest(p)}  {p.name}\n' for p in sorted(DIST.iterdir()) if p.is_file() and p.name != 'SHA256SUMS'))

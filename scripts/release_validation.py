@@ -10,6 +10,8 @@ import subprocess
 import sys
 import urllib.request
 from verify_native_package import verify
+from runner_overlay import check_source_delta, linux_archive
+from localization import source_archive
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG = json.loads((ROOT / 'release.json').read_text())
@@ -66,7 +68,12 @@ def inputs(directory, evidence, output):
             or reports['native']['identity']['id'] != '{75450dd9-387d-4289-8b23-7ad6609fa530}'):
         raise ValueError('Required compiled-fork test evidence is missing')
     package = verify(native)
+    overlay = linux_archive(native)
+    overlay['source_delta'] = check_source_delta(CONFIG['source_commit'])
+    package = verify(native)
     output.mkdir(parents=True, exist_ok=True)
+    (output / 'native-ui-overlay.json').write_text(json.dumps(overlay, indent=2) + '\n')
+    source_archive(native, output / 'fire-axolotl-localization-source.zip', overlay['localizations'])
     report = {'source_commit': CONFIG['source_commit'], 'native_run': CONFIG['native_run_id'], 'package': package, 'source_sha256': actual, 'reports': reports, 'stage': 'native-inputs-verified; installer tests still required'}
     (output / 'release-validation.json').write_text(json.dumps(report, indent=2) + '\n')
     print('Native package, full source, restart and integration evidence verified')

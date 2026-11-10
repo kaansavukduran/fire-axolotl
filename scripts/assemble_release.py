@@ -33,7 +33,7 @@ def main():
     if len(evidence['checks']['appimage']['passed']) < 4 or len(evidence['checks']['installed_browser']['passed']) < 11 or len(evidence['checks']['installed_restart']['passed']) < 4:
         raise ValueError('Installer validation is incomplete')
     checks = evidence['checks']
-    if checks['integration']['mode'] != 'compiled-fork' or len(checks['integration']['passed']) < 34 or checks['game']['mode'] != 'compiled-fork-normal-newtab' or len(checks['game']['passed']) < 11 or checks['languages']['mode'] != 'compiled-fork-native-languages' or len(checks['languages']['passed']) < 5:
+    if checks['integration']['mode'] != 'compiled-fork' or len(checks['integration']['passed']) < 34 or checks['game']['mode'] != 'compiled-fork-normal-newtab' or len(checks['game']['passed']) < 11 or checks['languages']['mode'] != 'compiled-fork-native-languages' or len(checks['languages']['passed']) < 10:
         raise ValueError('Installed integration, game or native-language validation is incomplete')
     (DIST / 'release-manifest.json').write_text(json.dumps(evidence, indent=2) + '\n')
     notes = f'''Fire Axolotl 0.1.0 geliştirici önizlemesi / developer preview
@@ -41,12 +41,12 @@ def main():
 **Bu kararlı günlük kullanım sürümü değildir. Otomatik güncellemeler kapalıdır.**
 **Not a stable daily-use release. Automatic updates are disabled.**
 
-Gerçek Firefox ESR {upstream} derlemesi; ayrı Fire Axolotl kimliği ve profili. Varsayılan koyu görünüm ve üst sekmeler; isteğe bağlı sol/sağ sekmeler, yerleşik Aion/uBlock Origin, konteynerler, video araçları ve yerel karakterler. Ana tarayıcı Türkçe/English içerir; dil seçicisi ve iki gerçek yeniden başlatmada tercih koruması doğrulandı. Aion araçlarının ve yeni sekme oyununun dil seçimi ayrıdır.
+Gerçek Firefox ESR {upstream} derlemesi; ayrı Fire Axolotl kimliği ve profili. Varsayılan koyu görünüm ve üst sekmeler; isteğe bağlı sol/sağ sekmeler, yerleşik Aion/uBlock Origin, konteynerler, video araçları ve yerel karakterler. Ana tarayıcı resmî 103 masaüstü dilini içerir; normal dil seçicisi, Almanca/Japonca/Arapça ve sağdan sola arayüz dahil 10 dil/yeniden başlatma senaryosu geçti. Aion araçlarının ve yeni sekme oyununun dil seçimi ayrıdır.
 
 | Platform | İndirme / Download | Durum / Status |
 | --- | --- | --- |
 | Linux x86_64 | `fire-axolotl-{version}-linux-x86_64.AppImage` | Ubuntu 24.04 test hedefi; GTK/masaüstü kitaplıkları gerekir. / Tested target: Ubuntu 24.04 with desktop libraries. |
-| Ubuntu 24.04 amd64 | `fire-axolotl-{version}-linux-amd64.deb` | Gerçek paket kurulumu, ilk açılış ve yeniden başlatma test edildi. / Actual installation, first launch and restart tested. |
+| Ubuntu 24.04 amd64 | `fire-axolotl-{version}-linux-amd64.deb` | Gerçek paket kurulumu, ilk açılış ve yeniden başlatma test edildi. / Actual installation and 70 installed-browser scenarios tested. |
 | Windows x64 | [Ayrı Windows sürümleri](https://github.com/{CONFIG["repository"]}/releases) | Bu Linux paketi Windows kurulumu değildir. Eski 153.6 motoru güncel güvenlik sürümü sayılmaz. |
 | macOS | Henüz yok / Not available | Mac derlemesi, Developer ID ve notarization bekliyor. |
 | Android | Henüz yok / Not available | Mobil ön yüz ve imzalı APK bekliyor. |
@@ -84,13 +84,13 @@ Yeni sekmede Aion Koşusu: Başlat, Boşluk/dokunma ile zıpla, Esc ile duraklat
 
 ### Kaynaklar ve doğrulama / Source and validation
 
-Tam uygulanmış motor kaynağı `fire-axolotl-applied-source.tar.zst`; launcher/paketleme kaynakları `fire-axolotl-{version}-packaging-source.zip`; AppImage runtime, LGPL FUSE kaynağı ve derleme/yine bağlama betikleri `fire-axolotl-{version}-appimage-support-source.tar.gz` içindedir. uBO'nun ilgili kaynakları ve GPL bildirimi ayrıca tarayıcının `distribution/sources` dizinindedir. Türkçe özgün XPI, MPL lisansı ve türetme makbuzu aynı kaynak dizinindedir; değişiklik betikleri paketleme kaynaklarına dahildir. Bileşen lisansları korunur.
+Tam uygulanmış motor kaynağı `fire-axolotl-applied-source.tar.zst`; launcher/paketleme kaynakları `fire-axolotl-{version}-packaging-source.zip`; AppImage runtime, LGPL FUSE kaynağı ve derleme/yine bağlama betikleri `fire-axolotl-{version}-appimage-support-source.tar.gz` içindedir. uBO'nun ilgili kaynakları ve GPL bildirimi ayrıca tarayıcının `distribution/sources` dizinindedir. Ek dil verileri `native-ui-overlay.json` içinde tek tek özetlenir. Motorun derlendiği ham kaynak arşivine ek olarak `fire-axolotl-localization-source.zip`, 102 özgün XPI, MPL lisansı, katalog pinleri ve türetme betiklerini içerir; native çalıştırılabilir dosyalar değiştirilmez. Bileşen lisansları korunur.
 
 Complete applied engine source, separate packaging/launcher source, and AppImage runtime/library source materials accompany the binaries. Runtime/library notices are embedded in both Linux packages. `SHA256SUMS` and `release-manifest.json` record sizes, digests and test evidence. `sha256sum -c SHA256SUMS --ignore-missing` checks the files downloaded into the same directory.
 
 Browser source: `{CONFIG['source_commit']}`. Packaging source: `{release_commit}`. [Successful native build and 11 startup + 34 integration + 4 restart checks](https://github.com/{CONFIG['repository']}/actions/runs/{CONFIG['native_run_id']}). Installer first launch and persistence were checked separately before this publication.
 
-The built-in release check follows the stable channel; use the Releases page for manual preview downloads. Signed updates, all languages, real-account Sync, live Netflix/DRM/quality adapters and other mapped features remain incomplete. See [the feature map](https://github.com/{CONFIG['repository']}/blob/{release_commit}/docs/FEATURES.md) and [requirements](https://github.com/{CONFIG['repository']}/blob/{release_commit}/docs/ROADMAP.md). No universal quality-forcing or malware-immunity claim is made. Fire Axolotl is independent of Mozilla.
+The built-in release check follows the stable channel; use the Releases page for manual preview downloads. Signed updates, full localization of new Aion strings, real-account Sync, live Netflix/DRM/quality adapters and other mapped features remain incomplete. See [the feature map](https://github.com/{CONFIG['repository']}/blob/{release_commit}/docs/FEATURES.md) and [requirements](https://github.com/{CONFIG['repository']}/blob/{release_commit}/docs/ROADMAP.md). No universal quality-forcing or malware-immunity claim is made. Fire Axolotl is independent of Mozilla.
 '''
     (DIST / 'RELEASE-NOTES.md').write_text(notes)
     (DIST / 'SHA256SUMS').write_text(''.join(f'{hashlib.file_digest(path.open("rb"), "sha256").hexdigest()}  {path.name}\n' for path in sorted(DIST.iterdir()) if path.is_file() and path.name != 'SHA256SUMS'))

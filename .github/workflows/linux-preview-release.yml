@@ -43,7 +43,12 @@ jobs:
           AION_NATIVE_RUN_ID: ${{ inputs.native_run_id }}
         run: |
           python3 scripts/release_validation.py preflight
-          git diff --exit-code ec13e3f64fe973ead7f2b14381e2d3a08c7e1bd6 HEAD -- browser branding components.json upstream.json localization.json scripts/localization.py scripts/prepare_source.py scripts/package_extension.py
+          python3 - <<'PY'
+          import json, sys
+          sys.path.insert(0, 'scripts')
+          from runner_overlay import check_source_delta
+          print('Reviewed UI/data source delta:', check_source_delta(json.load(open('release.json'))['source_commit']))
+          PY
       - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
           name: fire-axolotl-linux-developer-build-with-source-NOT-STABLE

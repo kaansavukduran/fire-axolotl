@@ -7,10 +7,13 @@ overlay source are recorded separately from the original engine build receipt.
 import argparse
 import configparser
 import hashlib
+import io
 import json
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 import subprocess
 import tempfile
+import tarfile
+import copy
 import zipfile
 from localization import overlay_resources
 
@@ -149,6 +152,53 @@ def windows_archive(path):
                 raise ValueError('A native file changed outside the reviewed browser UI archive')
         temp.replace(path)
     return {**report, 'original_native_zip_sha256': original_hash, 'native_zip_sha256': sha(path.read_bytes()), 'unchanged_native_files': len(unchanged), 'only_native_member_changed': omni}
+
+
+def linux_archive(path):
+    """Keep every native file, mode and symlink while changing reviewed UI data."""
+    original_hash = sha(path.read_bytes())
+    with tempfile.TemporaryDirectory(prefix='aion-linux-ui-') as folder:
+        directory = Path(folder)
+        with tarfile.open(path) as archive:
+            members = archive.getmembers()
+            names = [m.name for m in members]
+            if len(names) != len(set(names)) or any(PurePosixPath(n).is_absolute() or '..' in PurePosixPath(n).parts or '\\' in n for n in names):
+                raise ValueError('Unsafe or duplicate native Linux archive member')
+            roots = [m.name.rsplit('/', 1)[0] for m in members if m.isfile() and m.name.endswith('/application.ini')]
+            if len(roots) != 1:
+                raise ValueError('Expected one compiled runtime')
+            archive.extractall(directory, filter='data')
+        report = apply(directory / roots[0])
+        if not report['changed']:
+            return {**report, 'original_native_tar_sha256': original_hash, 'native_tar_sha256': original_hash, 'only_native_member_changed': None}
+        omni = roots[0] + '/browser/omni.ja'
+        replacement = (directory / omni).read_bytes()
+        temporary = path.with_suffix('.xz.new')
+        unchanged, metadata = {}, {}
+        with tarfile.open(path) as archive, tarfile.open(temporary, 'w:xz', preset=3) as output:
+            for member in archive:
+                metadata[member.name] = (member.type, member.mode, member.linkname, member.uid, member.gid, member.uname, member.gname, member.mtime)
+                if member.isfile():
+                    data = archive.extractfile(member).read()
+                    if member.name == omni:
+                        member = copy.copy(member)
+                        member.size = len(replacement)
+                        output.addfile(member, io.BytesIO(replacement))
+                    else:
+                        unchanged[member.name] = sha(data)
+                        output.addfile(member, io.BytesIO(data))
+                else:
+                    output.addfile(member)
+        with tarfile.open(temporary) as archive:
+            actual = {}
+            for member in archive:
+                actual[member.name] = (member.type, member.mode, member.linkname, member.uid, member.gid, member.uname, member.gname, member.mtime)
+                if member.name in unchanged and sha(archive.extractfile(member).read()) != unchanged[member.name]:
+                    raise ValueError('An unrelated native Linux file changed')
+            if actual != metadata:
+                raise ValueError('Native Linux file modes or links changed')
+        temporary.replace(path)
+    return {**report, 'original_native_tar_sha256': original_hash, 'native_tar_sha256': sha(path.read_bytes()), 'unchanged_native_files': len(unchanged), 'only_native_member_changed': omni}
 
 
 if __name__ == '__main__':

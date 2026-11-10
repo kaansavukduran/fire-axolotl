@@ -3,14 +3,16 @@
 import hashlib
 import io
 import json
+import re
 from pathlib import Path, PurePosixPath
 import shutil
 import stat
+import tarfile
 import urllib.request
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
-PIN = json.loads((ROOT / 'localization.json').read_text())
+PIN = json.loads((ROOT / 'localization.json').read_text(encoding='utf-8'))
 CACHE = ROOT / 'work/localizations'
 
 
@@ -21,7 +23,7 @@ def write_sources(destination, receipts):
     for locale, record in PIN['locales'].items():
         shutil.copyfile(fetch(locale, record), destination / f'fire-axolotl-localization-{locale}-original.xpi')
     shutil.copyfile(ROOT / 'LICENSE', destination / 'LICENSE.txt')
-    for name in ['localization.py']:
+    for name in ['localization.py', 'update_localization_pins.py']:
         shutil.copyfile(ROOT / 'scripts' / name, destination / name)
     shutil.copyfile(ROOT / 'localization.json', destination / 'localization.json')
     (destination / 'derivation.json').write_text(json.dumps({'upstream': PIN['upstream'], 'license': 'MPL-2.0', 'locales': receipts}, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
@@ -67,13 +69,21 @@ def source_archive(native_zip, destination, receipts):
         write_sources(directory, receipts)
         branding = directory / 'branding'
         branding.mkdir()
-        with zipfile.ZipFile(native_zip) as package:
-            paths = [name for name in package.namelist() if name.endswith('/browser/omni.ja')]
-            if len(paths) != 1:
-                raise ValueError('Expected one native browser language archive')
-            with zipfile.ZipFile(io.BytesIO(package.read(paths[0]))) as archive:
-                for target, original in [('brand.ftl', 'localization/en-US/branding/brand.ftl'), ('brand.properties', 'chrome/en-US/locale/branding/brand.properties')]:
-                    (branding / target).write_bytes(archive.read(original))
+        if zipfile.is_zipfile(native_zip):
+            with zipfile.ZipFile(native_zip) as package:
+                paths = [name for name in package.namelist() if name.endswith('/browser/omni.ja')]
+                if len(paths) != 1:
+                    raise ValueError('Expected one native browser language archive')
+                browser = package.read(paths[0])
+        else:
+            with tarfile.open(native_zip) as package:
+                paths = [m for m in package.getmembers() if m.isfile() and m.name.endswith('/browser/omni.ja')]
+                if len(paths) != 1:
+                    raise ValueError('Expected one native browser language archive')
+                browser = package.extractfile(paths[0]).read()
+        with zipfile.ZipFile(io.BytesIO(browser)) as archive:
+            for target, original in [('brand.ftl', 'localization/en-US/branding/brand.ftl'), ('brand.properties', 'chrome/en-US/locale/branding/brand.properties')]:
+                (branding / target).write_bytes(archive.read(original))
         with zipfile.ZipFile(destination, 'w', zipfile.ZIP_DEFLATED) as output:
             for file in sorted(directory.rglob('*')):
                 if file.is_file():
@@ -84,6 +94,8 @@ def source_archive(native_zip, destination, receipts):
 
 
 def verify(path, locale, record):
+    if not re.fullmatch(r'[A-Za-z]{2,8}(?:-[A-Za-z0-9]{2,8})*', locale):
+        raise ValueError('Unsafe language identifier')
     if hashlib.sha512(Path(path).read_bytes()).hexdigest() != record['sha512']:
         raise ValueError('Language package hash mismatch')
     with zipfile.ZipFile(path) as archive:
@@ -100,7 +112,7 @@ def verify(path, locale, record):
                 or manifest['browser_specific_settings']['gecko']['id'] != record['original_id']
                 or manifest['version'] != record['version']):
             raise ValueError('Unexpected language package identity/version')
-        if any(key in manifest for key in ['permissions', 'optional_permissions', 'content_scripts', 'background']):
+        if any(key in manifest for key in ['permissions', 'optional_permissions', 'content_scripts', 'background', 'experiment_apis', 'user_scripts', 'devtools_page', 'chrome_url_overrides', 'chrome_settings_overrides', 'browser_action', 'page_action', 'sidebar_action', 'commands', 'theme']):
             raise ValueError('Language package must contain only localization resources')
         if not {'META-INF/mozilla.rsa', 'META-INF/cose.sig'} <= set(names) or archive.testzip():
             raise ValueError('Missing signature data or damaged language package')
@@ -126,6 +138,26 @@ def fetch(locale, record):
     return path
 
 
+def rebrand_resource(text):
+    """Preserve translator comments and locale-specific Fluent attributes."""
+    output, active = [], False
+    for line in text.splitlines(keepends=True):
+        if line.lstrip().startswith(('#', '!')):
+            output.append(line)
+            continue
+        if line and not line[0].isspace():
+            key = line.split('=', 1)[0].strip()
+            active = bool(re.fullmatch(r'-(?:brand-[\w-]+|vendor-short-name)|brand\w+|vendorShortName', key))
+        if active:
+            if '=' in line and not line[0].isspace():
+                prefix, value = line.split('=', 1)
+                line = prefix + '=' + value.replace('Mozilla Firefox', 'Fire Axolotl').replace('Firefox', 'Fire Axolotl').replace('Mozilla', 'Fire Axolotl')
+            else:
+                line = line.replace('Mozilla Firefox', 'Fire Axolotl').replace('Firefox', 'Fire Axolotl').replace('Mozilla', 'Fire Axolotl')
+        output.append(line)
+    return ''.join(output)
+
+
 def build_addon(path, destination, locale, record, branding):
     manifest = verify(path, locale, record)
     destination = Path(destination)
@@ -136,15 +168,18 @@ def build_addon(path, destination, locale, record, branding):
                 continue
             archive.extract(item, destination)
     manifest['browser_specific_settings']['gecko']['id'] = record['id']
-    manifest['name'] = 'Türkçe · Fire Axolotl'
-    manifest['description'] = 'Fire Axolotl için Türkçe tarayıcı arayüzü.'
+    manifest['name'] = record.get('name', locale) + ' · Fire Axolotl'
+    manifest['description'] = f'Fire Axolotl browser language resources ({locale}).'
     manifest.pop('default_locale', None)
     modified = ['manifest.json']
     for relative, original in [(f'browser/localization/{locale}/branding/brand.ftl', 'brand.ftl'), (f'browser/chrome/{locale}/locale/branding/brand.properties', 'brand.properties')]:
         target = destination / relative
         if not target.is_file():
             raise ValueError('Language package branding layout changed')
-        shutil.copyfile(Path(branding) / original, target)
+        if 'Fire Axolotl' not in (Path(branding) / original).read_text(encoding='utf-8'):
+            raise ValueError('Independent native branding is required')
+        text = target.read_text(encoding='utf-8')
+        target.write_text(rebrand_resource(text), encoding='utf-8')
         modified.append(relative)
     (destination / 'manifest.json').write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     return {'locale': locale, **record, 'modified_files': {name: hashlib.sha256((destination / name).read_bytes()).hexdigest() for name in modified}, 'status': 'derived native built-in; not an unmodified Mozilla-signed package'}
