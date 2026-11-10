@@ -17,10 +17,18 @@
     }
     placeGroup();
     document.addEventListener('paneshown', placeGroup);
-    const locale = /^en(?:-|$)/i.test(Services.locale.appLocaleAsBCP47) ? 'en' : 'tr';
-    const response = await fetch(`chrome://browser/content/preferences/aion-${locale}.json`);
-    const messages = await response.json();
-    group.querySelectorAll('[data-aion-l10n]').forEach(element => {element.textContent = messages[element.dataset.aionL10n].message;});
+    let locale, messages, localizationRequest = 0;
+    async function localize() {
+      const request = ++localizationRequest;
+      const language = /^en(?:-|$)/i.test(Services.locale.appLocaleAsBCP47) ? 'en' : 'tr';
+      const response = await fetch(`chrome://browser/content/preferences/aion-${language}.json`);
+      const translated = await response.json();
+      if (request !== localizationRequest) return;
+      locale = language;
+      messages = translated;
+      group.querySelectorAll('[data-aion-l10n]').forEach(element => {element.textContent = messages[element.dataset.aionL10n].message;});
+    }
+    await localize();
     const select = document.getElementById('aion-tab-position');
     function sync() {
       const vertical = Services.prefs.getBoolPref(prefs[0], false);
@@ -34,12 +42,14 @@
       document.getElementById('aion-game-language').value = Services.prefs.getStringPref(prefs[5], locale);
     }
     select.addEventListener('change', () => {
-      if (!['top', 'left', 'right'].includes(select.value)) return;
-      if (select.value !== 'top') {
+      // Preference observers can synchronously refresh the select mid-change.
+      const position = select.value;
+      if (!['top', 'left', 'right'].includes(position)) return;
+      if (position !== 'top') {
         Services.prefs.setBoolPref('sidebar.revamp', true);
-        Services.prefs.setBoolPref(prefs[1], (select.value === 'left') !== Services.locale.isAppLocaleRTL);
+        Services.prefs.setBoolPref(prefs[1], (position === 'left') !== Services.locale.isAppLocaleRTL);
       }
-      Services.prefs.setBoolPref(prefs[0], select.value !== 'top');
+      Services.prefs.setBoolPref(prefs[0], position !== 'top');
       document.getElementById('aion-layout-status').textContent = messages.saved.message;
     });
     document.getElementById('aion-website-theme').addEventListener('change', event => {
@@ -67,12 +77,16 @@
       document.getElementById('aion-layout-status').textContent = messages.saved.message;
     });
     const observer = {observe: sync};
+    const localeObserver = {observe: () => localize().then(sync).catch(console.error)};
     prefs.forEach(pref => Services.prefs.addObserver(pref, observer));
+    Services.obs.addObserver(localeObserver, 'intl:app-locales-changed');
     window.addEventListener('unload', () => {
       prefs.forEach(pref => Services.prefs.removeObserver(pref, observer));
+      Services.obs.removeObserver(localeObserver, 'intl:app-locales-changed');
       document.removeEventListener('paneshown', placeGroup);
     }, {once: true});
     sync();
+    group.dataset.aionReady = 'true';
   }
   const observer = new MutationObserver(() => {
     if (document.getElementById('aionLayoutGroup')) {

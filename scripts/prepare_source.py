@@ -11,6 +11,7 @@ import sys
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from package_extension import package
 from fetch_components import fetch_all, PIN as UBLOCK_PIN, CACHE as COMPONENT_CACHE, sha256
+from localization import embed as embed_localizations
 
 ROOT = Path(__file__).resolve().parents[1]
 MARKER = '# Fire Axolotl built-in companion\nDIRS += ["aion"]\n'
@@ -255,8 +256,10 @@ def prepare(source):
     package_rule = '\n; Fire Axolotl policy and corresponding component source\n@RESPATH@/distribution/policies.json\n@RESPATH@/distribution/sources/*\n'
     if package_rule not in package_manifest.read_text():
         package_manifest.write_text(package_manifest.read_text() + package_rule)
+    localizations = embed_localizations(source, branding / 'locales/en-US')
     ublock = embed_ublock(source)
     receipt = {'upstream': pinned, 'overlay_commit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(), 'overlay_dirty': bool(subprocess.check_output(['git', 'status', '--porcelain'], cwd=ROOT, text=True).strip()), 'companion_sha256': hashlib.sha256((extension_dir / 'aion@fire-axolotl.browser.xpi').read_bytes()).hexdigest(), 'components': {'ublock-origin': ublock}, 'status': 'source-prepared-not-built'}
+    receipt['localizations'] = localizations
     (source / 'fire-axolotl-build.json').write_text(json.dumps(receipt, indent=2) + '\n')
     print(f'Prepared {source}; this is not a compiled browser')
     return source

@@ -1,3 +1,12 @@
+# Native Türkçe dil desteği / Native Turkish localization
+
+- Native arayüz için en-US ve sabit özetli Türkçe dil kaynakları paketlenir; `intl.locale.requested` varsayılanı boş bırakılarak işletim sistemi tercihi izlenir. Kullanıcının dil seçimi değiştirilmez. Diğer Firefox dillerinin dağıtımı henüz tamamlanmadı.
+- Dil paketinin eski denemesindeki `default_locale` alanı langpack şemasınca reddediliyordu. Düz metin ad/açıklama ve bağımsız kimlikle düzeltildi. Özgün çeviriler/atıflar korunur; değiştirilmiş türevde Mozilla imzaları taşınmaz. Harici paket imza denetimleri açık kalır. Kaynak XPI + MPL + türetme betiği/pin/marka kaynakları ayrı `fire-axolotl-localization-source.zip` içinde dağıtılır.
+- Gerçek derlenmiş Linux forkunda native Ayarlar seçicisi TR→EN ve iki gerçek süreç yeniden başlatma dahil 5 senaryoyu geçti. Dil, dikey sekmeler, OpenDyslexic ve oyun rekoru korundu. Özel Görünüm etiketleri canlı dil değişimine uyar.
+- Doğrudan üst→sağ sekme seçiminde eşzamanlı pref gözlemcisi seçim kutusunu sıfırlayabiliyordu. İşlem başında seçilen konum saklanır; bu yol native dil/persistans testinde doğrulandı.
+- Windows paketleme aynı derlenmiş motorun yalnızca browser/omni.ja veri kaynaklarını günceller: çeviri verisi, katalog girdisi ve tek OS-dil varsayılanı. Motor, ilkeler ve mevcut Aion/imzalı uBO korunur. Kaynak farkı koruyucusu yalnızca incelenen kaynak hazırlama ve tercih eklemelerini kabul eder. Kurulu Windows'ta 5 native dil senaryosu yeni zorunlu yayın kapısıdır.
+- 22 Node + 18 Python kontrolü geçti. Yeni katmanda önceki native smoke 11 geçti; son entegrasyon/oyun sonuçları ayrı kaydedilir. Native Windows 42729988254 derlemesi devam ediyor; Setup henüz üretilmedi. Native workflow değiştirilmedi, yeni motor derlemesi başlatılmadı.
+
 # Aion yeni sekme oyunu / Aion new-tab game
 
 - Görünüm yerleşimi: Lit `setting-pane.name` özelliği HTML niteliğine yansıtılmadığından eski `[name=...]` seçicisi paneli bulamıyordu. JS özelliğiyle seçilir; özel grup artık native Görünüm panelinden sonra yerleşir. Gerçek forkta sıralama ve 11 native smoke geçti; installed smoke bu sıralamayı da denetler. Sekme/font/gizlilik işlevleri korunur. Boşluk basılı tutulurken tekrarlanan olaylar da sayfayı kaydırmaz.

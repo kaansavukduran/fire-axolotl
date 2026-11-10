@@ -24,6 +24,7 @@ export class AionRunnerCard {
     this.world = new RunnerWorld();
     this.host = document.createElement('section');
     this.host.id = 'fireaxolotl-runner';
+    this.host.lang = config.language === 'tr' ? 'tr' : 'en';
     this.shadow = this.host.attachShadow({mode: 'open'});
     this.abort = new this.window.AbortController();
     const make = (tag, parent, text, className) => {

@@ -3,6 +3,7 @@ from pathlib import Path
 import tempfile
 import unittest
 import zipfile
+from unittest.mock import patch
 
 from runner_overlay import apply, PREFIX
 
@@ -18,16 +19,19 @@ class RunnerOverlayTests(unittest.TestCase):
             original = b'\x00untouched original native resource\xff'
             with zipfile.ZipFile(archive, 'w') as output:
                 output.writestr('unrelated/native.dat', original)
+                output.writestr('defaults/preferences/firefox-branding.js', (Path(__file__).resolve().parents[1] / 'browser/preferences/fire-axolotl.js').read_bytes())
                 output.writestr(PREFIX + 'aion-chrome.js', 'old UI')
                 output.writestr(PREFIX + 'preferences/preferences.xhtml', '<window><!-- Fire Axolotl preferences begin --><old/><!-- Fire Axolotl preferences end --></window>')
-            report = apply(runtime)
+            with patch('runner_overlay.overlay_resources', return_value=({}, [])):
+                report = apply(runtime)
             with zipfile.ZipFile(archive) as output:
                 self.assertEqual(output.read('unrelated/native.dat'), original)
                 self.assertIn(b'aion-newtab-game', output.read(PREFIX + 'preferences/preferences.xhtml'))
                 self.assertIn(PREFIX + 'aion-runner/aion-runner.png', output.namelist())
-            self.assertEqual(report['unchanged_member_count'], 1)
+            self.assertEqual(report['unchanged_member_count'], 2)
             self.assertNotEqual(report['original_browser_omni_sha256'], report['browser_omni_sha256'])
-            second = apply(runtime)
+            with patch('runner_overlay.overlay_resources', return_value=({}, [])):
+                second = apply(runtime)
             self.assertEqual(second['changed'], {})
             self.assertEqual(second['original_browser_omni_sha256'], second['browser_omni_sha256'])
             identity.write_text('[App]\nID=other-browser\nName=Other\n')

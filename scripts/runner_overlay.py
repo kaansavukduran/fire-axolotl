@@ -12,16 +12,18 @@ from pathlib import Path
 import subprocess
 import tempfile
 import zipfile
+from localization import overlay_resources
 
 ROOT = Path(__file__).resolve().parents[1]
 PREFIX = 'chrome/browser/content/browser/'
 
 
 def check_source_delta(base):
-    protected = ['browser', 'branding', 'components.json', 'upstream.json', 'scripts/prepare_source.py', 'scripts/package_extension.py', 'scripts/fetch_components.py']
+    protected = ['browser', 'branding', 'components.json', 'upstream.json', 'localization.json', 'scripts/localization.py', 'scripts/prepare_source.py', 'scripts/package_extension.py', 'scripts/fetch_components.py']
     changed = subprocess.check_output(['git', 'diff', '--name-only', base, 'HEAD', '--', *protected], cwd=ROOT, text=True).splitlines()
     allowed = {'browser/native/aion-chrome.js', 'browser/native/aion-layout.js', 'browser/native/aion-layout.inc.xhtml', 'scripts/prepare_source.py', 'browser/extension/_locales/tr/messages.json', 'browser/extension/_locales/en/messages.json'}
     allowed.update('browser/native/aion-runner/' + name for name in ['AionRunnerParent.sys.mjs', 'AionRunnerChild.sys.mjs', 'card.sys.mjs', 'world.sys.mjs', 'aion-runner.png', 'PROVENANCE.json'])
+    allowed.update(['localization.json', 'scripts/localization.py', 'browser/preferences/fire-axolotl.js'])
     if set(changed) - allowed:
         raise ValueError('The compiled core differs from the reviewed build: ' + ', '.join(sorted(set(changed) - allowed)))
     before = subprocess.check_output(['git', 'show', base + ':scripts/prepare_source.py'], cwd=ROOT).decode()
@@ -31,9 +33,23 @@ def check_source_delta(base):
     anchor = "    replace_once(base / 'jar.mn', 'browser.jar:\\n', 'browser.jar:\\n' + entries + '\\n')"
     if 'runner_anchor =' not in before:
         before = before.replace(anchor, anchor + "\n    runner_anchor = '        content/browser/aion-fonts/ (content/aion-fonts/**)\\n'\n    replace_once(base / 'jar.mn', runner_anchor, runner_anchor + '        content/browser/aion-runner/ (content/aion-runner/**)\\n')")
+    if 'from localization import embed as embed_localizations' not in before:
+        anchor = 'from fetch_components import fetch_all, PIN as UBLOCK_PIN, CACHE as COMPONENT_CACHE, sha256'
+        before = before.replace(anchor, anchor + '\nfrom localization import embed as embed_localizations')
+        before = before.replace('    ublock = embed_ublock(source)', "    localizations = embed_localizations(source, branding / 'locales/en-US')\n    ublock = embed_ublock(source)")
+        anchor = "    (source / 'fire-axolotl-build.json').write_text(json.dumps(receipt, indent=2) + '\\n')"
+        before = before.replace(anchor, "    receipt['localizations'] = localizations\n" + anchor)
     if before != (ROOT / 'scripts/prepare_source.py').read_text():
         raise ValueError('Only the reviewed resource-copy additions to source preparation are allowed')
+    old_preferences = subprocess.check_output(['git', 'show', base + ':browser/preferences/fire-axolotl.js'], cwd=ROOT).decode()
+    if 'pref("intl.locale.requested", "");' not in old_preferences:
+        old_preferences = old_preferences.replace('/* SPDX-License-Identifier: MPL-2.0 */\n', '/* SPDX-License-Identifier: MPL-2.0 */\n' + LOCALE_DEFAULT)
+    if old_preferences != (ROOT / 'browser/preferences/fire-axolotl.js').read_text():
+        raise ValueError('Only the OS-language default preference addition is reviewed')
     return changed
+
+
+LOCALE_DEFAULT = '// Follow the operating-system language until the user makes a language choice.\npref("intl.locale.requested", "");\n'
 
 
 def sha(data):
@@ -59,6 +75,17 @@ def apply(runtime):
     with zipfile.ZipFile(path) as archive:
         if len(archive.namelist()) != len(set(archive.namelist())):
             raise ValueError('Duplicate omni.ja member')
+        locale_entries, locales = overlay_resources(archive)
+        replacements.update(locale_entries)
+        pref_path = 'defaults/preferences/firefox-branding.js'
+        preferences = archive.read(pref_path).decode().replace('\r\n', '\n')
+        if 'pref("intl.locale.requested", "");' not in preferences:
+            expected = (ROOT / 'browser/preferences/fire-axolotl.js').read_text().replace(LOCALE_DEFAULT, '')
+            if preferences != expected:
+                raise ValueError('Unexpected native privacy/security defaults')
+            replacements[pref_path] = (ROOT / 'browser/preferences/fire-axolotl.js').read_bytes()
+        elif preferences != (ROOT / 'browser/preferences/fire-axolotl.js').read_text():
+            raise ValueError('Unexpected native language or privacy defaults')
         pref = PREFIX + 'preferences/preferences.xhtml'
         text = archive.read(pref).decode()
         begin, end = '<!-- Fire Axolotl preferences begin -->', '<!-- Fire Axolotl preferences end -->'
@@ -92,7 +119,7 @@ def apply(runtime):
         temp.replace(path)
     else:
         temp.unlink()
-    return {'original_browser_omni_sha256': sha(original), 'browser_omni_sha256': sha(path.read_bytes()), 'changed': changed, 'unchanged_member_count': len(unchanged), 'scope': 'Only the listed browser/omni.ja UI resources. No native executable, engine, policy or built-in add-on modified.'}
+    return {'original_browser_omni_sha256': sha(original), 'browser_omni_sha256': sha(path.read_bytes()), 'changed': changed, 'unchanged_member_count': len(unchanged), 'localizations': locales, 'scope': 'Listed browser/omni.ja UI resources, pinned built-in translation data/catalog and OS-language default only. Native executables, engine, policies, Aion and signed uBlock Origin are preserved.'}
 
 
 def windows_archive(path):

@@ -65,6 +65,8 @@ jobs:
         run: python tests/gecko_e2e.py
       - name: Play and configure Aion Run through the installed normal new-tab UI
         run: python tests/native_runner.py
+      - name: Switch native languages through Settings and preserve user choices across real restarts
+        run: python tests/native_localization.py
       - name: Uninstall while preserving profiles and default-browser choice
         run: ./scripts/windows_install.ps1 Uninstall
       - run: python scripts/windows_release.py assemble
@@ -84,6 +86,7 @@ jobs:
             work/native-test-artifacts/
             work/native-e2e-artifacts/
             work/runner-test-artifacts/
+            work/localization-test-artifacts/
           retention-days: 14
   publish:
     needs: package

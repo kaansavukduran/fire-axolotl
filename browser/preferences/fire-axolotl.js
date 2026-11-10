@@ -1,4 +1,6 @@
 /* SPDX-License-Identifier: MPL-2.0 */
+// Follow the operating-system language until the user makes a language choice.
+pref("intl.locale.requested", "");
 pref("startup.homepage_override_url", "");
 pref("startup.homepage_welcome_url", "");
 pref("startup.homepage_welcome_url.additional", "");
