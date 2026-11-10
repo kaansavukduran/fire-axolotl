@@ -1,3 +1,8 @@
+# Güncel Windows doğrulama çalıştırması
+
+- Native kaynak `a56d740acf86f57fd6892234c29ce9a2e12debf7`; [run 42772444157](https://github.com/kaansavukduran/fire-axolotl/actions/runs/42772444157). 42729988254 ilk motor paketini üretti fakat screenshot testinde başarısız oldu; yayın için kabul edilmez.
+- Yayın JSON ve üç artifact indirme pini yeni run’a eşlendi. Tam başarılı native testler ve gerçek Setup kurulumu geçmeden yayın yapılamaz. Nesne cache anahtarı korunur; gizlilik, TLS, sandbox ve imza denetimleri değiştirilmedi.
+
 # Windows derleme sonrası ekran görüntüsü hatası
 
 - Run 42729988254 motoru ve ZIP/native NSIS paketini başarıyla üretti. Native smoke ilk 7 kontrolü geçti; yan panel açıldıktan sonraki screenshot, Windows headless compositor `Unable to capture screenshot` hatasıyla durdu. Bu nedenle run başarısız ve yayın yapılmadı. Native payload artifact 13731801476 korundu; D:/o cache 1659208500 bayt olarak başarıyla kaydedildi.
