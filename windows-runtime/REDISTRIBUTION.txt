@@ -1,0 +1,6 @@
+Unmodified Microsoft Visual C++ runtime files are distributed only as part of Fire Axolotl for Windows. They are Microsoft proprietary operating-system components, not MPL-licensed source.
+
+The Visual Studio 2022 Distributable Code list permits distribution of unmodified files under VC/redist, subject to the applicable software license; debug_nonredist files are excluded.
+https://learn.microsoft.com/en-us/visualstudio/releases/2022/redistribution
+
+The original REDIST.txt and Microsoft notice are included. The same notice is preserved in about:license. Version, original file hashes, signatures and the CI origin are recorded in windows-runtime-build.json. The runtime files themselves are never modified or relicensed under MPL.

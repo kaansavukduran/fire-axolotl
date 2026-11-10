@@ -13,6 +13,7 @@ import zipfile
 from verify_native_package import verify
 from runner_overlay import check_source_delta, windows_archive
 from localization import source_archive
+from windows_runtime import augment as augment_windows_runtime
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG = json.loads((ROOT / 'windows-release.json').read_text())
@@ -83,6 +84,8 @@ def inputs():
             raise ValueError('Native revalidation evidence does not match these exact preserved packages')
     checks = {key: json.loads((evidence / path).read_text()) for key, path in {'native': 'native-test-artifacts/results.json', 'restart': 'native-test-artifacts/restart-results.json', 'integration': 'native-e2e-artifacts/results.json'}.items()}
     validate_checks(checks)
+    runtime = augment_windows_runtime(native)
+    (DIST / 'windows-runtime-build.json').write_text(json.dumps(runtime, indent=2) + '\n')
     overlay = windows_archive(native)
     overlay['source_delta'] = frontend_delta
     overlay['overlay_commit'] = gh('api', f'repos/{CONFIG["repository"]}/git/commits/{os.environ["GITHUB_SHA"]}', '--jq', '.sha')
@@ -107,11 +110,15 @@ def assemble():
     installer = json.loads((ROOT / 'work/windows-installer-test/installation.json').read_text())
     uninstall = json.loads((ROOT / 'work/windows-installer-test/uninstallation.json').read_text())
     sfx = json.loads((DIST / 'windows-sfx-build.json').read_text())
+    runtime = json.loads((DIST / 'windows-runtime-build.json').read_text())
     game = json.loads((ROOT / 'work/runner-test-artifacts/results.json').read_text())
     overlay = json.loads((DIST / 'newtab-ui-overlay.json').read_text())
     languages = json.loads((ROOT / 'work/localization-test-artifacts/results.json').read_text(encoding='utf-8'))
     if languages['mode'] != 'compiled-fork-native-languages' or len(languages['passed']) < 5:
         raise ValueError('Installed-browser native language and persistence checks missing')
+    profile = json.loads((ROOT / 'work/windows-installer-test/profile-probe.json').read_text())
+    if len(profile.get('application_local_crt', {})) != 3 or not runtime['crt_imports']:
+        raise ValueError('Actual application-local Windows runtime loading was not verified')
     setup = DIST / f'{STEM}-Setup.exe'
     if sfx['frontend_zip_sha256'] != overlay['native_zip_sha256'] or not sfx['inner_nsis_preserved'] or sfx['installer_sha256'] != digest(setup) or sfx['icon_sha256'] != digest(ROOT / 'branding/aion.ico'):
         raise ValueError('Original-brand installer wrapper verification missing')
@@ -121,11 +128,15 @@ def assemble():
         raise ValueError('Clean installation/uninstallation data protection not verified')
     commit = gh('api', f'repos/{CONFIG["repository"]}/git/commits/{os.environ["GITHUB_SHA"]}', '--jq', '.sha')
     subprocess.run(['git', 'archive', '--format=zip', '--prefix=fire-axolotl/', f'--output={DIST / (STEM + "-packaging-source.zip")}', commit], cwd=ROOT, check=True)
-    (DIST / 'release-manifest.json').write_text(json.dumps({'browser_source_commit': CONFIG['source_commit'], 'packaging_commit': commit, 'native_run': CONFIG['native_run_id'], 'installer_run': os.environ['GITHUB_RUN_ID'], 'authenticode_signed': False, 'automatic_updates': False, 'checks': checks, 'installation': installer, 'uninstallation': uninstall, 'installer_wrapper': sfx, 'ui_overlay': overlay, 'newtab_game': game, 'native_languages': languages}, indent=2) + '\n')
+    (DIST / 'release-manifest.json').write_text(json.dumps({'browser_source_commit': CONFIG['source_commit'], 'packaging_commit': commit, 'native_run': CONFIG['native_run_id'], 'installer_run': os.environ['GITHUB_RUN_ID'], 'authenticode_signed': False, 'automatic_updates': False, 'checks': checks, 'installation': installer, 'uninstallation': uninstall, 'installer_wrapper': sfx, 'ui_overlay': overlay, 'newtab_game': game, 'native_languages': languages, 'windows_runtime': runtime, 'profile_probe': profile}, indent=2) + '\n')
     notes = f'''Fire Axolotl Windows x64 geliştirici ön sürümü / developer preview
 
 **Kararlı günlük kullanım sürümü değildir. Windows Authenticode imzası ve otomatik güncelleme henüz yoktur.**
 **Not a stable daily-use release. No Windows Authenticode signature or automatic updater yet.**
+
+Bu düzeltme sürümü, ilk Windows ön sürümündeki eksik Visual C++ runtime bağımlılığını giderir. Sabit sürüm/özet ve geçerli Microsoft imzaları doğrulanan x64 CRT dosyaları uygulama klasöründedir. Kurulu tarayıcının CRT dosyalarını kendi klasöründen yüklediği ayrıca doğrulanır. Sistem runtime'ını değiştirmez. Lisans/atıflar `distribution/sources/windows-runtime/` ve `about:license` içindedir.
+
+This correction includes the unmodified, hash-pinned Microsoft x64 CRT alongside the application. Its Microsoft signatures, native PE import closure and actual loaded module paths are checked. The original preview required a preinstalled runtime; this package includes the required files locally. These Windows components have their own Microsoft redistribution terms and are not MPL source code.
 
 ### Windows'ta kurulum / Install on Windows
 

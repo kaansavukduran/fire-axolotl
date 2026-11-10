@@ -1,0 +1,20 @@
+Microsoft Windows: Terms for Microsoft Distributable Code
+Applies to msvc*.dll and vcruntime*.dll included with Fire Axolotl for Windows.
+
+Copyright (c) Microsoft Corporation.
+
+The Distributable Code may be used and distributed only if you comply with the
+following terms:
+
+(i)   You may use, copy, and distribute the Distributable Code only as part of
+      this product;
+(ii)  You may not use the Distributable Code on a platform other than Windows;
+(iii) You may not alter any copyright, trademark or patent notice in the
+      Distributable Code;
+(iv)  You may not modify or distribute the source code of any Distributable
+      Code so that any part of the source code becomes subject to the MPL or
+      any other copyleft license;
+(v)   You must comply with any technical limitations in the Distributable Code
+      that only allow you to use it in certain ways; and
+(vi)  You must comply with all domestic and international export laws and
+      regulations that apply to the Distributable Code.

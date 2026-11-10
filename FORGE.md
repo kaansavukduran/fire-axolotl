@@ -1,3 +1,11 @@
+# Windows düzeltme paketi: app-local CRT
+
+- Yeni hedef v0.1.0-dev.20261110-windows.1; eski release/etiket ve dosyalar korunur. Aynı derlenmiş motor 9d564dc ve başarılı native validation 42808841079 kullanılır. Değişiklik paketleme bileşenidir.
+- İmzalı Microsoft Visual C++ x64 14.44.35211.0 runtime dosyaları, windows-runtime.json SHA-256/sürüm/boyut pinleriyle VS2022 dağıtılabilir CRT klasöründen değiştirilmeden alınır. Windows-runtime-audit run 42816806440 bütün imzaları Valid olarak doğruladı. Orijinal REDIST.txt, Microsoft notice ve bileşenin MPL olmadığına dair dağıtım notu uygulamaya eklenir.
+- windows_runtime.py PE normal/gecikmeli importlarını denetler; eksik/değişmiş CRT'yi ve hatalı x86/x64 yerleşimini reddeder. Native dosyalar değiştirilmez; runtime ekleme makbuzu ayrı tutulur. SFX her ek bileşende güncel ZIP'i yeniden paketler; iç NSIS setup değişmez.
+- Kurulu process'in MSVCP140/VCRUNTIME140/VCRUNTIME140_1 modüllerini uygulama klasöründen, pinli hashlerle yüklemesi yeni zorunlu kapıdır. Önceden kurulu sistem CRT'sine sessiz fallback testten geçemez.
+- 22 Node + 22 Python kontrolü geçti. Yeni temiz kurulum/65 senaryo/kaldırma ve gerçek modül yolu testi Windows yayın akışında koşmalıdır. Yayın tamamlanmadan düzeltme hazır sayılmaz.
+
 # Son bağımlılık denetimi: Windows CRT
 
 - Yayımlanmış ZIP'teki 40 PE dosyası incelendi. Ana exe/mozglue/xul dahil dosyalar msvcp140.dll, vcruntime140.dll, vcruntime140_1.dll; ONNX ayrıca msvcp140_1.dll içe aktarıyor. Bu DLL'ler ZIP'te yok. CI makinesinde kurulu olduklarından önceki testler yokluklarını ortaya çıkarmadı. Eski release notuna ve README'ye bilinen gereksinim eklendi; yayımlanmış dosya ve etiketler değiştirilmedi.

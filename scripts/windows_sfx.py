@@ -148,6 +148,9 @@ def main():
     native = installer.with_name(installer.name.removesuffix('-Setup.exe') + '.zip')
     overlay = json.loads((installer.parent / 'newtab-ui-overlay.json').read_text())
     repack = overlay['only_native_member_changed'] is not None
+    runtime_report = installer.parent / 'windows-runtime-build.json'
+    if runtime_report.exists():
+        repack = repack or bool(json.loads(runtime_report.read_text())['added'])
     payload, inner_hash = frontend_payload(original, tag, native, work, repack=repack)
     updated = stub + tag + payload
     payload_sha256 = digest(payload)
