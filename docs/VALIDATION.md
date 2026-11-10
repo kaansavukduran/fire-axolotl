@@ -1,6 +1,15 @@
-# Güncel ESR geçişi · 2026-11-10
+# Güncel 153.7 doğrulaması · 2026-11-10
 
-Mozilla ESR 153.7.0esr yayımlandı. Aşağıdaki yayımlanmış paketler ve önceki başarılı testler 153.6'ya aittir. Güncel güvenlik sürümü olarak önerilmez. 153.6 Windows CRT düzeltme yayını 42825922166 iptal edildi; yeni sürüm yayımlanmadı. 153.7 kaynak/dil pinleri güncellendi; tam motor/kurulum doğrulaması yeniden gereklidir. Yayın öncesinde ve yayın anında resmî ESR/uBO güncellik kontrolü zorunlu tutulur.
+- [Windows x64 yayın ve kurulum](https://github.com/kaansavukduran/fire-axolotl/actions/runs/42849921106) ve [Linux yayın ve kurulum](https://github.com/kaansavukduran/fire-axolotl/actions/runs/42849928004) başarılı. Her kurulu üründe **11 açılış + 4 süreç yeniden başlatma + 34 entegrasyon + 11 oyun + 10 dil = 70 senaryo** geçti.
+- Windows tam motor derlemesi [42828049949](https://github.com/kaansavukduran/fire-axolotl/actions/runs/42828049949), kaynak `a6560b7fe2a42d7602001d11641e722ac087d297`. Linux tam motor derlemesi [42827574889](https://github.com/kaansavukduran/fire-axolotl/actions/runs/42827574889), kaynak `ec13e3f64fe973ead7f2b14381e2d3a08c7e1bd6`. Her iki paketleme kaydı `0759fae4b09e5cf27f709a1496eea3a23d1c33df`; motor yeniden derlenmeden yalnızca doğrulanmış UI/dil katmanı uygulanır ve tüm değişmeyen dosyalar kontrol edilir.
+- 103 resmî dilin yerel varlığı, bağımsız dil kimlikleri, DE/JA/AR/TR/EN normal seçici geçişi, Arapça RTL ve gerçek süreç yeniden başlatmalarında sekme/font/oyun rekorunun korunması geçti. Aion'un yeni metinleri TR/EN ile sınırlıdır.
+- Windows gerçek offline Setup temiz kuruldu; kurulu **80 dosya** ZIP ile eşleşti. Microsoft imzaları/hashleri, CRT import kapanışı ve gerçek XUL'u app-local CRT ile yükleyen statik test geçti. Sistem CRT/güvenlik dosyaları değiştirilmedi. Kaldırma profili ve varsayılan tarayıcı seçimini korudu.
+- Gerçek eski 153.6 Setup → yeni 153.7 Setup aynı kurulum dizinine uygulandı. Sentetik NSS parola, yer imi, konteyner, kelime, özel PNG, dil, sekme konumu, font, rekor ve Unicode işaret dosyası korundu. Bu test gerçek hesaba ait veri kullanmaz ve imzalı MAR/otomatik güncelleme değildir.
+- Linux AppImage çalıştırma ve iki paketin dosya karşılaştırması, gerçek `.deb` kurulumu ve kurulu tarayıcı testleri geçti. Yayımlanmış tüm dosyaların sunucu SHA-256 özetleri, ZIP CRC ve tam kaynak akışının özeti ayrıca indirildikten sonra doğrulandı.
+- Ağ kaydı yerel HTTP kontrol isteğiyle doğrulandı; 30 saniyelik yeni profil/yeni sekme örneğinde bilinen Mozilla telemetri/çalışma/sponsor uçları görülmedi. İlk yayın raporunun URL listesi yanıt başlığındaki adresleri de içerebilir; listedeki her URL gerçek bağlantı girişimi sayılmaz. Ayrı salt okunur `network-review.yml`, aynı yayımlanmış hashli dosyaları yalnızca `nsHttp uri=` kanal kayıtlarından yeniden değerlendirir. Ham günlükler/profiller yayımlanmaz. Bu örnek tüm gezinme veya zamanlanmış trafik denetimi değildir.
+- Yerel 153.7 tarayıcıda gerçek SearchService varsayılan motoru, arama düğmesinin yerelleştirilmiş metni ve gerçek tıklama/klavye ile adres çubuğuna odak/yazı devri doğrulandı. Gerçek kullanıcı sorgusu gönderilmedi. Upstream arama ortaklık parametreleri korunur; bağımsız hizmet anlaşmaları doğrulanmış değildir.
+
+İmzalı otomatik güncelleme, Authenticode, gerçek hesap/Sync ve CDM/Safe Browsing hizmet erişimi, canlı servis video kalite bağdaştırıcıları, Aion metinlerinin tüm dillere çevirisi ve [özellik eşlemesindeki](FEATURES.md) açıklar sürüyor. Bu geliştirici önizlemesi kararlı günlük kullanım veya virüs bağışıklığı sertifikası değildir. Aşağıdaki sonuçlar **153.6 tarihsel kayıtlarıdır**.
 
 # Tarihsel Windows x64 ön sürümü · 2026-11-10
 
@@ -50,7 +59,7 @@ Testler yerel/sentetik içerikle çalışır. Görsel arama URL'si çevrimdış�
 
 ## Açık işler / Remaining verification
 
-Güvenli imzalı güncelleme ve iki sürüm arasında veri koruma; macOS/ARM/mobil paketler; bütün Firefox dilleri ve dil paketi değiştirme; gerçek Mozilla hesabı/Sync; Safe Browsing/CDM hizmet erişimi; canlı YouTube/Netflix kalite davranışı; dış HTTPS çeviri hizmetiyle uçtan uca işlem; bütün iframe oynatıcıları; ekran okuyucuyla insan testi; bağımsız güvenlik/ağ incelemesi. Eksik özellikler [FEATURES.md](FEATURES.md) içinde saklanır.
+İmzalı uygulama içi güncelleme ve MAR üzerinden veri koruma; macOS/ARM/mobil paketler; yeni Aion metinlerinin diğer dillere çevirisi; gerçek Mozilla hesabı/Sync; Safe Browsing/CDM hizmet erişimi; canlı YouTube/Netflix kalite davranışı; dış HTTPS çeviri hizmetiyle uçtan uca işlem; bütün iframe oynatıcıları; ekran okuyucuyla insan testi; bağımsız güvenlik/ağ incelemesi. Eksik özellikler [FEATURES.md](FEATURES.md) içinde saklanır.
 
 Signed upgrades, other platforms, complete locales, actual account/service access, live streaming adapters, external translation, all-frame support, human accessibility review and independent security review remain pending. Passing tests does not certify a browser as malware-proof.
 

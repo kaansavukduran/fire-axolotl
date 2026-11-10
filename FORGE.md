@@ -1,3 +1,15 @@
+# Güncel devir · ESR 153.7 · 2026-11-10
+
+Windows x64 `v0.1.0-dev.20261110-windows.1` ve Linux `v0.1.0-dev.20261110-linux.1` yayımlandı. Her kurulu üründe 70 senaryo, Windows app-local CRT doğrulaması, gerçek eski Setup → yeni Setup veri koruyan yükseltmesi ve kaldırma geçti. Native Windows run 42828049949, Linux run 42827574889; paketleme/yayın Windows 42849921106, Linux 42849928004. Yayımlanmış paketleme kaydı `0759fae4b09e5cf27f709a1496eea3a23d1c33df`. 103 resmî native dil paketli; ek Aion metinleri TR/EN.
+
+Bütün açık kullanıcı istekleri [ROADMAP](docs/ROADMAP.md) ve [FEATURES](docs/FEATURES.md) içinde kalır. İmzalı otomatik güncelleme/Authenticode, gerçek hesap Sync ve bağımsız hizmet erişimi tamamlanmadı. Eski 153.6 dosyaları üzerine yazılmadı; tarihsel sürüm notlarında uyarıldı. Güncel kurulumlar ve gerçek ekran görüntüleri README/UI_PREVIEW'dedir.
+
+Yayın sonrası ağ kanıtı iyileştirmesi yalnızca testleri değiştirir: HTTP yanıt başlıklarındaki URL'ler bağlantı girişimi sayılmaz, `nsHttp uri=` alanları ayrılır. `network-review.yml` sabit SHA-256 ile aynı yayımlanmış Windows/Linux dosyalarını salt okunur yeniden test eder. Ham HTTP günlükleri/profiller yayınlanmaz. Bu sınırlı yeni sekme örneği sıfır Mozilla bağlantısı veya tam ağ denetimi iddiası değildir.
+
+Kaynak ZIP/Git bundle ve tam sürüm dosyaları kullanıcının önceden onayladığı özel Drive klasörlerine yedeklenir; geri okuma makbuzları çalışma alanında tutulur. Henüz geri okunmamış yüklemeler tamamlandı sayılmaz. Orijinal kullanıcı WIP'leri, kaynak ağacı ve motor nesne önbellekleri korunur; yalnızca testin ürettiği sentetik profiller ve hashli arşivden geri oluşturulabilen QA kopyası için disk temizliği yapıldı.
+
+Aşağıdaki bölümler önceki turların **tarihsel kayıtlarıdır**; güncel sürüm iddiası olarak kullanılmamalıdır.
+
 # 103 dilin kurulu üründe ilk doğrulaması
 
 - Üçüncü akış42847255103, AR'nin gerçek Apply/Restart seçimini ve Arapça açılışını gerçekleştirdi; test yeniden başlayan normal yeni sekmede Görünüm etiketi beklediğinden durdu. Önce Görünüm sayfasına gitme sırası düzeltildi. Gerçek derlenmiş153.7 runtime ve aynı103dil/UI katmanında yerelde bütün10 dil kontrolü, AR RTL ve TR/EN tekrar restartları geçti. Zorunlu kısa ağ örneklemesi de gerçek HTTP canary yakalamasıyla geçti. Bunlar ayrı çalışma alanı testleri; final kurulum/yayın akışı tekrar tamamlanmalıdır.

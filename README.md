@@ -8,23 +8,21 @@ Firefox ESR kaynak kodunu temel alan, Aion karakteriyle kişiselleştirilen ücr
 
 Free browser project based on Firefox ESR source, with an Aion companion. Fire Axolotl is not officially associated with Mozilla or its products. Firefox is a trademark of the Mozilla Foundation.
 
-**Durum / Status: Windows x64 ve Linux x86_64 geliştirici ön sürümleri yayımlandı; kararlı günlük kullanım sürümü değildir. Otomatik güncellemeler kapalıdır. / Windows x64 and Linux x86_64 developer prereleases published; not a stable daily-use release. Automatic updates are disabled.**
+**Durum / Status: ESR 153.7.0esr tabanlı Windows x64 ve Linux x86_64 geliştirici ön sürümleri yayımlandı. Kararlı günlük kullanım sürümü değildir; Authenticode imzası ve otomatik güncelleme yoktur. / Published developer previews; unsigned, automatic updates disabled.**
 
-**2026-11-10 güvenlik sürümü durumu:** Mozilla ESR 153.7.0esr yayımlandı. Önceki Windows/Linux paketleri 153.6 tabanlıdır ve güncel motor olarak önerilmez. 153.6 runtime düzeltmesinin yayını durduruldu; 153.7 motoru ve dil paketleri yeniden derleniyor. İlk Windows ön sürümü ayrıca önceden kurulu Visual C++ runtime gerektirir. / Existing previews use ESR 153.6 and are historical developer artifacts. Publication of its runtime correction was stopped when ESR 153.7 became available; new source and language pins are under verification. Do not treat old previews as a current security release.
+[Windows x64 Setup.exe indir](https://github.com/kaansavukduran/fire-axolotl/releases/download/v0.1.0-dev.20261110-windows.1/fire-axolotl-0.1.0-dev.20261110.1-windows-x86_64-Setup.exe) · [Windows sürüm notları](https://github.com/kaansavukduran/fire-axolotl/releases/tag/v0.1.0-dev.20261110-windows.1) · [Linux AppImage / Ubuntu .deb](https://github.com/kaansavukduran/fire-axolotl/releases/tag/v0.1.0-dev.20261110-linux.1)
 
-[Tarihsel Windows x64 Setup.exe — ESR 153.6, güncel değildir / Historical installer](https://github.com/kaansavukduran/fire-axolotl/releases/download/v0.1.0-dev.20261110-windows/fire-axolotl-0.1.0-dev.20261110-windows-x86_64-Setup.exe) · [Sürüm notları / Release notes](https://github.com/kaansavukduran/fire-axolotl/releases/tag/v0.1.0-dev.20261110-windows)
+Windows'ta yalnızca **Setup.exe** dosyasını indirip kurulum sihirbazını izle; Başlat menüsünden **Fire Axolotl** aç. Gerekli Microsoft x64 Visual C++ runtime dosyaları bu pakete lisans bildirimleriyle dahil edildi. Kaynak ZIP'lerini indirmen gerekmez. Önceki 153.6 önizlemeleri tarihsel dosyalardır; üzerlerine yazılmadı.
 
-Windows'ta Setup.exe dosyasını indirip çift tıkla, kurulum sihirbazını izle ve Başlat menüsünden **Fire Axolotl** aç. ZIP ve kaynak arşivleri kurulum için gerekli değildir. Windows sürümü ana arayüzde Türkçe/English, yeni sekmede isteğe bağlı Aion Koşusu içerir. Yeni profilde sekmeler üsttedir. **Geliştirici ön sürümüdür; Authenticode imzası ve otomatik güncelleme henüz yoktur.** / Download and run Setup.exe, follow the installer, then open Fire Axolotl from Start. Includes Turkish/English native UI and the optional Aion Run new-tab game. Unsigned developer preview; automatic updates remain disabled.
+Yeni profilde koyu görünüm ve **üst sekmeler** bulunur. Ayarlar'dan üst/sol/sağ sekmeleri, tarayıcı fontunu ve site renk tercihini seçebilirsin. Ana tarayıcı Firefox'un **103 resmî masaüstü dilini** içerir; yeni Aion metinleri Türkçe/İngilizcedir. Yerleşik Aion/uBlock Origin, konteynerler, video araçları, isteğe bağlı karakterler ve çevrimdışı Aion Koşusu kullanıcı kurulumu olmadan gelir.
 
-[Tarihsel Linux paketleri — ESR 153.6, güncel değildir / Historical Linux packages — v0.1.0-dev.20261109](https://github.com/kaansavukduran/fire-axolotl/releases/tag/v0.1.0-dev.20261109)
-
-Release sayfasında AppImage ve Ubuntu 24.04 amd64 `.deb` kurulumu, tam motor/paketleme kaynakları, lisanslar ve SHA-256 özetleri bulunur. Yeni profilde sekmeler üsttedir. Ana tarayıcı bu sürümde en-US; Aion ayarları Türkçe/İngilizcedir. Windows için yukarıdaki ayrı sürümü kullan; macOS/mobil kurulumları henüz yoktur. / The release includes AppImage and Ubuntu 24.04 amd64 `.deb` instructions, complete engine/packaging source, notices and checksums. Fresh profiles use top tabs. Browser chrome is en-US; Aion settings support Turkish/English. Use the separate Windows release above; macOS/mobile installers are not available yet.
+Her iki platformda kurulu tarayıcı üzerinde **70 senaryo** geçti. Windows'ta gerçek eski Setup → yeni Setup yükseltmesinde sentetik parola, yer imi, konteyner, kelimeler, karakter PNG'si ve ayarlar korundu. Bu elle kurulum testidir; imzalı otomatik güncelleme değildir. [Doğrulama ve sınırlar](docs/VALIDATION.md) · [Kullanım kılavuzu](docs/QUICK_START.md).
 
 [Çalışan arayüzün ekran görüntüleri / Screenshots of the running interface](docs/UI_PREVIEW.md)
 
 Bu depo; doğrulanmış Firefox kaynağını indiren derleme katmanını, özgün markalamayı, yerleşik Aion modülünü ve sekme konumu için yerel ayarları içerir. Motorun tüm geçmişini bu küçük depoya kopyalamak yerine kaynak sürümü ve SHA-512 özeti `upstream.json` içinde sabitlenir. Gömülü modül tarayıcı derlenirken paketlenir; son kullanıcının ayrı eklenti kurması hedeflenmez. Geliştirme sırasında aynı modül geçici eklenti olarak denenebilir.
 
-Firefox'un yerleşik özellikleri, dil yönetimi ve isteğe bağlı Mozilla hesabı/Sync temel alınır. Telemetri, çalışmalar, sponsorlu öneriler ve reklam ilişkilendirmesi yerel ilkelerle kapatılır; güvenlik bağlantıları korunur. Aion'un yeni metinleri şu an Türkçe/İngilizcedir; tüm Firefox dillerine genişletilmesi ve gerçek hesapla Sync doğrulaması henüz tamamlanmadı.
+Firefox'un yerleşik özellikleri, dil yönetimi ve isteğe bağlı Mozilla hesabı/Sync temel alınır. Telemetri, çalışmalar, sponsorlu öneriler ve reklam ilişkilendirmesi yerel ilkelerle kapatılır; güvenlik bağlantıları korunur. Ana tarayıcıda 103 dil paketlenmiştir. Yeni Aion metinlerinin TR/EN dışına çevrilmesi ve gerçek hesapla Sync doğrulaması henüz tamamlanmadı.
 
 This repository contains a pinned Firefox source build overlay, original branding, the built-in Aion module, and native tab-layout settings. The upstream version and SHA-512 are locked in `upstream.json`; the complete engine history is not duplicated here. The companion is embedded at browser build time. A temporary add-on package is available for development, not as a browser installer.
 
@@ -79,8 +77,8 @@ Geçici yükleme Firefox kapanınca kaldırılır. Bu yöntem sekme yerleşimi k
 
 ```sh
 python3 scripts/fetch_source.py
-python3 scripts/prepare_source.py work/upstream/firefox-153.6.0
-cd work/upstream/firefox-153.6.0
+python3 scripts/prepare_source.py work/upstream/firefox-153.7.0
+cd work/upstream/firefox-153.7.0
 ./mach bootstrap --application-choice browser --no-system-changes
 ./mach build
 ./mach run

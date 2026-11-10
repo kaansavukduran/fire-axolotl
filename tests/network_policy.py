@@ -13,7 +13,10 @@ def forbidden(host):
 
 def endpoints(text):
     result = set()
-    for raw in re.findall(r'https?://[^\s\"\'<>]+', text):
+    # nsHttp logs response headers too. A Report-To/Location URL appearing in
+    # a header is not evidence of an outgoing channel. Only recorded channel
+    # URI fields count as initialization attempts.
+    for raw in re.findall(r'\buri=(https?://[^\s\"\'<>]+)', text):
         try:
             url = urlsplit(raw.rstrip('],;)'))
             if url.hostname:

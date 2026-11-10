@@ -15,3 +15,12 @@ class NetworkSamplePolicyTests(unittest.TestCase):
     def test_endpoint_evidence_omits_queries_and_long_identifiers(self):
         sample = 'uri=http://127.0.0.1:8000/fire-axolotl-network-canary\nuri=https://incoming.telemetry.mozilla.org/submit/0123456789abcdef01234567/ping?private=value'
         self.assertEqual(endpoints(sample), {('127.0.0.1', '/fire-axolotl-network-canary'), ('incoming.telemetry.mozilla.org', '/submit/<redacted>/ping')})
+
+    def test_response_header_urls_are_not_outgoing_channel_evidence(self):
+        sample = '\n'.join([
+            'E/nsHttp uri=https://example.invalid/page?private=value',
+            'Report-To: {"endpoints":[{"url":"https://a.nel.cloudflare.com/report/v4?token=private"}]}',
+            'Location: https://incoming.telemetry.mozilla.org/not-yet-requested',
+            'D/nsHttp HttpChannelChild::AsyncOpen [this=123 uri=https://example.invalid/next]',
+        ])
+        self.assertEqual(endpoints(sample), {('example.invalid', '/page'), ('example.invalid', '/next')})

@@ -6,6 +6,10 @@ Kaynak indirme betiği SHA-512 doğrulaması yapar ve dolu hedef dizine çıkart
 
 The source fetcher verifies SHA-512 and refuses non-empty destinations. Review source changes and checksums on every upstream update. A daily Actions job fails when the ESR pin becomes stale; it does not automatically patch or guarantee immediate maintenance.
 
+## Güncel paketler · 2026-11-10
+
+ESR 153.7.0esr Windows x64 ve Linux x86_64 önizlemeleri yayımlandı. [Windows doğrulama/yayın](https://github.com/kaansavukduran/fire-axolotl/actions/runs/42849921106), [Linux doğrulama/yayın](https://github.com/kaansavukduran/fire-axolotl/actions/runs/42849928004). Motor kaynakları ayrı tam arşivlerle; 102 özgün ek dil, katalog, MPL ve türetme betikleri `fire-axolotl-localization-source.zip` ile birlikte sunulur. Ana tarayıcıda 103 dil vardır. Güncel indirmeler [README](../README.md) içindedir; aşağıdaki ilk aktarım bölümü tarihseldir.
+
 ## Kaynak katmanı / Source overlay
 
 `scripts/prepare_source.py`:
@@ -28,7 +32,7 @@ python3 scripts/archive_applied_source.py /path/to/prepared-source dist/fire-axo
 
 Standart `mach bootstrap`, `mach build`, `mach run` ve `mach package` girişleri kullanılır. `--disable-updater`, imzalama anahtarları ve gerçek güncelleme hizmeti hazır olmadığı için geliştirme yapılandırmasındadır. Bu yapılandırmayla üretilen dosya kararlı günlük kullanım paketi olarak yayımlanmamalıdır. / The development config disables the updater until independent signing and update hosting exist; do not publish that build as a stable daily-use browser.
 
-## İlk native denemenin aktarımı / First native test delivery
+## Tarihsel ilk native denemenin aktarımı / Historical first native test delivery
 
 `0f94fea` kaynak kaydının gerçek Linux arşivi ve tam uygulanmış motor kaynakları üretildi, özel Drive aktarımından geri okunarak doğrulandı. GitHub kaynak gönderimi ve normal CI başarılıdır; `uploads.github.com` varlık yüklemesi HTTP 401 verdiği için Release kaydı **taslak ve yayımlanmamış** durumda kaldı. Boş Release, indirilebilir sürüm olarak gösterilmez. Drive bağlantısının tek dosyada 100 MiB sınırı, özgün arşivi değiştirmeyen kayıpsız parçalarla aşıldı; bu, son kullanıcı kurulum deneyimi olarak tasarlanmış değildir.
 
@@ -38,8 +42,8 @@ Native Linux developer CI ayrıca [42666129157](https://github.com/kaansavukdura
 
 | Platform | Hedef / Target | Durum / Status |
 | --- | --- | --- |
-| Windows x64 / ARM64 | İmzalı Setup.exe / signed Setup.exe | Henüz derlenmedi, temiz kurulum ve imzalama bekliyor. / Build, signing and clean-install validation pending. |
-| Linux x64 / ARM64 | AppImage, mümkünse .deb / AppImage and preferably .deb | x64 tam kaynak derlemesi, `.tar.xz` ve arşivden açılış geçti. AppImage/.deb ve ARM64 henüz üretilmedi. / x64 source build, tar package and extracted-package startup passed; AppImage/.deb and ARM64 pending. |
+| Windows x64 / ARM64 | Setup.exe | x64 153.7 kaynak derlemesi ve gerçek Setup yayımlandı; temiz kurulum/70 senaryo/elle eski sürümden veri koruyan yükseltme geçti. Authenticode, otomatik güncelleme ve ARM64 açık. |
+| Linux x64 / ARM64 | AppImage, .deb | x64 153.7 AppImage/Ubuntu 24.04 .deb yayımlandı; gerçek paket kurulumu/70 senaryo geçti. ARM64 ve imzalı güncelleme açık. |
 | macOS Apple Silicon / Intel | Developer ID imzalı ve notarized .dmg / signed, notarized .dmg | macOS derleyici ve Apple imzalama hesabı gerekli. / macOS build host and Apple signing required. |
 | Android | Ayrı kimlik ve kalıcı imzayla APK / separate identity and stable signing | GeckoView tabanlı mobil ön yüz henüz oluşturulmadı. / GeckoView mobile front end pending. |
 | iPhone | App Store / TestFlight | iOS ön yüz, uygun motor/dağıtım koşulları, Apple hesabı ve inceleme gerekli. Masaüstü kaynağı doğrudan iPhone paketi değildir. / Requires an iOS front end, applicable engine/distribution terms, Apple account and review. |

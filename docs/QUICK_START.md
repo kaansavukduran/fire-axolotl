@@ -8,7 +8,7 @@ Windows'ta **Setup.exe** dosyasını çalıştırıp kurulum sihirbazını izle;
 
 Yeni profilde tarayıcı koyu temada ve sekmeler üstte açılır. **Menü → Ayarlar → Görünüm** içindeki Fire Axolotl kontrollerinden üst, sol veya sağ sekmeleri seçebilirsin. Aynı yerde araç çubuğu düzenleyicisini açabilir, tarayıcı yazı tipini OpenDyslexic veya Lexend yapabilirsin. Font değişikliği sitelerin yazılarını kendiliğinden değiştirmez.
 
-Sitelerin kendi teması korunur. Tarayıcıya uyan sitelerin açık/koyu tercihini Görünüm'den seçebilirsin; sayfalar zorla karartılmaz. Ana arayüz dilini **Ayarlar → Diller** üzerinden değiştir. Bu ön sürümde Türkçe ve English bulunur. Aion araçlarının ve oyunun dili ayrıca seçilir.
+Sitelerin kendi teması korunur. Tarayıcıya uyan sitelerin açık/koyu tercihini Görünüm'den seçebilirsin; sayfalar zorla karartılmaz. Ana arayüz dilini **Ayarlar → Diller** üzerinden değiştir. 153.7 tabanlı ön sürüm, Firefox'un yayımladığı 103 masaüstü dilini içerir; seçici dilleri kendi adlarıyla gösterir. Tarayıcı isterse **Uygula ve yeniden başlat** düğmesini kullan. Aion araçları ve eklediğimiz yeni Görünüm kontrolleri şu an Türkçe/İngilizcedir; oyunun dili ayrıca seçilir.
 
 ## Aion Koşusu
 
@@ -40,4 +40,4 @@ Aion panelindeki **Ayarlar** düğmesi; araç dili, tema, ölçek, çeviri hizme
 
 Yeni ön sürümler [GitHub Releases](https://github.com/kaansavukduran/fire-axolotl/releases) üzerinden elle indirilir. Bu aşamada Authenticode imzası ve otomatik güncelleme yoktur. Güvenlik korumalarını kapatma; dosya bütünlüğünü sürümdeki SHA-256 özetiyle karşılaştırabilirsin.
 
-Gerçek hesapla Sync doğrulaması, bütün Firefox dilleri ve diğer eksikler [özellik eşlemesinde](FEATURES.md) takip edilir. Açılış testlerinin geçmesi bu hizmetlerin tamamlandığı anlamına gelmez.
+Gerçek hesapla Sync doğrulaması, yeni Aion metinlerinin diğer dillere çevirisi ve kalan eksikler [özellik eşlemesinde](FEATURES.md) takip edilir. Açılış testlerinin geçmesi bu hizmetlerin tamamlandığı anlamına gelmez.
