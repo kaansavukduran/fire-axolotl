@@ -1,5 +1,7 @@
 # 103 dilin kurulu üründe ilk doğrulaması
 
+- İkinci paketleme42844003532'de DE ve JA normal seçiciden geçti. AR, upstream'in `intl.multilingual.liveReloadBidirectional` kapalıyken yön değişiminde yeniden başlatma istemesi nedeniyle anında geçiş bekleyen testte durdu. Test gerçek `Uygula ve yeniden başlat` düğmesini kullanır; yalnızca test oturumunun otomatik quit'i kısa süre durdurulur, gerçek locale pref'i yazıldıktan sonra WebDriver aynı profili kapatıp yeniden açar. Ürün tercihi/bidir güvenlik veya UI davranışı değiştirilmez. RTL→TR dönüşü de aynı normal akıştan gider.
+
 - Linux153.7 motoru42827574889 başarılı. İlk103dilli gerçek AppImage/deb akışı42840814021 kurulum, AppImage4, native11, restart4, entegrasyon34 ve oyun11 kontrollerini geçti. Dil testi bütün103 kaydın yerleşik ve etkin olduğunu doğruladı; Almanca native seçim gerçekleşti.
 - Ardından Aion'un ek Görünüm etiketleri için beklenen İngilizce fallback yerine Türkçe seçildiği görüldü. aion-layout.js, yalnızca Türkçe native locale için TR; diğerleri için EN kullanacak şekilde düzeltildi. Firefox'un103 dil çevirileri korunur, Aion'a özgü metinler TR/EN sınırındadır. Arapça RTL/restart ve kalan dil/ağ kontrolleri geçmeden yayın yok. Motor yeniden derlenmez; incelenebilir UI katmanı yeniden paketlenir.
 

@@ -41,12 +41,32 @@ def state():
 
 
 def choose(code):
+    global driver
     driver.get('about:preferences#languages')
     wait = WebDriverWait(driver, 30)
     host = wait.until(lambda _: driver.find_element(By.ID, 'browserLanguagePreferred'))
     # moz-select's actual HTML control: use trusted option clicks.
     select = wait.until(lambda _: driver.execute_script('return arguments[0].shadowRoot.querySelector("select")', host))
     Select(select).select_by_value(code)
+    wait.until(lambda _: state()['locale'] == code or driver.execute_script('return document.getElementById("browserLanguageMessage")?.pendingLocale === arguments[0];', code))
+    if state()['locale'] != code:
+        # Follow the real Apply/Restart control. Intercept only this test's
+        # automatic quit so WebDriver can stop/start the same profile itself.
+        # Keep Firefox's bidirectional live-reload preference unchanged.
+        driver.set_context('chrome')
+        driver.execute_script('window.__aionTestQuitObserver={observe(subject){subject.QueryInterface(Ci.nsISupportsPRBool).data=true;}}; Services.obs.addObserver(window.__aionTestQuitObserver,"quit-application-requested");')
+        driver.set_context('content')
+        try:
+            button = wait.until(lambda _: driver.execute_script('const host=document.getElementById("browserLanguageMessage"); const button=host?.shadowRoot?.querySelector("moz-button");return button?.shadowRoot?.querySelector("button") || button;'))
+            button.click()
+            wait.until(lambda _: state()['requested'][0] == code)
+        finally:
+            driver.set_context('chrome')
+            driver.execute_script('Services.obs.removeObserver(window.__aionTestQuitObserver,"quit-application-requested");delete window.__aionTestQuitObserver;')
+            driver.set_context('content')
+        driver.quit()
+        driver = start()
+        driver.set_window_size(1440, 1050)
     wait.until(lambda _: state()['locale'] == code)
     expected = json.loads((ROOT / f'browser/extension/_locales/{"tr" if code == "tr" else "en"}/messages.json').read_text(encoding='utf-8'))['tabLayout']['message']
     wait.until(lambda _: driver.execute_script('return document.querySelector("[data-aion-l10n=tabLayout]")?.textContent') == expected)
@@ -101,8 +121,6 @@ try:
         assert title and title != 'Settings'
         driver.set_context('content')
         record(f'Native Settings selects {code} from the normal language picker and resolves its own translated strings')
-    driver.quit()
-    driver = start()
     after = state()
     assert after['locale'] == 'ar' and after['best'] == 13 and after['font'] == 'opendyslexic' and after['vertical']
     driver.set_context('chrome')
