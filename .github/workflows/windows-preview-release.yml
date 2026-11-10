@@ -47,6 +47,7 @@ jobs:
           run-id: 42729988254
           github-token: ${{ github.token }}
       - run: python -m pip install -r tests/requirements-gecko.txt zstandard==0.25.0
+      - run: python -m unittest discover -s tests -p capture_checks.py
       - run: python scripts/windows_release.py inputs
       - name: Build our own installer extraction icon and wrapper
         run: python scripts/windows_sfx.py

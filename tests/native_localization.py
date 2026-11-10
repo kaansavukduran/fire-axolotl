@@ -10,7 +10,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.firefox.service import Service
 from selenium.webdriver.support.ui import Select, WebDriverWait
-from gecko_controls import choose_option
+from gecko_controls import choose_option, capture_screenshot
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / 'work/localization-test-artifacts'
@@ -53,7 +53,7 @@ def choose(code):
     driver.get('about:preferences#appearance')
     wait.until(lambda _: driver.find_element(By.CSS_SELECTOR, '[data-aion-l10n="tabLayout"]').text == expected)
     driver.set_context('chrome')
-    driver.save_screenshot(str(OUT / f'native-settings-{code}.png'))
+    capture_screenshot(driver, str(OUT / f'native-settings-{code}.png'))
     driver.set_context('content')
     states.append(state())
 

@@ -16,7 +16,7 @@ from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.firefox.service import Service
 from selenium.webdriver.support.ui import Select, WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from gecko_controls import choose_option
+from gecko_controls import choose_option, capture_screenshot
 
 ROOT = Path(__file__).resolve().parents[1]
 NATIVE = bool(os.environ.get('AION_NATIVE_BINARY'))
@@ -197,7 +197,7 @@ try:
     driver.find_element(By.CSS_SELECTOR, '[data-scale="200"]').click(); saved('scale', 200)
     driver.set_window_size(480, 900)
     assert driver.execute_script('return document.documentElement.scrollWidth <= innerWidth + 2')
-    driver.save_screenshot(str(ARTIFACTS / 'settings-tr-200-narrow.png'))
+    capture_screenshot(driver, str(ARTIFACTS / 'settings-tr-200-narrow.png'))
     record('200% interface scale on a narrow viewport without horizontal clipping')
     driver.find_element(By.ID, 'reset-scale').click(); saved('scale', 100)
     assert driver.execute_script('return UI.settings.textSize') == 150
@@ -213,7 +213,7 @@ try:
     assert driver.execute_script('return UI.settings.theme') == 'dark'
     record('English UI and settings persistence after reopening the page')
     driver.set_window_size(1280, 1000)
-    driver.save_screenshot(str(ARTIFACTS / 'settings-en-dark.png'))
+    capture_screenshot(driver, str(ARTIFACTS / 'settings-en-dark.png'))
     driver.get(base + 'popup.html')
     wait.until(lambda d: d.find_element(By.ID, 'container-name').get_attribute('placeholder'))
     value('container-name', 'İş · Learning')
@@ -272,14 +272,14 @@ try:
     assert not response.get('error'), response
     driver.switch_to.window(web_handle)
     assert driver.find_element(By.CSS_SELECTOR, '[data-aion-captions]').is_displayed()
-    driver.save_screenshot(str(ARTIFACTS / 'video-dual-captions.png'))
+    capture_screenshot(driver, str(ARTIFACTS / 'video-dual-captions.png'))
     assert driver.execute_script('return [...document.querySelector("video").textTracks].find(t=>t.label==="English").mode') == 'hidden'
     driver.find_element(By.ID, 'fullscreen-video').click()
     wait.until(lambda d: d.execute_script('return document.fullscreenElement === document.querySelector("video");'))
     wait.until(lambda d: d.execute_script('const track=[...document.querySelector("video").textTracks].find(t=>t.label==="Aion");return track?.mode==="showing" && [...(track.activeCues||[])].some(c=>c.text.includes("Merhaba Aion"));'))
     assert not driver.find_element(By.CSS_SELECTOR, '[data-aion-captions]').is_displayed()
     assert driver.execute_script('return [...document.querySelector("video").textTracks].find(t=>t.label==="Aion").activeCues.length') == 2
-    driver.save_screenshot(str(ARTIFACTS / 'video-native-fullscreen-captions.png'))
+    capture_screenshot(driver, str(ARTIFACTS / 'video-native-fullscreen-captions.png'))
     record('Native video-element fullscreen displays both local subtitle tracks through Gecko text rendering')
     driver.execute_async_script('document.exitFullscreen().then(()=>arguments[0](true));')
     wait.until(lambda d: d.find_element(By.CSS_SELECTOR, '[data-aion-captions]').is_displayed())
@@ -302,7 +302,7 @@ try:
     ActionChains(driver).move_to_element(menu).perform()
     bing_selector = '#contentAreaContextMenu menuitem[label="Bing"]'
     wait.until(lambda d: d.find_element(By.CSS_SELECTOR, bing_selector).is_displayed())
-    driver.save_screenshot(str(ARTIFACTS / 'image-search-context-menu.png'))
+    capture_screenshot(driver, str(ARTIFACTS / 'image-search-context-menu.png'))
     driver.find_element(By.CSS_SELECTOR, bing_selector).click()
     driver.set_context('content')
     wait.until(lambda d: len(set(d.window_handles) - handles_before_search) == 1)
@@ -323,7 +323,7 @@ try:
     try:
         wait.until(lambda d: not any(item.is_displayed() for item in d.find_elements(By.CSS_SELECTOR, menu_selector)))
     except Exception:
-        driver.save_screenshot(str(ARTIFACTS / 'image-menu-disable-failure.png'))
+        capture_screenshot(driver, str(ARTIFACTS / 'image-menu-disable-failure.png'))
         print('Menu DOM diagnostic:', driver.execute_script('return [...document.querySelectorAll(arguments[0])].map(m=>({id:m.id,hidden:m.hidden,collapsed:m.collapsed,display:getComputedStyle(m).display}));', menu_selector), flush=True)
         driver.set_context('content'); driver.switch_to.window(control_handle)
         print('Menu settings diagnostic:', driver.execute_async_script('browser.runtime.getBackgroundPage().then(async w=>arguments[0]({imageSearch:(await w.readSettings()).imageSearch,controller:!!w.AionImageMenus}));'), flush=True)
@@ -424,7 +424,7 @@ try:
         assert driver.execute_script('return document.getElementById("character-canvas").getContext("2d").getImageData(0,0,480,480).data.some((v,i)=>i%4===3 && v>0);')
     Select(driver.find_element(By.ID, 'character-activity')).select_by_value('read')
     wait.until(lambda d: d.find_element(By.ID, 'character-canvas').get_attribute('data-activity') == 'read')
-    driver.save_screenshot(str(ARTIFACTS / 'character-owl-reading-tr.png'))
+    capture_screenshot(driver, str(ARTIFACTS / 'character-owl-reading-tr.png'))
     record('All four whole-character companions render locally with an actual reading animation and Turkish controls')
     Select(driver.find_element(By.ID, 'character')).select_by_value('aion')
     wait.until(lambda d: d.find_element(By.ID, 'character-canvas').get_attribute('data-character') == 'aion')
@@ -487,7 +487,7 @@ try:
     wait.until(lambda d: d.find_element(By.TAG_NAME, 'h1').text == 'Companions')
     driver.set_window_size(480, 900)
     assert driver.execute_script('return document.documentElement.scrollWidth <= innerWidth + 2;')
-    driver.save_screenshot(str(ARTIFACTS / 'characters-en-200-narrow.png'))
+    capture_screenshot(driver, str(ARTIFACTS / 'characters-en-200-narrow.png'))
     record('English companion controls remain usable on a narrow screen at 200 percent interface scale')
     driver.set_window_size(1280, 1000)
     driver.get(base + 'settings.html')
@@ -497,7 +497,7 @@ try:
     driver.find_element(By.ID, 'open-characters').click()
     driver.set_context('chrome')
     wait.until(lambda d: d.execute_script('return SidebarController.currentID?.includes("aion_fire-axolotl_browser");'))
-    driver.save_screenshot(str(ARTIFACTS / 'character-native-sidebar.png'))
+    capture_screenshot(driver, str(ARTIFACTS / 'character-native-sidebar.png'))
     record('The optional native companion sidebar opens through the normal settings button')
 finally:
     (ARTIFACTS / 'results.json').write_text(json.dumps({'mode': 'compiled-fork' if NATIVE else 'stock-firefox-fixture', 'passed': results}, ensure_ascii=False, indent=2) + '\n')

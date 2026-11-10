@@ -5,6 +5,7 @@ import os
 from pathlib import Path
 import time
 
+from gecko_controls import capture_screenshot
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
@@ -45,7 +46,7 @@ def card():
 
 def screenshot(name):
     driver.set_context('chrome')
-    driver.save_screenshot(str(OUT / name))
+    capture_screenshot(driver, str(OUT / name))
     driver.set_context('content')
 
 

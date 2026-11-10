@@ -1,6 +1,19 @@
 # SPDX-License-Identifier: MPL-2.0
 """Operate actual HTML controls, including prefixed HTML in Firefox chrome."""
 from selenium.webdriver.common.by import By
+from selenium.common.exceptions import WebDriverException
+import time
+
+
+def capture_screenshot(driver, filename):
+    """Wait out a transient native compositor snapshot failure, never skip it."""
+    for attempt in range(3):
+        try:
+            return driver.save_screenshot(str(filename))
+        except WebDriverException as error:
+            if 'Unable to capture screenshot' not in str(error) or attempt == 2:
+                raise
+            time.sleep(0.25)
 
 
 def choose_option(driver, element_id, value):

@@ -12,7 +12,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.firefox.service import Service
 from selenium.webdriver.support.ui import Select, WebDriverWait
-from gecko_controls import choose_option
+from gecko_controls import choose_option, capture_screenshot
 
 ROOT = Path(__file__).resolve().parents[1]
 ARTIFACTS = Path(os.environ.get('AION_NATIVE_ARTIFACTS', ROOT / 'work/native-test-artifacts'))
@@ -64,7 +64,7 @@ try:
     record('Fresh native profile starts with the dark browser theme')
     uuid = driver.execute_script('return JSON.parse(Services.prefs.getStringPref("extensions.webextensions.uuids"))["aion@fire-axolotl.browser"];')
     redesigned = driver.execute_script('return Services.prefs.getBoolPref("browser.settings-redesign.enabled",false);')
-    driver.save_screenshot(str(ARTIFACTS / 'native-first-window.png'))
+    capture_screenshot(driver, str(ARTIFACTS / 'native-first-window.png'))
     driver.set_context('content')
     # Normal first-run/new-tab initialization can replace the initial browsing
     # context. Start from an explicit live tab rather than a cached context.
@@ -79,7 +79,7 @@ try:
     driver.find_element(By.ID, 'open-characters').click()
     driver.set_context('chrome')
     wait.until(lambda d: d.execute_script('return SidebarController.currentID?.includes("aion_fire-axolotl_browser");'))
-    driver.save_screenshot(str(ARTIFACTS / 'native-companion-sidebar.png'))
+    capture_screenshot(driver, str(ARTIFACTS / 'native-companion-sidebar.png'))
     driver.execute_script('SidebarController.hide();')
     driver.set_context('content')
     driver.get(f'moz-extension://{uuid}/characters.html')
@@ -99,7 +99,7 @@ try:
         wait.until(lambda d: d.execute_script('return gBrowser.tabContainer.getAttribute("orient");') == ('horizontal' if side == 'top' else 'vertical'))
         if side != 'top':
             wait.until(lambda d: d.execute_script('return gBrowser.tabContainer.getBoundingClientRect().x < gBrowser.selectedBrowser.getBoundingClientRect().x;') == (side == 'left'))
-        driver.save_screenshot(str(ARTIFACTS / f'native-tabs-{side}.png'))
+        capture_screenshot(driver, str(ARTIFACTS / f'native-tabs-{side}.png'))
         driver.set_context('content')
     record('Packaged native controls move actual browser tabs left, right and top')
     choose_option(driver, 'aion-browser-font', 'opendyslexic')

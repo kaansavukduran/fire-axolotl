@@ -1,3 +1,9 @@
+# Windows derleme sonrası ekran görüntüsü hatası
+
+- Run 42729988254 motoru ve ZIP/native NSIS paketini başarıyla üretti. Native smoke ilk 7 kontrolü geçti; yan panel açıldıktan sonraki screenshot, Windows headless compositor `Unable to capture screenshot` hatasıyla durdu. Bu nedenle run başarısız ve yayın yapılmadı. Native payload artifact 13731801476 korundu; D:/o cache 1659208500 bayt olarak başarıyla kaydedildi.
+- Ekran görüntüsü yardımcısı yalnızca bu belirli yakalama hatasında en çok 3 kez, 250ms arayla dener. Kalıcı ve ilgisiz hatalar yine testi durdurur. İki hata davranış testi ayrı Selenium ortamında koşar; ürünün güvenlik ayarları değiştirilmez.
+- Tam ilgili kaynak arşivi artık testlerden önce saklanır. Sonraki test hatasında motor kaynağı kaybolmaz. Yeni native çalıştırma en-US/tr ve sağ sekme düzeltmesi dahil güncel main kaynaklarını kullanır. Yayın pinleri yeni run başladıktan sonra onun kesin SHA/ID'sine eşlenmelidir.
+
 # Native Türkçe dil desteği / Native Turkish localization
 
 - Native arayüz için en-US ve sabit özetli Türkçe dil kaynakları paketlenir; `intl.locale.requested` varsayılanı boş bırakılarak işletim sistemi tercihi izlenir. Kullanıcının dil seçimi değiştirilmez. Diğer Firefox dillerinin dağıtımı henüz tamamlanmadı.
