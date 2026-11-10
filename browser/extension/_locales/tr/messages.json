@@ -544,5 +544,17 @@
   },
   "characterLibraryFull": {
     "message": "8 özel karakter sınırına ulaşıldı. Birini dışa aktarıp kaldırabilir, sonra yenisini ekleyebilirsin."
+  },
+  "newtabGame": {
+    "message": "Yeni sekmede Aion Koşusu’nu göster"
+  },
+  "newtabGameHelp": {
+    "message": "Çevrimdışı mini oyun. Yalnızca Başlat’a basınca çalışır. İstediğin zaman gizleyebilirsin; arama ve kısayollar kullanılabilir. Değişiklikler yeni sekmelere uygulanır."
+  },
+  "newtabGameLanguage": {
+    "message": "Yeni sekme oyununun dili"
+  },
+  "newtabGameReset": {
+    "message": "Bu cihazdaki oyun rekorunu sıfırla"
   }
 }

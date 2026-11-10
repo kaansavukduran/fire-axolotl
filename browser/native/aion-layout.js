@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: MPL-2.0 */
 (() => {
   'use strict';
-  const prefs = ['sidebar.verticalTabs', 'sidebar.position_start', 'layout.css.prefers-color-scheme.content-override', 'fireaxolotl.ui.font'];
+  const prefs = ['sidebar.verticalTabs', 'sidebar.position_start', 'layout.css.prefers-color-scheme.content-override', 'fireaxolotl.ui.font', 'fireaxolotl.newtabGame.enabled', 'fireaxolotl.newtabGame.language'];
   let initialized = false;
   async function initialize() {
     const group = document.getElementById('aionLayoutGroup');
@@ -30,6 +30,8 @@
       select.value = !vertical ? 'top' : start !== rtl ? 'left' : 'right';
       document.getElementById('aion-website-theme').value = Services.prefs.getIntPref(prefs[2], 2);
       document.getElementById('aion-browser-font').value = Services.prefs.getStringPref(prefs[3], 'system');
+      document.getElementById('aion-newtab-game').checked = Services.prefs.getBoolPref(prefs[4], true);
+      document.getElementById('aion-game-language').value = Services.prefs.getStringPref(prefs[5], locale);
     }
     select.addEventListener('change', () => {
       if (!['top', 'left', 'right'].includes(select.value)) return;
@@ -51,6 +53,18 @@
     });
     document.getElementById('aion-customize-toolbar').addEventListener('click', () => {
       Services.wm.getMostRecentWindow('navigator:browser')?.gCustomizeMode.enter();
+    });
+    document.getElementById('aion-newtab-game').addEventListener('change', event => {
+      Services.prefs.setBoolPref(prefs[4], event.target.checked);
+      document.getElementById('aion-layout-status').textContent = messages.saved.message;
+    });
+    document.getElementById('aion-game-language').addEventListener('change', event => {
+      if (['tr', 'en'].includes(event.target.value)) Services.prefs.setStringPref(prefs[5], event.target.value);
+      document.getElementById('aion-layout-status').textContent = messages.saved.message;
+    });
+    document.getElementById('aion-game-reset').addEventListener('click', () => {
+      Services.prefs.clearUserPref('fireaxolotl.newtabGame.best');
+      document.getElementById('aion-layout-status').textContent = messages.saved.message;
     });
     const observer = {observe: sync};
     prefs.forEach(pref => Services.prefs.addObserver(pref, observer));

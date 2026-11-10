@@ -22,7 +22,11 @@ Sıra, ilk konuşmadaki tarayıcı isteklerini izler. “Kısmi”, kullanılabi
 | 16 | Firefox özellikleri; telemetri ve reklam ölçümü kapalı | İlkeler native profilde doğrulandı. Kapsamlı ağ incelemesi ve bağımsız hizmet erişimi açık. |
 | 17 | Kullanılabilir paket ve gerçek arayüz | Derlenmiş tarayıcı ekranları var. Günlük kullanım için kararlı sürüm henüz yok. Platformlar [BUILD.md](BUILD.md) içinde. |
 | 18 | İsteğe bağlı karakterler ve kullanıcı karakteri ekleme | Aion/kuzu/kurt/baykuş resim kareleri, duraklatma, azaltılmış hareket, yerel PNG, silme ve yedek geri alma geçti. |
+| 19 | Yeni sekmede özgün piksel Aion zıplama oyunu | 48 karelik pafta; Başlat, Boşluk/dokunma, Esc, buz/ateş/kül, yerel rekor, gizleme ve TR/EN. Derlenmiş Linux forkunun normal yeni sekmesinde 9 kontrol geçti. Windows kurulu paket testi yayın kapısıdır. |
+| 20 | Windows Setup.exe | Tam motor derlemesi 42709930229 sürüyor. Aion simgeli SFX kabuğu Windows 2022 üzerinde derlendi. Gerçek temiz kurulum ve kaldırma testleri tamamlanmadan Windows hazır sayılmaz. |
 
 Yanlışlıkla başka uygulama için gönderilen spor, besin seçici ve RPG menüsü değişiklikleri bu projeye taşınmaz. Kullanıcının son düzeltmesiyle yalnızca tarayıcıya uygun karakter fikri kapsamda kaldı.
+
+Driver Booster / WinOptimizer tarama, onarma ve sürücü güncelleme talepleri de kullanıcı tarafından yanlış proje olarak geri çekildi; Fire Axolotl kapsamına dahil değildir.
 
 Öncelik: gerçek dağıtım arşivi doğrulaması → dil/hizmet uyumluluğu → imzalı güncelleme → açık özellik eşlemesi → platform paketleri. Her aşamada kanıt ve kalan sınırlar [VALIDATION.md](VALIDATION.md) içinde güncellenir; bir süreç yeniden başlatma testi, sürüm yükseltme testi yerine sayılmaz.

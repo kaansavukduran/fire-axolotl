@@ -1,3 +1,12 @@
+# Aion yeni sekme oyunu / Aion new-tab game
+
+- Kullanıcının Aion ana referansı ve paftasından uygulama için özgün piksel pafta üretildi: `browser/native/aion-runner/aion-runner.png`, 6 sütun × 8 satır, 48 kare. PNG değiştirilmeden saklanır; kaynak/özet `PROVENANCE.json` içinde. Google Dino kodu veya varlıkları kullanılmadı.
+- Firefox'un mevcut araması ve kısayolları korunur; normal `about:newtab` / `about:home` sayfasına ayrı kart eklenir. Başlat, Boşluk/dokunma, Esc, sekme geçişinde duraklatma, buz/ateş/kül, yerel rekor, gizle, native Görünüm ayarlarında göster/TR/EN/rekor sıfırlama var. Başka eklentinin yeni sekmesine müdahale edilmez; web sayfalarına aktör yüklenmez.
+- Gerçek yayımlanmış Linux motorunun ayrı kopyasına yalnızca `browser/omni.ja` arayüz kaynakları uygulandı. `tests/native_runner.py` normal tarayıcıda 9 senaryoyu geçti. Görüntüler `docs/screenshots/aion-runner-*.png`; taslak/maket değildir. 22 Node ve 16 Python kontrolü beklenen güncel toplamdır; son çalıştırmayı kayıtla doğrula.
+- `runner_overlay.py` motor/politika/yerleşik eklenti değişikliklerini reddeder; kaynak hazırlama betiğinde yalnızca 3 kaynak kopyalama satırını kabul eder. Değişen her arayüz kaynağı ve değişmeden kalan native dosyalar hash ile denetlenir. Windows ZIP ve Setup aynı arayüz yükünü kullanmalı; kurulu oyunun 9 testi yayın öncesi zorunludur.
+- Windows SFX kabuğu [42723028131](https://github.com/kaansavukduran/fire-axolotl/actions/runs/42723028131) ile VS 2022 üzerinde başarıyla derlendi. LZMA SDK 18.05 kaynak/atfı korunur, Aion simgesi ve kendi ürün adı kullanılır. Oyun için 7z arşivi tekrar paketlenir; iç native NSIS setup.exe değiştirilmez. Kurulum testi bütün kurulu dosyaları güncel ZIP ile karşılaştırır.
+- Shell GitHub kimliğinin süresi doldu; bağlı GitHub uygulaması kullanılabilir. Yeni kaynak gönderimini bu uygulamanın blob/tree/commit/ref API'siyle tamamla; `source-sync.yml` ürettiği tam Git bundle'ını indirip yerel dalı ve per-push Drive yedeğini kesin commit'e eşle. Ana motor derlemesini yeniden başlatma.
+
 # Windows geliştirmesi / Windows development
 
 - Driver Booster / WinOptimizer tarama, onarma ve sürücü güncelleme talepleri kullanıcı tarafından yanlış proje olarak geri çekildi; tarayıcı kapsamına dahil değildir.

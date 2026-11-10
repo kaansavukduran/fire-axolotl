@@ -25,5 +25,16 @@
     <html:option value="serif">Georgia</html:option>
   </html:select>
   <description data-aion-l10n="browserFontHelp"/>
+  <html:label style="display:flex;align-items:center;gap:.6em;margin-block:.7em">
+    <html:input id="aion-newtab-game" type="checkbox"/>
+    <html:span data-aion-l10n="newtabGame"/>
+  </html:label>
+  <description data-aion-l10n="newtabGameHelp"/>
+  <html:label for="aion-game-language" data-aion-l10n="newtabGameLanguage"/>
+  <html:select id="aion-game-language" style="font:inherit;padding:.6em;margin-block:.5em">
+    <html:option value="tr">Türkçe</html:option>
+    <html:option value="en">English</html:option>
+  </html:select>
+  <html:button id="aion-game-reset" data-aion-l10n="newtabGameReset" style="font:inherit;padding:.6em"/>
   <description id="aion-layout-status" role="status"/>
 </groupbox>

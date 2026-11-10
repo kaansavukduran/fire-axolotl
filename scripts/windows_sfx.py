@@ -87,6 +87,38 @@ def replace_stub(installer, tag, stub):
     return stub + tag + tail, digest(tail)
 
 
+def frontend_payload(installer, tag, native, work):
+    directory = work / 'ui-payload'
+    if directory.exists():
+        raise ValueError('The installer repack directory must be new')
+    directory.mkdir()
+    sevenzip = shutil.which('7z') or str(Path(os.environ['ProgramFiles']) / '7-Zip/7z.exe')
+    if not Path(sevenzip).is_file():
+        raise ValueError('The Windows runner 7-Zip build tool is required')
+    # Validate the complete tag boundary, then extract only the reviewed inner
+    # NSIS installer. Never execute an installer during this packaging step.
+    replace_stub(installer, tag, b'MZboundary-check')
+    original_archive = directory / 'original.7z'
+    original_archive.write_bytes(installer.split(tag, 1)[1])
+    subprocess.run([sevenzip, 'e', str(original_archive), 'setup.exe', '-o' + str(directory), '-y', '-bso0'], check=True)
+    inner = directory / 'setup.exe'
+    inner_hash = digest(inner.read_bytes())
+    if inner.read_bytes()[:2] != b'MZ':
+        raise ValueError('Native NSIS installer missing')
+    with zipfile.ZipFile(native) as archive:
+        roots = [name.rsplit('/', 1)[0] for name in archive.namelist() if name.endswith('/application.ini')]
+        if len(roots) != 1:
+            raise ValueError('One reviewed runtime is required')
+        archive.extractall(directory / 'runtime')
+    shutil.move(str(directory / 'runtime' / roots[0]), directory / 'core')
+    output = directory / 'app.7z'
+    subprocess.run([sevenzip, 'a', '-t7z', str(output), 'core', 'setup.exe', '-m0=LZMA2', '-mx=7', '-mmt=2', '-bso0'], cwd=directory, check=True)
+    subprocess.run([sevenzip, 't', str(output), '-bso0'], check=True)
+    if digest(inner.read_bytes()) != inner_hash:
+        raise ValueError('Inner native NSIS installer changed')
+    return output.read_bytes(), inner_hash
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--sdk', type=Path)
@@ -111,18 +143,21 @@ def main():
         raise ValueError('One verified native installer is required')
     installer = installers[0]
     original = installer.read_bytes()
-    updated, payload_sha256 = replace_stub(original, tag, stub)
+    native = installer.with_name(installer.name.removesuffix('-Setup.exe') + '.zip')
+    payload, inner_hash = frontend_payload(original, tag, native, work)
+    updated = stub + tag + payload
+    payload_sha256 = digest(payload)
     installer.write_bytes(updated)
     dist = installer.parent
-    report = {'original_installer_sha256': digest(original), 'installer_sha256': digest(updated), 'native_7z_payload_unchanged': True, 'native_7z_payload_sha256': payload_sha256, 'sfx_sha256': digest(stub), 'icon_sha256': digest((ROOT / 'branding/aion.ico').read_bytes()), 'sdk_license': 'LZMA SDK 18.05 public domain; Mozilla notices retained', 'build_command': command}
+    report = {'original_installer_sha256': digest(original), 'installer_sha256': digest(updated), 'native_7z_payload_unchanged': False, 'frontend_zip_sha256': digest(native.read_bytes()), 'inner_nsis_preserved': True, 'inner_nsis_sha256': inner_hash, 'native_7z_payload_sha256': payload_sha256, 'sfx_sha256': digest(stub), 'icon_sha256': digest((ROOT / 'branding/aion.ico').read_bytes()), 'sdk_license': 'LZMA SDK 18.05 public domain; Mozilla notices retained', 'build_command': command}
     (dist / 'windows-sfx-build.json').write_text(json.dumps(report, indent=2) + '\n')
     with zipfile.ZipFile(dist / 'windows-sfx-corresponding-source.zip', 'w', zipfile.ZIP_DEFLATED) as archive:
         for path in sorted(sdk.rglob('*')):
             if path.is_file() and not set(path.relative_to(sdk).parts).intersection({'Win32', 'ARM64', '.vs'}) and path.suffix.lower() not in {'.sfx', '.exe', '.obj', '.pdb'}:
                 archive.write(path, str(Path('7zstub') / path.relative_to(sdk)))
         archive.write(Path(__file__), 'windows_sfx.py')
-        archive.writestr('README.txt', 'Public-domain LZMA SDK 18.05 extraction wrapper, with Mozilla changes and original notices. Icon and product strings replaced with Fire Axolotl. Build using windows_sfx.py --sdk ./7zstub from the packaging-source checkout. Full native browser source is distributed separately. windows-sfx-build.json records the actual command and unchanged native archive digest.\n')
-    print('Original-brand SFX rebuilt; native installer archive preserved byte for byte')
+        archive.writestr('README.txt', 'Public-domain LZMA SDK 18.05 extraction wrapper, with Mozilla changes and original notices. Icon and product strings replaced with Fire Axolotl. Build using windows_sfx.py --sdk ./7zstub from the packaging-source checkout. Full native browser source is distributed separately. windows-sfx-build.json records the actual command, unchanged inner NSIS installer digest and updated UI payload archive digest.\n')
+    print('Original-brand SFX rebuilt; unchanged native NSIS installer packages the audited UI overlay')
 
 
 if __name__ == '__main__':

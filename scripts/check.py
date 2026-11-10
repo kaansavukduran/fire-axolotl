@@ -23,6 +23,10 @@ for file in EXT.glob('*.js'):
     assert 'innerHTML' not in file.read_text(), f'Untrusted HTML sink in {file}'
 for file in (ROOT / 'browser/native').glob('*.js'):
     subprocess.run(['node', '--check', str(file)], check=True)
+for file in (ROOT / 'browser/native/aion-runner').glob('*.mjs'):
+    subprocess.run(['node', '--check', str(file)], check=True)
+runner = ROOT / 'browser/native/aion-runner'
+assert hashlib.sha256((runner / 'aion-runner.png').read_bytes()).hexdigest() == json.loads((runner / 'PROVENANCE.json').read_text())['sha256'], 'Runner artwork provenance mismatch'
 native_keys = set(re.findall(r'data-aion-l10n="([^"]+)"', (ROOT / 'browser/native/aion-layout.inc.xhtml').read_text()))
 assert native_keys <= translations['en'].keys(), 'Missing native tab-layout translations'
 manifest = json.loads((EXT / 'manifest.json').read_text())

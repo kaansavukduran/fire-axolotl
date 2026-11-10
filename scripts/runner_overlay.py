@@ -1,0 +1,128 @@
+# SPDX-License-Identifier: MPL-2.0
+"""Apply only audited new-tab UI resources to our own compiled browser.
+
+The engine and built-in add-ons are preserved. The modified omni.ja and complete
+overlay source are recorded separately from the original engine build receipt.
+"""
+import argparse
+import configparser
+import hashlib
+import json
+from pathlib import Path
+import subprocess
+import tempfile
+import zipfile
+
+ROOT = Path(__file__).resolve().parents[1]
+PREFIX = 'chrome/browser/content/browser/'
+
+
+def check_source_delta(base):
+    protected = ['browser', 'branding', 'components.json', 'upstream.json', 'scripts/prepare_source.py', 'scripts/package_extension.py', 'scripts/fetch_components.py']
+    changed = subprocess.check_output(['git', 'diff', '--name-only', base, 'HEAD', '--', *protected], cwd=ROOT, text=True).splitlines()
+    allowed = {'browser/native/aion-chrome.js', 'browser/native/aion-layout.js', 'browser/native/aion-layout.inc.xhtml', 'scripts/prepare_source.py', 'browser/extension/_locales/tr/messages.json', 'browser/extension/_locales/en/messages.json'}
+    allowed.update('browser/native/aion-runner/' + name for name in ['AionRunnerParent.sys.mjs', 'AionRunnerChild.sys.mjs', 'card.sys.mjs', 'world.sys.mjs', 'aion-runner.png', 'PROVENANCE.json'])
+    if set(changed) - allowed:
+        raise ValueError('The compiled core differs from the reviewed build: ' + ', '.join(sorted(set(changed) - allowed)))
+    before = subprocess.check_output(['git', 'show', base + ':scripts/prepare_source.py'], cwd=ROOT).decode()
+    anchor = "    shutil.copytree(ROOT / 'browser/extension/fonts', base / 'content/aion-fonts', dirs_exist_ok=True)"
+    before = before.replace(anchor, "    shutil.copytree(ROOT / 'browser/native/aion-runner', base / 'content/aion-runner', dirs_exist_ok=True)\n" + anchor)
+    anchor = "    replace_once(base / 'jar.mn', 'browser.jar:\\n', 'browser.jar:\\n' + entries + '\\n')"
+    before = before.replace(anchor, anchor + "\n    runner_anchor = '        content/browser/aion-fonts/ (content/aion-fonts/**)\\n'\n    replace_once(base / 'jar.mn', runner_anchor, runner_anchor + '        content/browser/aion-runner/ (content/aion-runner/**)\\n')")
+    if before != (ROOT / 'scripts/prepare_source.py').read_text():
+        raise ValueError('Only the reviewed resource-copy additions to source preparation are allowed')
+    return changed
+
+
+def sha(data):
+    return hashlib.sha256(data).hexdigest()
+
+
+def apply(runtime):
+    identity = configparser.ConfigParser()
+    identity.read(runtime / 'application.ini')
+    if identity['App']['ID'] != '{75450dd9-387d-4289-8b23-7ad6609fa530}' or identity['App']['Name'] != 'FireAxolotl':
+        raise ValueError('The compiled Fire Axolotl product is required')
+    path = runtime / 'browser/omni.ja'
+    original = path.read_bytes()
+    replacements = {
+        PREFIX + 'aion-chrome.js': (ROOT / 'browser/native/aion-chrome.js').read_bytes(),
+        PREFIX + 'preferences/aion-layout.js': (ROOT / 'browser/native/aion-layout.js').read_bytes()
+    }
+    for locale in ['tr', 'en']:
+        replacements[PREFIX + f'preferences/aion-{locale}.json'] = (ROOT / f'browser/extension/_locales/{locale}/messages.json').read_bytes()
+    for file in sorted((ROOT / 'browser/native/aion-runner').iterdir()):
+        if file.is_file():
+            replacements[PREFIX + 'aion-runner/' + file.name] = file.read_bytes()
+    with zipfile.ZipFile(path) as archive:
+        if len(archive.namelist()) != len(set(archive.namelist())):
+            raise ValueError('Duplicate omni.ja member')
+        pref = PREFIX + 'preferences/preferences.xhtml'
+        text = archive.read(pref).decode()
+        begin, end = '<!-- Fire Axolotl preferences begin -->', '<!-- Fire Axolotl preferences end -->'
+        if text.count(begin) != 1 or text.count(end) != 1:
+            raise ValueError('Expected the existing native appearance preferences')
+        before, rest = text.split(begin, 1)
+        _, after = rest.split(end, 1)
+        text = before + begin + '\n' + (ROOT / 'browser/native/aion-layout.inc.xhtml').read_text().rstrip() + '\n' + end + after
+        replacements[pref] = text.encode()
+        temp = path.with_suffix('.ja.new')
+        unchanged = {}
+        changed = {}
+        with zipfile.ZipFile(temp, 'w', zipfile.ZIP_DEFLATED) as output:
+            for entry in archive.infolist():
+                data = archive.read(entry.filename)
+                updated = replacements.pop(entry.filename, data)
+                output.writestr(entry, updated)
+                if data != updated:
+                    changed[entry.filename] = {'before': sha(data), 'after': sha(updated)}
+                else:
+                    unchanged[entry.filename] = sha(data)
+            for name, data in replacements.items():
+                output.writestr(name, data)
+                changed[name] = {'before': None, 'after': sha(data)}
+    with zipfile.ZipFile(temp) as archive:
+        if archive.testzip() is not None:
+            raise ValueError('Repacked UI archive CRC failure')
+        if any(sha(archive.read(name)) != expected for name, expected in unchanged.items()):
+            raise ValueError('An unrelated native browser resource changed')
+    temp.replace(path)
+    return {'original_browser_omni_sha256': sha(original), 'browser_omni_sha256': sha(path.read_bytes()), 'changed': changed, 'unchanged_member_count': len(unchanged), 'scope': 'Only the listed browser/omni.ja UI resources. No native executable, engine, policy or built-in add-on modified.'}
+
+
+def windows_archive(path):
+    original_hash = sha(path.read_bytes())
+    with tempfile.TemporaryDirectory(prefix='aion-ui-') as folder:
+        directory = Path(folder)
+        with zipfile.ZipFile(path) as archive:
+            roots = [name.rsplit('/', 1)[0] for name in archive.namelist() if name.endswith('/application.ini')]
+            if len(roots) != 1:
+                raise ValueError('Expected one compiled runtime')
+            archive.extractall(directory)
+        report = apply(directory / roots[0])
+        omni = roots[0] + '/browser/omni.ja'
+        replacement = (directory / omni).read_bytes()
+        temp = path.with_suffix('.zip.new')
+        unchanged = {}
+        with zipfile.ZipFile(path) as archive, zipfile.ZipFile(temp, 'w') as output:
+            for entry in archive.infolist():
+                data = archive.read(entry.filename)
+                output.writestr(entry, replacement if entry.filename == omni else data)
+                if entry.filename != omni:
+                    unchanged[entry.filename] = sha(data)
+        with zipfile.ZipFile(temp) as archive:
+            if archive.testzip() is not None or any(sha(archive.read(name)) != value for name, value in unchanged.items()):
+                raise ValueError('A native file changed outside the reviewed browser UI archive')
+        temp.replace(path)
+    return {**report, 'original_native_zip_sha256': original_hash, 'native_zip_sha256': sha(path.read_bytes()), 'unchanged_native_files': len(unchanged), 'only_native_member_changed': omni}
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('runtime', type=Path)
+    parser.add_argument('--receipt', type=Path, required=True)
+    args = parser.parse_args()
+    report = apply(args.runtime)
+    args.receipt.parent.mkdir(parents=True, exist_ok=True)
+    args.receipt.write_text(json.dumps(report, indent=2) + '\n')
+    print(f'Applied {len(report["changed"])} UI resources; {report["unchanged_member_count"]} original archive members verified unchanged')

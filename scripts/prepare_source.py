@@ -229,9 +229,12 @@ def prepare(source):
     base = source / 'browser/base'
     for filename in ['aion-chrome.js', 'aion-chrome.css']:
         shutil.copyfile(ROOT / 'browser/native' / filename, base / 'content' / filename)
+    shutil.copytree(ROOT / 'browser/native/aion-runner', base / 'content/aion-runner', dirs_exist_ok=True)
     shutil.copytree(ROOT / 'browser/extension/fonts', base / 'content/aion-fonts', dirs_exist_ok=True)
     entries = '\n'.join(['        content/browser/aion-chrome.js (content/aion-chrome.js)', '        content/browser/aion-chrome.css (content/aion-chrome.css)', '        content/browser/aion-fonts/ (content/aion-fonts/**)'])
     replace_once(base / 'jar.mn', 'browser.jar:\n', 'browser.jar:\n' + entries + '\n')
+    runner_anchor = '        content/browser/aion-fonts/ (content/aion-fonts/**)\n'
+    replace_once(base / 'jar.mn', runner_anchor, runner_anchor + '        content/browser/aion-runner/ (content/aion-runner/**)\n')
     chrome_assets = '  <link rel="stylesheet" href="chrome://browser/content/aion-chrome.css"/>\n  <script src="chrome://browser/content/aion-chrome.js"/>\n'
     replace_once(base / 'content/browser.xhtml', '</head>', chrome_assets + '</head>')
     replace_once(prefs / 'preferences.xhtml', '</head>', chrome_assets + '</head>')

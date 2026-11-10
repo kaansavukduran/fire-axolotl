@@ -19,6 +19,8 @@
     init() {
       Services.prefs.addObserver(preference, controller);
       controller.observe();
+      try {ChromeUtils.importESModule('chrome://browser/content/aion-runner/AionRunnerParent.sys.mjs').register();}
+      catch (error) {console.error('Aion runner registration failed', error);}
       window.addEventListener('unload', () => Services.prefs.removeObserver(preference, controller), {once: true});
     }
   };

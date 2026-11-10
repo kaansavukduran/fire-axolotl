@@ -544,5 +544,17 @@
   },
   "characterLibraryFull": {
     "message": "The 8-character limit is reached. Export and remove one before adding another."
+  },
+  "newtabGame": {
+    "message": "Show Aion Run on new tabs"
+  },
+  "newtabGameHelp": {
+    "message": "A small offline game. Starts only when you press Start. Hide it at any time; search and shortcuts stay available. Changes apply to new tabs."
+  },
+  "newtabGameLanguage": {
+    "message": "New-tab game language"
+  },
+  "newtabGameReset": {
+    "message": "Reset the local game record"
   }
 }
