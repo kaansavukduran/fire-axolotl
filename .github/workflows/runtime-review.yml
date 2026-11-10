@@ -1,0 +1,49 @@
+name: Export reviewed Linux native runtime for local QA
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  export:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+      AION_NATIVE_RUN_ID: '42827574889'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: '3.12'
+      - run: python3 scripts/release_validation.py preflight
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131
+        with:
+          name: fire-axolotl-linux-developer-build-with-source-NOT-STABLE
+          path: work/runtime-review-inputs
+          run-id: 42827574889
+          github-token: ${{ github.token }}
+      - name: Verify identity and export only the compiled runtime
+        run: |
+          python3 - <<'PY'
+          import json, shutil, sys
+          from pathlib import Path
+          sys.path.insert(0, 'scripts')
+          from verify_native_package import verify
+          config = json.load(open('release.json'))
+          packages = list(Path('work/runtime-review-inputs').glob('fire-axolotl-*.tar.xz'))
+          assert len(packages) == 1
+          report = verify(packages[0])
+          out = Path('work/runtime-review-export')
+          out.mkdir()
+          shutil.copyfile(packages[0], out / packages[0].name)
+          (out / 'provenance.json').write_text(json.dumps({'source_commit': config['source_commit'], 'native_run': config['native_run_id'], 'native': report}, indent=2) + '\n')
+          PY
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: linux-native-runtime-review-NOT-STABLE
+          path: work/runtime-review-export/
+          if-no-files-found: error
+          retention-days: 1
