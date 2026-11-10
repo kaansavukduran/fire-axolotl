@@ -30,8 +30,8 @@ def digest(path):
 
 def preflight():
     run = json.loads(gh('api', f'repos/{CONFIG["repository"]}/actions/runs/{CONFIG["native_run_id"]}'))
-    expected = {'status': 'completed', 'conclusion': 'success', 'event': 'workflow_dispatch', 'head_branch': 'main', 'head_sha': CONFIG['source_commit'], 'workflow_id': CONFIG['native_workflow_id'], 'path': '.github/workflows/native-windows.yml'}
-    if any(run.get(key) != value for key, value in expected.items()) or run['repository']['id'] != CONFIG['repository_id'] or run['head_repository']['id'] != CONFIG['repository_id']:
+    expected = {'status': 'completed', 'conclusion': 'success', 'head_branch': 'main', 'head_sha': CONFIG['source_commit'], 'workflow_id': CONFIG['native_workflow_id'], 'path': '.github/workflows/native-windows.yml'}
+    if run.get('event') not in {'workflow_dispatch', 'push'} or any(run.get(key) != value for key, value in expected.items()) or run['repository']['id'] != CONFIG['repository_id'] or run['head_repository']['id'] != CONFIG['repository_id']:
         raise ValueError('The reviewed successful Windows source build is required')
     if os.environ.get('GITHUB_EVENT_NAME') == 'workflow_run':
         event = json.loads(Path(os.environ['GITHUB_EVENT_PATH']).read_text())
@@ -105,7 +105,7 @@ def assemble():
     setup = DIST / f'{STEM}-Setup.exe'
     if sfx['frontend_zip_sha256'] != overlay['native_zip_sha256'] or not sfx['inner_nsis_preserved'] or sfx['installer_sha256'] != digest(setup) or sfx['icon_sha256'] != digest(ROOT / 'branding/aion.ico'):
         raise ValueError('Original-brand installer wrapper verification missing')
-    if game['mode'] != 'compiled-fork-normal-newtab' or len(game['passed']) < 9:
+    if game['mode'] != 'compiled-fork-normal-newtab' or len(game['passed']) < 11:
         raise ValueError('Installed-browser new-tab game checks missing')
     if not installer['payload_verified'] or not uninstall['profiles_preserved'] or not uninstall['default_browser_preserved']:
         raise ValueError('Clean installation/uninstallation data protection not verified')

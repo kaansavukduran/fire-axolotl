@@ -182,6 +182,7 @@ export class AionRunnerCard {
     this.canvas.dataset.state = world.status;
     this.canvas.dataset.score = world.score;
     this.canvas.dataset.airborne = String(world.y < 0);
+    this.canvas.dataset.obstacleX = world.obstacles.length ? world.obstacles[0].x.toFixed(1) : '';
   }
   destroy() {
     this.dead = true;

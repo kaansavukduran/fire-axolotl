@@ -11,5 +11,9 @@ ac_add_options MOZ_APP_REMOTINGNAME=fire-axolotl
 # Do not accept Mozilla-signed MAR files as updates to this independent product.
 # Enable the updater only after project MAR signing and hosting are operational.
 ac_add_options --disable-updater
-mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/obj-fire-axolotl
+if test -n "${FIRE_AXOLOTL_OBJDIR:-}"; then
+  mk_add_options MOZ_OBJDIR="$FIRE_AXOLOTL_OBJDIR"
+else
+  mk_add_options MOZ_OBJDIR=@TOPSRCDIR@/obj-fire-axolotl
+fi
 mk_add_options MOZ_MAKE_FLAGS=-j4

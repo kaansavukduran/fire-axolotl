@@ -13,7 +13,9 @@ export class AionRunnerChild extends JSWindowActorChild {
       });
       const place = () => {
         const search = this.document.querySelector('.search-wrapper');
-        if (search && !this.card.dismissed && !this.card.host.isConnected) search.after(this.card.host);
+        if (this.card.dismissed || this.card.host.isConnected) return;
+        if (search) search.after(this.card.host);
+        else this.document.querySelector('main')?.prepend(this.card.host);
       };
       place();
       this.observer = new this.contentWindow.MutationObserver(place);

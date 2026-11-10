@@ -98,7 +98,19 @@ try:
     driver.switch_to.window(original)
     record('Switching to another tab pauses gameplay until an explicit Resume')
 
-    seen = set()
+    play.click()
+    WebDriverWait(driver, 30, poll_frequency=0.02).until(lambda _: 160 < float(canvas.get_attribute('data-obstacle-x') or '1000') <= 218)
+    canvas.send_keys(Keys.SPACE)
+    wait.until(lambda _: int(canvas.get_attribute('data-score')) >= 1)
+    first_hit = wait.until(lambda _: canvas.get_attribute('data-state') if canvas.get_attribute('data-state') in ['ice', 'fire'] else False)
+    time.sleep(1.1)
+    screenshot(f'newtab-{first_hit}.png')
+    driver.get('about:newtab')
+    shadow, canvas, play = card()
+    assert int(shadow.find_element(By.CSS_SELECTOR, '.best').text.split()[-1]) >= 1
+    record('A genuine keyboard jump clears an obstacle, earns a score and preserves the earned record on a fresh new tab')
+
+    seen = {first_hit}
     for attempt in range(24):
         play.click()
         state = wait.until(lambda _: canvas.get_attribute('data-state') if canvas.get_attribute('data-state') in ['ice', 'fire'] else False)
@@ -148,6 +160,25 @@ try:
     shadow, canvas, play = card()
     assert shadow.find_element(By.CSS_SELECTOR, '.best').text == 'Best 0'
     record('Reset record clears only the local game record')
+
+    driver.set_context('chrome')
+    driver.execute_script('Services.prefs.setBoolPref("browser.newtabpage.activity-stream.showSearch",false)')
+    driver.set_context('content')
+    driver.get('about:newtab')
+    shadow, canvas, play = card()
+    assert not driver.find_elements(By.CSS_SELECTOR, '.search-wrapper')
+    driver.set_context('chrome')
+    driver.execute_script('Services.prefs.setBoolPref("browser.newtabpage.enabled",false)')
+    driver.set_context('content')
+    driver.get('about:newtab')
+    time.sleep(0.3)
+    assert not driver.find_elements(By.ID, 'fireaxolotl-runner')
+    driver.set_context('chrome')
+    driver.execute_script('Services.prefs.clearUserPref("browser.newtabpage.enabled");Services.prefs.clearUserPref("browser.newtabpage.activity-stream.showSearch")')
+    driver.set_context('content')
+    driver.get('about:newtab')
+    card()
+    record('Game visibility is independent of the search-bar toggle and respects the native blank-new-tab choice')
 
     driver.get('data:text/html,<title>Ordinary page</title><input>')
     assert not driver.find_elements(By.ID, 'fireaxolotl-runner')

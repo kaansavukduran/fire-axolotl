@@ -26,9 +26,11 @@ def check_source_delta(base):
         raise ValueError('The compiled core differs from the reviewed build: ' + ', '.join(sorted(set(changed) - allowed)))
     before = subprocess.check_output(['git', 'show', base + ':scripts/prepare_source.py'], cwd=ROOT).decode()
     anchor = "    shutil.copytree(ROOT / 'browser/extension/fonts', base / 'content/aion-fonts', dirs_exist_ok=True)"
-    before = before.replace(anchor, "    shutil.copytree(ROOT / 'browser/native/aion-runner', base / 'content/aion-runner', dirs_exist_ok=True)\n" + anchor)
+    if "shutil.copytree(ROOT / 'browser/native/aion-runner'" not in before:
+        before = before.replace(anchor, "    shutil.copytree(ROOT / 'browser/native/aion-runner', base / 'content/aion-runner', dirs_exist_ok=True)\n" + anchor)
     anchor = "    replace_once(base / 'jar.mn', 'browser.jar:\\n', 'browser.jar:\\n' + entries + '\\n')"
-    before = before.replace(anchor, anchor + "\n    runner_anchor = '        content/browser/aion-fonts/ (content/aion-fonts/**)\\n'\n    replace_once(base / 'jar.mn', runner_anchor, runner_anchor + '        content/browser/aion-runner/ (content/aion-runner/**)\\n')")
+    if 'runner_anchor =' not in before:
+        before = before.replace(anchor, anchor + "\n    runner_anchor = '        content/browser/aion-fonts/ (content/aion-fonts/**)\\n'\n    replace_once(base / 'jar.mn', runner_anchor, runner_anchor + '        content/browser/aion-runner/ (content/aion-runner/**)\\n')")
     if before != (ROOT / 'scripts/prepare_source.py').read_text():
         raise ValueError('Only the reviewed resource-copy additions to source preparation are allowed')
     return changed
@@ -86,7 +88,10 @@ def apply(runtime):
             raise ValueError('Repacked UI archive CRC failure')
         if any(sha(archive.read(name)) != expected for name, expected in unchanged.items()):
             raise ValueError('An unrelated native browser resource changed')
-    temp.replace(path)
+    if changed:
+        temp.replace(path)
+    else:
+        temp.unlink()
     return {'original_browser_omni_sha256': sha(original), 'browser_omni_sha256': sha(path.read_bytes()), 'changed': changed, 'unchanged_member_count': len(unchanged), 'scope': 'Only the listed browser/omni.ja UI resources. No native executable, engine, policy or built-in add-on modified.'}
 
 
@@ -100,6 +105,8 @@ def windows_archive(path):
                 raise ValueError('Expected one compiled runtime')
             archive.extractall(directory)
         report = apply(directory / roots[0])
+        if not report['changed']:
+            return {**report, 'original_native_zip_sha256': original_hash, 'native_zip_sha256': original_hash, 'unchanged_native_files': len(archive.namelist()), 'only_native_member_changed': None}
         omni = roots[0] + '/browser/omni.ja'
         replacement = (directory / omni).read_bytes()
         temp = path.with_suffix('.zip.new')

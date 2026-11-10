@@ -87,7 +87,7 @@ def replace_stub(installer, tag, stub):
     return stub + tag + tail, digest(tail)
 
 
-def frontend_payload(installer, tag, native, work):
+def frontend_payload(installer, tag, native, work, repack=True):
     directory = work / 'ui-payload'
     if directory.exists():
         raise ValueError('The installer repack directory must be new')
@@ -105,6 +105,8 @@ def frontend_payload(installer, tag, native, work):
     inner_hash = digest(inner.read_bytes())
     if inner.read_bytes()[:2] != b'MZ':
         raise ValueError('Native NSIS installer missing')
+    if not repack:
+        return original_archive.read_bytes(), inner_hash
     with zipfile.ZipFile(native) as archive:
         roots = [name.rsplit('/', 1)[0] for name in archive.namelist() if name.endswith('/application.ini')]
         if len(roots) != 1:
@@ -144,12 +146,14 @@ def main():
     installer = installers[0]
     original = installer.read_bytes()
     native = installer.with_name(installer.name.removesuffix('-Setup.exe') + '.zip')
-    payload, inner_hash = frontend_payload(original, tag, native, work)
+    overlay = json.loads((installer.parent / 'newtab-ui-overlay.json').read_text())
+    repack = overlay['only_native_member_changed'] is not None
+    payload, inner_hash = frontend_payload(original, tag, native, work, repack=repack)
     updated = stub + tag + payload
     payload_sha256 = digest(payload)
     installer.write_bytes(updated)
     dist = installer.parent
-    report = {'original_installer_sha256': digest(original), 'installer_sha256': digest(updated), 'native_7z_payload_unchanged': False, 'frontend_zip_sha256': digest(native.read_bytes()), 'inner_nsis_preserved': True, 'inner_nsis_sha256': inner_hash, 'native_7z_payload_sha256': payload_sha256, 'sfx_sha256': digest(stub), 'icon_sha256': digest((ROOT / 'branding/aion.ico').read_bytes()), 'sdk_license': 'LZMA SDK 18.05 public domain; Mozilla notices retained', 'build_command': command}
+    report = {'original_installer_sha256': digest(original), 'installer_sha256': digest(updated), 'native_7z_payload_unchanged': not repack, 'frontend_zip_sha256': digest(native.read_bytes()), 'inner_nsis_preserved': True, 'inner_nsis_sha256': inner_hash, 'native_7z_payload_sha256': payload_sha256, 'sfx_sha256': digest(stub), 'icon_sha256': digest((ROOT / 'branding/aion.ico').read_bytes()), 'sdk_license': 'LZMA SDK 18.05 public domain; Mozilla notices retained', 'build_command': command}
     (dist / 'windows-sfx-build.json').write_text(json.dumps(report, indent=2) + '\n')
     with zipfile.ZipFile(dist / 'windows-sfx-corresponding-source.zip', 'w', zipfile.ZIP_DEFLATED) as archive:
         for path in sorted(sdk.rglob('*')):

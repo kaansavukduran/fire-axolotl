@@ -33,6 +33,8 @@ class WindowsIdentityTests(unittest.TestCase):
         with patch.dict(os.environ, {'GITHUB_EVENT_NAME': 'workflow_dispatch'}):
             with patch.object(windows_release, 'gh', return_value=json.dumps(run)):
                 windows_release.preflight()
+            with patch.object(windows_release, 'gh', return_value=json.dumps({**run, 'event': 'push'})):
+                windows_release.preflight()
             for key, value in [('conclusion', 'failure'), ('event', 'pull_request'), ('head_sha', 'unknown'), ('repository', {'id': 1}), ('head_repository', {'id': 1})]:
                 with patch.object(windows_release, 'gh', return_value=json.dumps({**run, key: value})):
                     with self.assertRaises(ValueError):

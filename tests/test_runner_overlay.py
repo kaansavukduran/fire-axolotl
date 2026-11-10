@@ -29,6 +29,7 @@ class RunnerOverlayTests(unittest.TestCase):
             self.assertNotEqual(report['original_browser_omni_sha256'], report['browser_omni_sha256'])
             second = apply(runtime)
             self.assertEqual(second['changed'], {})
+            self.assertEqual(second['original_browser_omni_sha256'], second['browser_omni_sha256'])
             identity.write_text('[App]\nID=other-browser\nName=Other\n')
             with self.assertRaisesRegex(ValueError, 'Fire Axolotl'):
                 apply(runtime)

@@ -19,9 +19,9 @@ export function register() {
 export class AionRunnerParent extends JSWindowActorParent {
   configuration() {
     return {
-      enabled: Services.prefs.getBoolPref(PREFIX + 'enabled', true),
+      enabled: Services.prefs.getBoolPref(PREFIX + 'enabled', true) && Services.prefs.getBoolPref('browser.newtabpage.enabled', true),
       best: Services.prefs.getIntPref(PREFIX + 'best', 0),
-      language: Services.prefs.getStringPref(PREFIX + 'language', /^tr\b/i.test(Services.locale.appLocaleAsBCP47) ? 'tr' : 'en')
+      language: Services.prefs.getStringPref(PREFIX + 'language', /^en\b/i.test(Services.locale.appLocaleAsBCP47) ? 'en' : 'tr')
     };
   }
   receiveMessage({name, data}) {

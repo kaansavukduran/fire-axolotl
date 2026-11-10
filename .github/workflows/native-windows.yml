@@ -1,6 +1,9 @@
 name: Native Windows x64 developer build
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [.github/workflows/native-windows.yml]
 permissions:
   contents: read
 concurrency:
@@ -15,6 +18,7 @@ jobs:
       MOZBUILD_STATE_PATH: C:\mozstate
       MACH_INTERACTIVE: '0'
       MACH_HIDE_DEV_DRIVE_SUGGESTION: '1'
+      FIRE_AXOLOTL_OBJDIR: D:/o
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
@@ -30,58 +34,83 @@ jobs:
       - name: Install hash-pinned MozillaBuild without antivirus exclusions
         run: ./scripts/windows_build.ps1
       - run: python -m pip install -r tests/requirements-gecko.txt zstandard==0.25.0
-      - run: python scripts/fetch_source.py
-      - run: python scripts/prepare_source.py work/upstream/firefox-153.6.0
+      - uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25
+        id: objects
+        with:
+          path: D:/o
+          key: windows-native-short-v1-${{ hashFiles('upstream.json', 'windows-build.json', 'browser/mozconfig') }}-${{ github.run_id }}
+          restore-keys: windows-native-short-v1-${{ hashFiles('upstream.json', 'windows-build.json', 'browser/mozconfig') }}-
+      - run: python scripts/fetch_source.py --destination D:/s
+      - run: python scripts/prepare_source.py D:/s/firefox-153.6.0
       - name: Bootstrap the native Windows toolchain
         shell: C:\mozilla-build\msys2\usr\bin\bash.exe --login -e -o pipefail {0}
         run: |
           repo=$(cygpath -u "$GITHUB_WORKSPACE")
-          cd "$repo/work/upstream/firefox-153.6.0"
+          cd /d/s/firefox-153.6.0
           type python3
           python3 --version
           python3 "$repo/scripts/windows_mach.py" --no-interactive bootstrap --application-choice browser --no-system-changes
       - name: Compile the actual Windows Firefox fork
+        id: compile
         shell: C:\mozilla-build\msys2\usr\bin\bash.exe --login -e -o pipefail {0}
         run: |
           repo=$(cygpath -u "$GITHUB_WORKSPACE")
-          cd "$repo/work/upstream/firefox-153.6.0"
+          cd /d/s/firefox-153.6.0
           python3 "$repo/scripts/windows_mach.py" build
       - name: Package the compiled Windows payload
         shell: C:\mozilla-build\msys2\usr\bin\bash.exe --login -e -o pipefail {0}
         run: |
           repo=$(cygpath -u "$GITHUB_WORKSPACE")
-          cd "$repo/work/upstream/firefox-153.6.0"
+          cd /d/s/firefox-153.6.0
           python3 "$repo/scripts/windows_mach.py" package
       - name: Preserve the compiled payload before subsequent installer work
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         with:
           name: fire-axolotl-windows-x64-native-payload
           path: |
-            work/upstream/firefox-153.6.0/obj-fire-axolotl/dist/fire-axolotl-*.zip
-            work/upstream/firefox-153.6.0/obj-fire-axolotl/dist/install/sea/*.exe
+            D:/o/dist/fire-axolotl-*.zip
+            D:/o/dist/install/sea/*.exe
           if-no-files-found: error
           retention-days: 14
       - run: python scripts/fetch_test_runtime.py
       - name: Fresh-profile built-in and native interface smoke tests
         env:
-          AION_NATIVE_BINARY: ${{ github.workspace }}/work/upstream/firefox-153.6.0/obj-fire-axolotl/dist/bin/fire-axolotl.exe
+          AION_NATIVE_BINARY: D:/o/dist/bin/fire-axolotl.exe
         run: python tests/native_smoke.py
       - name: Settings and profile data across a real process restart
         env:
-          AION_NATIVE_BINARY: ${{ github.workspace }}/work/upstream/firefox-153.6.0/obj-fire-axolotl/dist/bin/fire-axolotl.exe
+          AION_NATIVE_BINARY: D:/o/dist/bin/fire-axolotl.exe
         run: python tests/native_restart.py
       - name: Full integration suite on the compiled Windows fork
         env:
-          AION_NATIVE_BINARY: ${{ github.workspace }}/work/upstream/firefox-153.6.0/obj-fire-axolotl/dist/bin/fire-axolotl.exe
+          AION_NATIVE_BINARY: D:/o/dist/bin/fire-axolotl.exe
         run: python tests/gecko_e2e.py
+      - name: Normal new-tab Aion game in the compiled Windows product
+        env:
+          AION_NATIVE_BINARY: D:/o/dist/bin/fire-axolotl.exe
+        run: python tests/native_runner.py
       - name: Preserve corresponding applied Windows source
-        run: python scripts/archive_applied_source.py work/upstream/firefox-153.6.0 dist/fire-axolotl-windows-applied-source.tar.zst
+        run: python scripts/archive_applied_source.py D:/s/firefox-153.6.0 dist/fire-axolotl-windows-applied-source.tar.zst
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         with:
           name: fire-axolotl-windows-x64-corresponding-source
           path: dist/
           if-no-files-found: error
           retention-days: 14
+      - name: Preserve incremental objects even if compilation or tests fail
+        if: always() && !cancelled() && steps.compile.outcome != 'skipped'
+        continue-on-error: true
+        uses: actions/cache/save@caa296126883cff596d87d8935842f9db880ef25
+        with:
+          path: D:/o
+          key: ${{ steps.objects.outputs.cache-primary-key }}
+      - name: Collect configuration evidence under the common work directory
+        if: always()
+        run: |
+          if (Test-Path 'D:/o/config.log') {
+            New-Item work/native-config -ItemType Directory -Force | Out-Null
+            Copy-Item 'D:/o/config.log' work/native-config/config.log
+          }
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         if: always()
         with:
@@ -89,5 +118,6 @@ jobs:
           path: |
             work/native-test-artifacts/
             work/native-e2e-artifacts/
-            work/upstream/firefox-153.6.0/obj-fire-axolotl/config.log
+            work/runner-test-artifacts/
+            work/native-config/
           retention-days: 14

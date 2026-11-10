@@ -22,8 +22,8 @@ Sıra, ilk konuşmadaki tarayıcı isteklerini izler. “Kısmi”, kullanılabi
 | 16 | Firefox özellikleri; telemetri ve reklam ölçümü kapalı | İlkeler native profilde doğrulandı. Kapsamlı ağ incelemesi ve bağımsız hizmet erişimi açık. |
 | 17 | Kullanılabilir paket ve gerçek arayüz | Derlenmiş tarayıcı ekranları var. Günlük kullanım için kararlı sürüm henüz yok. Platformlar [BUILD.md](BUILD.md) içinde. |
 | 18 | İsteğe bağlı karakterler ve kullanıcı karakteri ekleme | Aion/kuzu/kurt/baykuş resim kareleri, duraklatma, azaltılmış hareket, yerel PNG, silme ve yedek geri alma geçti. |
-| 19 | Yeni sekmede özgün piksel Aion zıplama oyunu | 48 karelik pafta; Başlat, Boşluk/dokunma, Esc, buz/ateş/kül, yerel rekor, gizleme ve TR/EN. Derlenmiş Linux forkunun normal yeni sekmesinde 9 kontrol geçti. Windows kurulu paket testi yayın kapısıdır. |
-| 20 | Windows Setup.exe | Tam motor derlemesi 42709930229 sürüyor. Aion simgeli SFX kabuğu Windows 2022 üzerinde derlendi. Gerçek temiz kurulum ve kaldırma testleri tamamlanmadan Windows hazır sayılmaz. |
+| 19 | Yeni sekmede özgün piksel Aion zıplama oyunu | 48 karelik pafta; Başlat, Boşluk/dokunma, Esc, buz/ateş/kül, yerel rekor, gizleme ve TR/EN. Gerçek engel aşma ve kazanılmış rekor dahil normal derlenmiş tarayıcıda 11 kontrol geçti. Arama/boş yeni sekme tercihleri korunur. Windows kurulu paket testi yayın kapısıdır. |
+| 20 | Windows Setup.exe | Çalıştırma 42709930229 uzun Windows nesne yolunda başarısız oldu. Kısa `D:/s` kaynak ve `D:/o` çıktı köküyle sonraki deneme hazırlanır; ara nesneler artık saklanır. Aion simgeli SFX kabuğu Windows 2022 üzerinde derlendi. Gerçek temiz kurulum/kaldırma geçmeden hazır sayılmaz. |
 
 Yanlışlıkla başka uygulama için gönderilen spor, besin seçici ve RPG menüsü değişiklikleri bu projeye taşınmaz. Kullanıcının son düzeltmesiyle yalnızca tarayıcıya uygun karakter fikri kapsamda kaldı.
 
