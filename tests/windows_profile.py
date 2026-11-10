@@ -6,6 +6,7 @@ import os
 from pathlib import Path
 import uuid
 import subprocess
+import shutil
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.firefox.service import Service
@@ -30,7 +31,9 @@ try:
           $items+=@{ModuleName=$m.ModuleName;FileName=$m.FileName;Signature=[string]$signature.Status;Signer=$signature.SignerCertificate.Subject;Version=@($v.FileMajorPart,$v.FileMinorPart,$v.FileBuildPart,$v.FilePrivatePart)}
         }
       }; ConvertTo-Json -Compress -InputObject @($items)'''.replace('__PID__', str(browser_pid))
-    modules = json.loads(subprocess.check_output(['powershell', '-NoProfile', '-NonInteractive', '-Command', command], text=True))
+    # Use the same PowerShell edition as the runtime collector. Hosted runners
+    # export PSModulePath for pwsh; Windows PowerShell 5 cannot load its modules.
+    modules = json.loads(subprocess.check_output([shutil.which('pwsh') or 'powershell', '-NoProfile', '-NonInteractive', '-Command', command], text=True))
     expected = {'msvcp140.dll', 'vcruntime140.dll', 'vcruntime140_1.dll'}
     assert {m['ModuleName'].lower() for m in modules} == expected
     pins = json.loads((ROOT / 'windows-runtime.json').read_text())

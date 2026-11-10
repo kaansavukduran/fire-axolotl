@@ -24,6 +24,16 @@ jobs:
           run-id: 42791204074
           github-token: ${{ github.token }}
       - run: python tests/windows_runtime_fallback.py --package
+      - run: python -m pip install -r tests/requirements-gecko.txt
+      - run: python scripts/fetch_test_runtime.py
+      - name: Select the preserved runtime-augmented browser
+        shell: pwsh
+        run: |
+          $binary = @(Get-ChildItem work/runtime-fallback-browser -Recurse -Filter fire-axolotl.exe)
+          if ($binary.Count -ne 1) { throw 'Expected one native browser' }
+          "AION_NATIVE_BINARY=$($binary[0].FullName)" | Out-File $env:GITHUB_ENV -Encoding utf8 -Append
+      - name: Check actual loaded Microsoft signatures and independent profile
+        run: python tests/windows_profile.py
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         if: always()
         with:

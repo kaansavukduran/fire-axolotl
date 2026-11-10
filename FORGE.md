@@ -1,3 +1,8 @@
+# Windows test aracının PowerShell seçimi
+
+- Fallback denemesi 42823588972 başarılı: gerçek xul.dll tüm pinli uygulama-yerel CRT dosyalarıyla yüklendi, PreferSystem32 korunarak. 42823901036 gerçek Setup kurulumu/dosya karşılaştırması, aynı fallback ve native 11 açılış kontrolünü geçti; profil denetimi Windows PowerShell 5'in pwsh modül yolundaki imza modülünü açamaması nedeniyle durdu. Yayın yapılmadı.
+- Profil aracı kolektörle aynı pwsh sürümünü seçer. İmza, System32 konumu, sürüm ve yerel hash denetimleri aynen zorunludur. Küçük fallback akışına gerçek process imza/profil denetimi de eklendi; tam paketleme yeniden çalışmadan önce bu test geçmelidir.
+
 # CRT fallback doğrulaması ve Firefox System32 tercihi
 
 - İlk CRT paketi 42819455725 kuruldu ve native smoke geçti. Profile testi System32 kullanımını reddetti. Kaynak incelemesi (LauncherProcessWin.cpp EnablePreferLoadFromSystem32IfCompatible) Firefox'un uyumlu eşit/yeni sistem runtime'ını güvenlik amacıyla tercih ettiğini doğruladı. Bu davranış değiştirilmez; sistem kopyası seçilmişse konum, geçerli Microsoft imzası ve asgari sürüm kontrol edilir.
