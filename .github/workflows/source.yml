@@ -12,10 +12,10 @@ jobs:
         with:
           python-version: '3.12'
       - name: Fetch and verify exact upstream archive
-        run: python3 scripts/fetch_source.py
+        run: python3 scripts/fetch_source.py --github-env
       - name: Apply overlay twice to verify idempotence
         run: |
-          python3 scripts/prepare_source.py work/upstream/firefox-153.6.0
-          python3 scripts/prepare_source.py work/upstream/firefox-153.6.0
+          python3 scripts/prepare_source.py "$FIRE_AXOLOTL_SOURCE"
+          python3 scripts/prepare_source.py "$FIRE_AXOLOTL_SOURCE"
       - name: Rebuild distributed uBlock source and compare package contents
         run: python3 scripts/verify_component_source.py

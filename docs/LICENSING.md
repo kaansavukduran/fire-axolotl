@@ -24,6 +24,12 @@ Sevilen özellikler için özgün kod yazılabilir. Başka eklentilerin kodu, g�
 
 uBlock Origin 1.76.0, değiştirilmemiş ayrı bir GPL-3.0-or-later bileşeni olarak kaynak katmanına eklendi. Tam ilgili kaynaklar ve korunmuş lisanslar tarayıcı paketine dahil edilir; yeniden üretme kontrolü vardır. Ayrıntı ve ağ/izin sınırları [bileşen envanterindedir](COMPONENTS.md). Diğer ekran görüntüsü eklentileri alınmış sayılmaz. / uBlock Origin is now a separately licensed, unmodified component in the source overlay, with corresponding source and preserved notices shipped alongside the browser. Other listed extensions are not implied to be bundled.
 
+## Windows runtime bileşenleri
+
+Windows düzeltme paketi, lisanslı Visual Studio 2022 dağıtılabilir klasöründen alınan değiştirilmemiş Microsoft x64 CRT dosyalarını uygulama klasöründe taşır. Bunlar Microsoft'un kendi dağıtım koşullarına tabidir; MPL kaynak kodu olarak sunulmaz. Özgün bildirim, REDIST.txt, sürüm/özet ve Microsoft imza doğrulamaları korunur. `debug_nonredist` dosyaları kullanılmaz. Ayrıntılar [üçüncü taraf bildirimlerinde](../THIRD_PARTY_NOTICES.md) ve [dağıtım notunda](../windows-runtime/REDISTRIBUTION.txt).
+
+Windows packages retain the Microsoft Distributable Code notice and component provenance. This does not relicense Microsoft's Windows runtime under the project's source license.
+
 ## Resmi kaynaklar / Primary references
 
 - [Mozilla MPL 2.0 FAQ](https://www.mozilla.org/en-US/MPL/2.0/FAQ/), özellikle dağıtım ve kaynak yükümlülükleri / especially source and redistribution obligations.
@@ -33,3 +39,4 @@ uBlock Origin 1.76.0, değiştirilmemiş ayrı bir GPL-3.0-or-later bileşeni ol
 - [OpenAI Terms of Use](https://openai.com/policies/terms-of-use/), çıktı hakları ve benzerlik / output ownership and similarity.
 - [Lexend OFL](../browser/extension/fonts/OFL.txt).
 - [OpenDyslexic OFL](../browser/extension/fonts/OpenDyslexic-OFL.txt), değiştirilmemiş yazar sürümü ve kayıtlı kaynak özetiyle / unmodified author-published snapshot with recorded hashes.
+- [Microsoft Visual Studio 2022 redistribution list](https://learn.microsoft.com/en-us/visualstudio/releases/2022/redistribution), `VC/redist` kapsamı ve yazılım lisansı koşullarıyla / subject to the applicable software license.

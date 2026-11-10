@@ -1,11 +1,11 @@
 {
-  "upstream": "153.6.0esr",
+  "upstream": "153.7.0esr",
   "fallback": "tr",
   "locales": {
     "tr": {
-      "url": "https://archive.mozilla.org/pub/firefox/releases/153.6.0esr/linux-x86_64/xpi/tr.xpi",
-      "sha512": "38aa4a949835b00b055011115a93e05986fc7f206a32f347df52afc07d1b95dd8edc30add5f23e97081c8953b32f2a1e4acaa6cf279899a2372d2531f2bae343",
-      "version": "153.6.20261022.211647",
+      "url": "https://archive.mozilla.org/pub/firefox/releases/153.7.0esr/linux-x86_64/xpi/tr.xpi",
+      "sha512": "79d1406ecadcd3f2ff14901916f7731c21f0d3e176d1b361082de9afe6580917b2692ab4b45040dc4e8ae4ba5f7c2e7ae7deec7463bcaf428b4c33f21875cae5",
+      "version": "153.7.20261103.151912",
       "original_id": "langpack-tr@firefox.mozilla.org",
       "id": "langpack-tr@fire-axolotl.browser"
     }

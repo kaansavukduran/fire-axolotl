@@ -3,6 +3,7 @@
 import argparse
 import hashlib
 import json
+import os
 from pathlib import Path
 import tarfile
 import urllib.request
@@ -34,6 +35,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--archive', type=Path)
     parser.add_argument('--destination', type=Path, default=ROOT / 'work/upstream')
+    parser.add_argument('--github-env', action='store_true', help='Expose the verified extracted source root to following Actions steps')
     args = parser.parse_args()
     upstream = json.loads((ROOT / 'upstream.json').read_text())
     archive = args.archive or ROOT / 'work' / Path(upstream['source_url']).name
@@ -46,7 +48,11 @@ def main():
         verify(partial, upstream['sha512'])
         partial.rename(archive)
     verify(archive, upstream['sha512'])
-    print(extract(archive, args.destination))
+    source = extract(archive, args.destination)
+    if args.github_env:
+        with open(os.environ['GITHUB_ENV'], 'a', encoding='utf-8') as stream:
+            stream.write(f'FIRE_AXOLOTL_SOURCE={source.as_posix()}\n')
+    print(source)
 
 
 if __name__ == '__main__':

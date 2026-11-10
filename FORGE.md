@@ -1,3 +1,11 @@
+# ESR 153.7 güvenlik güncellemesi
+
+- Resmî sürüm kontrolü 153.7.0esr bildirdi. 42825922166 Windows düzeltme yayını, henüz paketleme aşamasındayken iptal edildi; .1 etiketi/yayını oluşturulmadı. Eski 153.6 varlıkları tarihsel kayıt olarak korunur, güncel motor diye önerilmez.
+- Kaynak SHA-512 ve tr/en-US test paketleri resmî 153.7 SHA512SUMS ile sabitlendi; Türkçe XPI indirildi ve özeti/manifest sürümü doğrulandı. uBO 1.76.0 resmî digest güncel. Windows CRT/Microsoft imzaları ve pwsh profil düzeltmesi yeni motora taşınır.
+- Windows ve Linux yayın ön kontrolü/yayın anında resmî ESR/uBO güncellik kapısı zorunlu. Ağ hatası veya yeni sürüm yayını durdurur. Altı gerileme senaryosu eklenir. Kaynak kökü artık indirilip doğrulanan arşivden Actions ortamına aktarılır; workflow içinde eski sürüm dizini sabitlenmez.
+- Özel klasör 1CT1EBUmJ10cpfkO6auWe1QcXx0Q6E7Eq, `staging-esr153.6-runtime-20261110-yayin-iptal` olarak yeniden adlandırıldı. İçindeki önceki kaynaklar ve doğrulanmış yedekler korunur; yeni 153.7 kaynağıyla aynı dosya adları altında karıştırılmaz.
+- Sonraki zorunlu iş: tam 153.7 source overlay/idempotence, Windows ve Linux native derleme/test; yeni kesin SHA/run pinleri; gerçek kurulum testi ve kaynaklarıyla yeni yayın. İmzalı otomatik güncelleme, bütün diller ve gerçek hizmet doğrulaması hâlâ ayrı açık işlerdir.
+
 # Windows test aracının PowerShell seçimi
 
 - Fallback denemesi 42823588972 başarılı: gerçek xul.dll tüm pinli uygulama-yerel CRT dosyalarıyla yüklendi, PreferSystem32 korunarak. 42823901036 gerçek Setup kurulumu/dosya karşılaştırması, aynı fallback ve native 11 açılış kontrolünü geçti; profil denetimi Windows PowerShell 5'in pwsh modül yolundaki imza modülünü açamaması nedeniyle durdu. Yayın yapılmadı.

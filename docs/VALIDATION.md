@@ -1,4 +1,8 @@
-# Windows x64 yayımlanmış ön sürüm · 2026-11-10
+# Güncel ESR geçişi · 2026-11-10
+
+Mozilla ESR 153.7.0esr yayımlandı. Aşağıdaki yayımlanmış paketler ve önceki başarılı testler 153.6'ya aittir. Güncel güvenlik sürümü olarak önerilmez. 153.6 Windows CRT düzeltme yayını 42825922166 iptal edildi; yeni sürüm yayımlanmadı. 153.7 kaynak/dil pinleri güncellendi; tam motor/kurulum doğrulaması yeniden gereklidir. Yayın öncesinde ve yayın anında resmî ESR/uBO güncellik kontrolü zorunlu tutulur.
+
+# Tarihsel Windows x64 ön sürümü · 2026-11-10
 
 - [Sürüm](https://github.com/kaansavukduran/fire-axolotl/releases/tag/v0.1.0-dev.20261110-windows); motor kaynağı `9d564dced55dc4816cc4aeb57387ba1643f007ed`, paketleme/etiket hedefi `535b6e2a5279bfb7037f20dbda98e0d5afc42b14`.
 - Motor run 42791204074; değiştirilmemiş motor girdileri ve kesin ZIP/Setup/source özetleriyle başarılı native yeniden doğrulama 42808841079. Native 11 açılış + 4 restart + 34 entegrasyon + 11 oyun + 5 dil senaryosu geçti.

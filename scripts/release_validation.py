@@ -6,6 +6,8 @@ import json
 import os
 from pathlib import Path
 import re
+import subprocess
+import sys
 import urllib.request
 from verify_native_package import verify
 
@@ -26,6 +28,7 @@ def validate_run(run, config=CONFIG):
 
 
 def preflight():
+    subprocess.run([sys.executable, str(ROOT / 'scripts/check_upstream.py')], check=True)
     run_id = os.environ.get('AION_NATIVE_RUN_ID', str(CONFIG['native_run_id']))
     if not run_id.isdigit() or int(run_id) != CONFIG['native_run_id']:
         raise ValueError('This preview is pinned to one validated native run')

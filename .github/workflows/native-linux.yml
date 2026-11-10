@@ -19,47 +19,48 @@ jobs:
         with:
           python-version: '3.12'
       - run: python3 -m pip install -r tests/requirements-gecko.txt
-      - run: python3 scripts/fetch_source.py
-      - run: python3 scripts/prepare_source.py work/upstream/firefox-153.6.0
+      - run: python3 scripts/fetch_source.py --github-env
+      - run: python3 scripts/prepare_source.py "$FIRE_AXOLOTL_SOURCE"
       - run: python3 scripts/verify_component_source.py
       - name: Preserve complete applied source alongside developer binaries
-        run: python3 scripts/archive_applied_source.py work/upstream/firefox-153.6.0 dist/fire-axolotl-applied-source.tar.zst
+        run: python3 scripts/archive_applied_source.py "$FIRE_AXOLOTL_SOURCE" dist/fire-axolotl-applied-source.tar.zst
       - name: Bootstrap native build dependencies
-        working-directory: work/upstream/firefox-153.6.0
+        working-directory: ${{ env.FIRE_AXOLOTL_SOURCE }}
         run: python3 mach bootstrap --application-choice browser
       - name: Compile the actual fork
-        working-directory: work/upstream/firefox-153.6.0
+        working-directory: ${{ env.FIRE_AXOLOTL_SOURCE }}
         run: python3 mach build
       - run: python3 scripts/fetch_test_runtime.py
       - name: Fresh-profile native built-in and interface smoke test
         env:
-          AION_NATIVE_BINARY: ${{ github.workspace }}/work/upstream/firefox-153.6.0/obj-fire-axolotl/dist/bin/fire-axolotl
+          AION_NATIVE_BINARY: ${{ env.FIRE_AXOLOTL_SOURCE }}/obj-fire-axolotl/dist/bin/fire-axolotl
         run: python3 tests/native_smoke.py
       - name: Preserve data across a real browser process restart
         env:
-          AION_NATIVE_BINARY: ${{ github.workspace }}/work/upstream/firefox-153.6.0/obj-fire-axolotl/dist/bin/fire-axolotl
+          AION_NATIVE_BINARY: ${{ env.FIRE_AXOLOTL_SOURCE }}/obj-fire-axolotl/dist/bin/fire-axolotl
         run: python3 tests/native_restart.py
       - name: Full integration suite on the compiled fork without injected modules
         env:
-          AION_NATIVE_BINARY: ${{ github.workspace }}/work/upstream/firefox-153.6.0/obj-fire-axolotl/dist/bin/fire-axolotl
+          AION_NATIVE_BINARY: ${{ env.FIRE_AXOLOTL_SOURCE }}/obj-fire-axolotl/dist/bin/fire-axolotl
         run: python3 tests/gecko_e2e.py
       - name: Package the tested native browser
-        working-directory: work/upstream/firefox-153.6.0
+        working-directory: ${{ env.FIRE_AXOLOTL_SOURCE }}
         run: python3 mach package
       - name: Verify the real packaged identity, policies and corresponding source
         run: |
           python3 - <<'PY'
           from pathlib import Path
-          import shutil, sys
+          import os, shutil, sys
           sys.path.insert(0, 'scripts')
           from verify_native_package import verify
-          packages = list(Path('work/upstream/firefox-153.6.0/obj-fire-axolotl/dist').glob('fire-axolotl-*.tar.xz'))
+          source = Path(os.environ['FIRE_AXOLOTL_SOURCE'])
+          packages = list((source / 'obj-fire-axolotl/dist').glob('fire-axolotl-*.tar.xz'))
           if len(packages) != 1:
               raise ValueError(f'Expected exactly one native Linux package, got {packages}')
           destination = Path('dist') / packages[0].name
           shutil.copyfile(packages[0], destination)
           verify(destination)
-          shutil.copyfile('work/upstream/firefox-153.6.0/fire-axolotl-build.json', 'dist/fire-axolotl-build.json')
+          shutil.copyfile(source / 'fire-axolotl-build.json', 'dist/fire-axolotl-build.json')
           PY
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:

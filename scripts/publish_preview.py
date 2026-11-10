@@ -6,6 +6,7 @@ import os
 from pathlib import Path
 import re
 import subprocess
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG = json.loads((ROOT / 'release.json').read_text())
@@ -18,6 +19,7 @@ def gh(*args):
 def main():
     if os.environ.get('GITHUB_REPOSITORY') != CONFIG['repository'] or os.environ.get('GITHUB_REF_NAME') != 'main' or os.environ.get('GITHUB_EVENT_NAME') != 'workflow_dispatch':
         raise ValueError('Publishing is restricted to the selected repository main-branch manual workflow')
+    subprocess.run([sys.executable, str(ROOT / 'scripts/check_upstream.py')], check=True)
     dist = ROOT / 'dist'
     expected = {}
     for line in (dist / 'SHA256SUMS').read_text().splitlines():

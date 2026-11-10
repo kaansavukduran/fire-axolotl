@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 import shutil
 import subprocess
+import sys
 import tarfile
 import zipfile
 
@@ -31,6 +32,9 @@ def digest(path):
 
 
 def preflight():
+    # Recheck immediately before both packaging and publication. A green build
+    # from an older ESR must not become a newly recommended download.
+    subprocess.run([sys.executable, str(ROOT / 'scripts/check_upstream.py')], check=True)
     run = json.loads(gh('api', f'repos/{CONFIG["repository"]}/actions/runs/{CONFIG["native_run_id"]}'))
     expected = {'status': 'completed', 'conclusion': 'success', 'head_branch': 'main', 'head_sha': CONFIG.get('validation_commit', CONFIG['source_commit']), 'workflow_id': CONFIG['native_workflow_id'], 'path': CONFIG.get('native_workflow_path', '.github/workflows/native-windows.yml')}
     if run.get('event') not in {'workflow_dispatch', 'push'} or any(run.get(key) != value for key, value in expected.items()) or run['repository']['id'] != CONFIG['repository_id'] or run['head_repository']['id'] != CONFIG['repository_id']:

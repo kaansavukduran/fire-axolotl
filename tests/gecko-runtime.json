@@ -1,7 +1,7 @@
 {
   "firefox": {
-    "url": "https://archive.mozilla.org/pub/firefox/releases/153.6.0esr/linux-x86_64/en-US/firefox-153.6.0esr.tar.xz",
-    "sha512": "b2ed0f8d5dd1f363aae0e5d09554eee00c6beb980d5ea40db2a5dd7cc478b01b4f7059f0c981d97aec8af2ef64629de4349aedf075be8ebdd39cc3d814a6a17f",
+    "url": "https://archive.mozilla.org/pub/firefox/releases/153.7.0esr/linux-x86_64/en-US/firefox-153.7.0esr.tar.xz",
+    "sha512": "742a3dbc5488ab50040efe6b0798aa5fbc3d22c1d0d1c142718f05dcc602aed7649d87e2159c65f44db4d26795ba3fac60c1dc22f97a5b593ab72c55583f30c3",
     "binary": "firefox/firefox"
   },
   "geckodriver": {

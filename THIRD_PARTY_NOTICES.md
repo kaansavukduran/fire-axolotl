@@ -6,6 +6,14 @@ Linux installer inputs and hashes are pinned in `linux-packaging.json`. AppImage
 
 AppImage runtime ve kitaplıklarının lisansları korunur; statik LGPL bileşeninin kaynağı ile yeniden derleme/bağlama betikleri ayrı destek kaynak arşivinde sunulur. Paketleme imzalı otomatik güncelleme altyapısı anlamına gelmez.
 
+## Microsoft Visual C++ runtime (Windows)
+
+The Windows correction package includes unmodified x64 Microsoft Visual C++ runtime 14.44.35211.0 from the licensed Visual Studio 2022 `VC/Redist/MSVC` directory. Every file's original SHA-256, size, version and valid Microsoft signature are checked against `windows-runtime.json`. These Microsoft Windows components have their own redistribution terms; they are not MPL-licensed source. Debug/nonredistributable files are excluded.
+
+The original REDIST.txt, Microsoft notice, redistribution reference and collection provenance are retained in the installed application's `distribution/sources/windows-runtime/`; the upstream Microsoft notice remains in `about:license`. The release's `windows-runtime-build.json` records unchanged native files and all added component hashes. See [Microsoft's Visual Studio 2022 Distributable Code list](https://learn.microsoft.com/en-us/visualstudio/releases/2022/redistribution) and [the retained notice](windows-runtime/MICROSOFT-NOTICE.txt).
+
+Windows düzeltme paketindeki Microsoft runtime dosyaları değiştirilmeden, kendi dağıtım koşulları ve bildirimleriyle sunulur; projenin MPL lisansı bu bileşenleri yeniden lisanslamaz. Sistem runtime'ı değiştirilmez. Firefox'un uyumlu güncel System32 kopyasını tercih etme güvenlik davranışı korunur.
+
 ## Mozilla Firefox / Gecko
 
 Upstream: https://archive.mozilla.org/pub/firefox/releases/153.6.0esr/source/firefox-153.6.0esr.source.tar.xz
