@@ -20,13 +20,16 @@ Yeni sekmede **Başlat** düğmesine bas. Oyun alanındayken **Boşluk** veya do
 
 Araç çubuğundaki **Aion simgesine** bas. Ayrı eklenti kurmadan şu araçlara erişirsin:
 
-- **Konteynerler:** Bir alan seçip mevcut sayfayı o alanda aç veya yeni bir alan oluştur. Geçici alandaki son sekme kapatılınca yalnızca o alan temizlenir; indirmelerin ve geçmişin silinmez. Siteleri otomatik alanlara atama henüz yoktur.
+- **Konteynerler:** Aynı sitede iş ve kişisel hesaplarını ayrı tutmak için kullan. Aion → Konteynerler'den ad verip alan oluştur, ardından seçip sayfayı o alanda aç. Sayfaya veya bağlantıya **sağ tık → Konteynerde aç → alan adı** ile de erişebilirsin. Asıl sekme açık kalır; çerezler ve giriş oturumları ayrılır. Bu özellik VPN değildir. Geçici alandaki son sekme kapatılınca yalnızca o alan temizlenir; indirmelerin ve geçmişin silinmez. Siteleri otomatik alanlara atama henüz yoktur.
 - **Video:** Sayfadaki erişilebilir video için 0,25×–4× hız seç, uygula veya normal hıza dön. Gerçek çözünürlüğü okuyabilirsin. Kalite isteği deneysel YouTube desteğidir; Netflix veya bütün siteler için çözünürlük garantisi vermez.
 - **Çift altyazı:** Kendi VTT/SRT dosyalarını özgün ve çevrilmiş altyazı alanlarına yükleyip göster. Bu işlem otomatik altyazı çevirisi değildir.
-- **Çeviri:** Seçili metni veya erişilebilir altyazı satırını al. Dış çeviri için Aion ayarlarından kendi HTTPS hizmetini seçip izin ver; yalnızca gönderme eyleminde metin o hizmete gider.
+- **Çeviri:** **Aion → Çeviri → Cihazda çeviri aracını aç** düğmesine bas. Açılan yerel çeviri sekmesine metni yapıştırıp kaynak/hedef dili seç. Firefox'un açık kaynak çeviri motoru desteklediği dillerde cihazda çalışır; dil modelleri ilk kullanımda internetten indirilir. İndikten sonra o dil çiftiyle çevrimdışı çeviri yapılabilir. Ayrı bir sohbet yapay zekâsı veya önceden yüklenmiş sohbet modeli bulunmaz.
+- **Seçili metin ve altyazı:** Metne sağ tıklayıp Aion çeviri aracını açabilir veya panelde seçili metni/erişilebilir altyazı satırını alabilirsin. Paneldeki isteğe bağlı dış çeviri alanını kullanmak için önce **Çeviri hizmeti ayarları** üzerinden kendi HTTPS hizmetini seçip izin ver. Metin yalnızca gönderme eyleminde o hizmete gider. Bu alanın hizmet ayarı, cihazda çeviri aracını kullanmak için gerekli değildir.
 - **Görselle arama:** Görsele sağ tıkla ve sağlayıcı seç. Görsel adresi yalnızca bu seçimde sağlayıcıya gönderilir. Aion ayarlarından kapatılabilir.
 
 uBlock Origin tarayıcıyla birlikte etkindir; kendi araç çubuğu simgesinden yönetilir. Parolalar, yer imleri, geçmiş ve okuyucu görünümü Firefox temelindeki kendi menülerinden kullanılır. Bitwarden hesabı veya DeepL aboneliğiyle otomatik bağlantı kurulmaz.
+
+Aion 0.2 araç paneli geniş pencerede 760 piksele kadar açılır. **Geniş ekranda aç** düğmesi araçları normal bir sekmeye taşır; Çeviri, Konteynerler ve Video arasında geçebilirsin. Video ve konteyner işlemleri başlangıçta seçtiğin web sekmesini kullanır; üzerinde çalışılan sekme panelde gösterilir. Taslak metin ve seçili konteyner yalnızca tarayıcı oturumu boyunca korunur; normal ayar yedeğine yazılmaz.
 
 ## Karakterler ve kişisel ayarlar
 

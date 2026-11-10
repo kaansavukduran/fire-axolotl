@@ -1,10 +1,20 @@
+# Aion 0.2 · geniş araçlar, konteyner menüsü ve yerel çeviri
+
+Windows `v0.2.0-dev.20261110-windows` ve Linux `v0.2.0-dev.20261110-linux`; paketleme kaydı `bde5110227ae29ef054d8471f72b01ed6918d5f4`. Test/yayın Windows42881924559, Linux42881930851. Her kurulu üründe70 mevcut +9 araç senaryosu, gerçek EN→TR ve yeni metinle çevrimdışı çıkarım geçti. Windows0.1→0.2 gerçek Setup yükseltmesi verileri ve yeni native çeviri köprüsünü korudu.
+
+Kullanım: Aion → Çeviri → Cihazda çeviri aracını aç; ilk kullanımda dil modelleri indirilir. Konteyner oluştur/seç veya sayfa/bağlantıya sağ tıkla → Konteynerde aç. Geniş ekranda aç, başlangıçtaki web sekmesini koruyan tam sekme araç alanını açar. Taslak ve alan seçimi yalnızca oturumda tutulur. Ayrı sohbet modeli paketlenmez.
+
+Gerçek Linux0.2 ekranları UI_PREVIEW, ayrıntılı doğrulama VALIDATION, açık işler FEATURES/ROADMAP içindedir. İmzalı otomatik güncelleme/Authenticode ve gerçek Sync hesabı doğrulaması açık kalır. Orijinal kullanıcı WIP'leri ve motor nesne önbelleği korunur. Özel Drive'da417 kaynak ZIP/tam Git yedeğinin11 dosyası geri okunup doğrulandı; son dokümantasyon/etiket kaynak yedeği ve makbuzları ayrıca hazırlanır. Eski büyük binary yedek klasörleri staging durumundadır; tamamlandı sayılmaz.
+
+Aşağıdaki bölümler önceki aşamaların tarihsel kaydıdır.
+
 # Aion0.2 araç UX çalışması · yayın öncesi
 
 Yetkili kaynak `/workspace/work/fire-axolotl-locale`, dal `codex/native-locale-repair`, uzak `kaansavukduran/fire-axolotl/main`. Orijinal çalışma ağacındaki kullanıcı WIP'leri korunur.
 
 760px açılır panel, Çeviri/Konteyner/Video görevleri, tam sekme çalışma alanı, kaynak sekme bağlamı ve oturumluk taslak eklendi. Sağ tık menüsünde kalıcı/geçici konteyner ve seçili metin girişi bulunur; görsel arama menüsü diğer menüleri silmez. Native çeviri bağlantısı yalnızca kendi Aion sayfasından sabit about adresini açar. Yeni izin eklenmedi. Aion sürümü0.2.0; engine153.7 korunur.
 
-Yerelde34 mevcut entegrasyon senaryosu geçti. Gerçek toolbar genişliği760px, geniş çalışma alanı, kişisel/iş çerez ayrımı ve native çeviri açılışı doğrulandı. Gerçek EN→TR model çıkarımı Merhaba dünya ve internet kapalı yeni metin Günaydın sonucunu verdi; yerel testte sadece sentetik profile ortamın sağladığı TLS proxy/CA uygulandı. Ürünün TLS ayarı değiştirilmedi. Genişletilmiş8 araç senaryosu ve gerçek kurulum akışları0.2 yayınından önce zorunludur.
+Yerelde34 mevcut entegrasyon senaryosu geçti. Gerçek toolbar genişliği760px, geniş çalışma alanı, kişisel/iş çerez ayrımı ve native çeviri açılışı doğrulandı. Gerçek EN→TR model çıkarımı Merhaba dünya ve internet kapalı yeni metin Günaydın sonucunu verdi; yerel testte sadece sentetik profile ortamın sağladığı TLS proxy/CA uygulandı. Ürünün TLS ayarı değiştirilmedi. Genişletilmiş9 araç senaryosu ve gerçek kurulum akışları0.2 yayınından önce zorunludur.
 
 Yeni sürüm hedefleri Windows `v0.2.0-dev.20261110-windows`, Linux `v0.2.0-dev.20261110-linux`. Native engine run/source pinleri korunur; yalnızca incelenmiş kendi UI kaynakları, aynı kimlik/izinlerle Aion manifest sürümü ve kayıt güncellenir. Windows önceki153.7/Aion0.1 Setup → Aion0.2 yükseltmesinde veriler ve native çeviri bağlantısı ayrıca doğrulanır. Henüz yeni yayın tamamlandı denmez. Aşağıdaki bölümler tarihseldir.
 

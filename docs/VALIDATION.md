@@ -1,4 +1,15 @@
-# Güncel 153.7 doğrulaması · 2026-11-10
+# Aion 0.2 doğrulaması · 2026-11-10
+
+- [Windows kurulum/yayın](https://github.com/kaansavukduran/fire-axolotl/actions/runs/42881924559) ve [Linux kurulum/yayın](https://github.com/kaansavukduran/fire-axolotl/actions/runs/42881930851). Paketleme kaydı `bde5110227ae29ef054d8471f72b01ed6918d5f4`; aynı 153.7 motor pinleri korunur.
+- Her platformda 70 mevcut senaryo, ayrıca **9 gerçek araç senaryosu** geçti: geniş yerel popup, normal düğmeyle tam sekme açma, kaynak sekmeye video işlemi, kişisel/iş çerez ayrımı, gerçek sağ tık konteyner/seçili metin menüleri, yerel çeviri açma, klavye, TR/EN ve OpenDyslexic/%200 dar görünüm; sıradan sitenin ayrıcalıklı aracı açamaması.
+- Her iki kurulu tarayıcı kendi normal ağ/TLS ayarlarıyla dil modelini indirdi: **Hello world → Merhaba dünya**. Ardından tarayıcı çevrimdışına alınıp yeni bir metinle **Good morning → Günaydın** doğrulandı. Sohbet modeli veya önceden indirilmiş çeviri modeli paketlendiği iddia edilmez. Bu iki sentetik örnek tüm dillerin kalitesini veya her web sitesini doğrulamaz.
+- Windows gerçek önceki 153.7/Aion0.1 Setup → Aion0.2 Setup yükseltmesini geçti. Sentetik parola, yer imi, konteyner, kelimeler, özel PNG ve tercihler korundu; aynı profilde yeni yerel çeviri köprüsü de çalıştı. Bu, elle Setup yükseltmesidir; MAR/otomatik güncelleme değildir.
+- `npm test`: 25 Node + 39 Python kontrolü. `npm run check`: JavaScript, manifest/izinler ve 129 TR/EN anahtarı. Yeni native köprü yalnızca kendi Aion sayfasından sabit yerel çeviri adresini açar; çağıran URL/kod/dosya yolu veremez. Yeni WebExtension izni eklenmedi; TLS, süreç kum havuzu ve dış eklenti imza kontrolleri korunur.
+- Kamuya açık dosya doğrulaması ve özel kaynak yedeğinin geri okuma makbuzları çalışma alanında tutulur. Aynı SHA-256'lı değişmeyen büyük motor kaynakları önceki tam doğrulamayla eşleştirilir; değişen yayın dosyaları yeniden indirilip hashleri karşılaştırılır. Profiller ve ham ağ kayıtları yayınlanmaz.
+
+İmzalı otomatik güncelleme/Authenticode, gerçek hesap Sync, kalan hizmet erişimi ve [özellik eşlemesindeki](FEATURES.md) açıklar sürer. Aşağıdaki 0.1 ve 153.6 kayıtları tarihseldir.
+
+# Önceki 0.1 / 153.7 doğrulaması · 2026-11-10
 
 - [Windows x64 yayın ve kurulum](https://github.com/kaansavukduran/fire-axolotl/actions/runs/42849921106) ve [Linux yayın ve kurulum](https://github.com/kaansavukduran/fire-axolotl/actions/runs/42849928004) başarılı. Her kurulu üründe **11 açılış + 4 süreç yeniden başlatma + 34 entegrasyon + 11 oyun + 10 dil = 70 senaryo** geçti.
 - Windows tam motor derlemesi [42828049949](https://github.com/kaansavukduran/fire-axolotl/actions/runs/42828049949), kaynak `a6560b7fe2a42d7602001d11641e722ac087d297`. Linux tam motor derlemesi [42827574889](https://github.com/kaansavukduran/fire-axolotl/actions/runs/42827574889), kaynak `ec13e3f64fe973ead7f2b14381e2d3a08c7e1bd6`. Her iki paketleme kaydı `0759fae4b09e5cf27f709a1496eea3a23d1c33df`; motor yeniden derlenmeden yalnızca doğrulanmış UI/dil katmanı uygulanır ve tüm değişmeyen dosyalar kontrol edilir.

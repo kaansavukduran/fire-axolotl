@@ -1,4 +1,30 @@
-# Çalışan Fire Axolotl 153.7 arayüzü
+# Aion 0.2 araçları
+
+Aşağıdaki görüntüler gerçek 153.7 Linux tarayıcısında yeni 0.2 UI katmanından alındı; çizim veya arayüz maketi değildir. Sayfa, metin ve konteyner adları sentetik test verileridir. Adres çubuğundaki çizgili işaret otomasyon göstergesidir.
+
+## Geniş çalışma alanı
+
+Araç çubuğundaki Aion paneli 760 piksele kadar açılır. **Geniş ekranda aç** araçları normal sekmeye taşır. Çeviri, Konteynerler ve Video ayrı görevlerdir; başlangıçta seçilen web sekmesi üstte belirtilir. Bu görüntü tam sekme görünümüdür.
+
+![Aion 0.2 Türkçe geniş çalışma alanı](screenshots/02-local-workspace-tr.png)
+
+## Cihazda çeviri
+
+**Aion → Çeviri → Cihazda çeviri aracını aç** yerel Firefox çeviri sayfasına gider. Desteklenen dillerin modelleri ilk kullanımda indirilir; ayrı sohbet modeli kurulu değildir. Aşağıdaki “Good morning → Günaydın” sonucu, ilk model indirmesi ve başka bir metnin çevirisi sonrasında tarayıcı çevrimdışına alınarak elde edildi.
+
+![İnternet kapalıyken yeni metnin yerel çevirisi](screenshots/02-local-translation-offline.png)
+
+## Büyük yazı ve dar pencere
+
+Türkçe, OpenDyslexic, yüzde 200 yazı ölçeği ve dar pencerede alanlar alt alta yerleşir. Bunlar isteğe bağlı erişilebilirlik ayarlarıdır.
+
+![Yüzde 200 ölçekli dar çalışma alanı](screenshots/02-local-workspace-tr-200.png)
+
+[Kullanım kılavuzu](QUICK_START.md) · [Doğrulama ve sürüm durumu](VALIDATION.md)
+
+Aşağıdaki Windows görüntüleri önceki 0.1 sürümünün yeni sekme, görünüm ve dil özelliklerini gösterir.
+
+# Önceki Windows 0.1 arayüzü
 
 2026-11-10. Bu görüntüler yayımlanmış Windows x64 Setup'ın kurduğu gerçek tarayıcıdan alındı: [başarılı kurulum/test/yayın](https://github.com/kaansavukduran/fire-axolotl/actions/runs/42849921106). Görüntülerin kaynak kanıt arşivinin SHA-256 özeti `2b967f0fd3cbeeccbf38d232c5f8cae9302aa4c4437388d0c2890ccbb2faf837`; ZIP CRC ve pikseller değiştirilmeden kopyalama doğrulandı. Bunlar taslak arayüz görselleri değildir.
 
