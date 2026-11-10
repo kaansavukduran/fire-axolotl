@@ -72,7 +72,9 @@ try:
     driver.switch_to.window(driver.window_handles[-1])
     driver.switch_to.new_window('tab')
     driver.get(f'moz-extension://{uuid}/settings.html')
-    wait.until(lambda d: d.find_element(By.ID, 'language').is_displayed())
+    # The select is painted before asynchronous settings loading installs its
+    # listeners. The version is filled by render() after UI.init() completes.
+    wait.until(lambda d: d.find_element(By.ID, 'version').text.strip())
     Select(driver.find_element(By.ID, 'language')).select_by_value('tr')
     wait.until(lambda d: d.find_element(By.TAG_NAME, 'h1').text == 'Ayarlar')
     record('Packaged Aion settings open and switch to Turkish')

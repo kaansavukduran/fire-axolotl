@@ -1,3 +1,5 @@
+- Son yerel doğrulama: snapshot yardımcısıyla native smoke 11 geçti. Dil seçicisi için yalnızca görünürlük beklemek yeterli değildi; test artık UI.init sonrası render edilen sürüm alanını bekler. Ürün verileri/izinleri değiştirilmez.
+
 # Güncel Windows doğrulama çalıştırması
 
 - Native kaynak `a56d740acf86f57fd6892234c29ce9a2e12debf7`; [run 42772444157](https://github.com/kaansavukduran/fire-axolotl/actions/runs/42772444157). 42729988254 ilk motor paketini üretti fakat screenshot testinde başarısız oldu; yayın için kabul edilmez.
