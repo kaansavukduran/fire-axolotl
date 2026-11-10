@@ -13,7 +13,7 @@ jobs:
           $ErrorActionPreference = 'Stop'
           $vswhere = "${env:ProgramFiles(x86)}/Microsoft Visual Studio/Installer/vswhere.exe"
           $vs = (& $vswhere -latest -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath).Trim()
-          $roots = @(Get-ChildItem "$vs/VC/Redist/MSVC/*/x64/Microsoft.VC143.CRT" -Directory | Sort-Object FullName -Descending)
+          $roots = @(Get-Item "$vs/VC/Redist/MSVC/*/x64/Microsoft.VC143.CRT" | Sort-Object FullName -Descending)
           if (!$roots.Count) { throw 'No application-local x64 CRT found' }
           $crt = $roots[0].FullName
           $files = @(Get-ChildItem $crt -File | ForEach-Object {
@@ -29,6 +29,13 @@ jobs:
           }
           New-Item work/runtime-audit -ItemType Directory -Force | Out-Null
           @{visual_studio=$vs; crt_directory=$crt; files=$files; license_files=$licenses} | ConvertTo-Json -Depth 8 | Set-Content work/runtime-audit/inventory.json -Encoding utf8
+          $i = 0
+          foreach ($license in $licenses) {
+            if ($license -match '1033|en-US|en-us') {
+              $i++
+              Copy-Item $license "work/runtime-audit/license-$i$([IO.Path]::GetExtension($license))"
+            }
+          }
           Get-Content work/runtime-audit/inventory.json
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         with:
