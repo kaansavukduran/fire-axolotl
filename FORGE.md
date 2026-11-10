@@ -1,5 +1,7 @@
 # ESR 153.7 güvenlik güncellemesi
 
+- Windows ilk 153.7 denemesi 42827565818, mevcut yayın-provenance birim testinin yeni güncellik kapısına gerçek ağ çağrısı yapıp ortak CI GitHub kotasına takılmasıyla durdu; motor indirilmedi/derlenmedi. Birim testindeki harici güncellik kapısı artık izole edilir, ayrıca başarısız güncellik kontrolünün artifact işlemlerinden önce yayını reddettiği test edilir. Gerçek yayın/schedule kontrolü GitHub için yalnızca kendi Actions token'ını kullanabilir; kontroller atlanmaz. Linux/source ec13 derlemeleri aynı motor kaynaklarıyla devam eder.
+
 - Resmî sürüm kontrolü 153.7.0esr bildirdi. 42825922166 Windows düzeltme yayını, henüz paketleme aşamasındayken iptal edildi; .1 etiketi/yayını oluşturulmadı. Eski 153.6 varlıkları tarihsel kayıt olarak korunur, güncel motor diye önerilmez.
 - Kaynak SHA-512 ve tr/en-US test paketleri resmî 153.7 SHA512SUMS ile sabitlendi; Türkçe XPI indirildi ve özeti/manifest sürümü doğrulandı. uBO 1.76.0 resmî digest güncel. Windows CRT/Microsoft imzaları ve pwsh profil düzeltmesi yeni motora taşınır.
 - Windows ve Linux yayın ön kontrolü/yayın anında resmî ESR/uBO güncellik kapısı zorunlu. Ağ hatası veya yeni sürüm yayını durdurur. Altı gerileme senaryosu eklenir. Kaynak kökü artık indirilip doğrulanan arşivden Actions ortamına aktarılır; workflow içinde eski sürüm dizini sabitlenmez.

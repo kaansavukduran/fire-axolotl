@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: MPL-2.0
 """Signal new Mozilla ESR security releases without silently updating the source pin."""
 import json
+import os
 from pathlib import Path
 import urllib.request
 
@@ -13,7 +14,10 @@ if pin['version'] != current:
     raise SystemExit(f'Firefox ESR security review required: pinned {pin["version"]}, current {current}. Update source hash, rebuild, test and publish signed updates.')
 print(f'Firefox ESR pin is current: {current}')
 component = json.loads((ROOT / 'components.json').read_text())['ublock-origin']
-request = urllib.request.Request('https://api.github.com/repos/gorhill/uBlock/releases/latest', headers={'User-Agent': 'Fire-Axolotl-component-review', 'Accept': 'application/vnd.github+json'})
+headers = {'User-Agent': 'Fire-Axolotl-component-review', 'Accept': 'application/vnd.github+json'}
+if token := os.environ.get('GH_TOKEN'):
+    headers['Authorization'] = 'Bearer ' + token
+request = urllib.request.Request('https://api.github.com/repos/gorhill/uBlock/releases/latest', headers=headers)
 with urllib.request.urlopen(request, timeout=30) as response:
     release = json.load(response)
 if release['tag_name'] != component['version']:

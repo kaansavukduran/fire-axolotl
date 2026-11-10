@@ -2,6 +2,7 @@
 import importlib.util
 import json
 import os
+import subprocess
 from pathlib import Path
 import tempfile
 import unittest
@@ -30,7 +31,7 @@ class WindowsIdentityTests(unittest.TestCase):
         import windows_release
         config = windows_release.CONFIG
         run = {'status': 'completed', 'conclusion': 'success', 'event': 'workflow_dispatch', 'head_branch': 'main', 'head_sha': config.get('validation_commit', config['source_commit']), 'workflow_id': config['native_workflow_id'], 'path': config.get('native_workflow_path', '.github/workflows/native-windows.yml'), 'repository': {'id': config['repository_id']}, 'head_repository': {'id': config['repository_id']}}
-        with patch.dict(os.environ, {'GITHUB_EVENT_NAME': 'workflow_dispatch'}):
+        with patch.dict(os.environ, {'GITHUB_EVENT_NAME': 'workflow_dispatch'}), patch.object(windows_release.subprocess, 'run'):
             with patch.object(windows_release, 'gh', return_value=json.dumps(run)):
                 windows_release.preflight()
             with patch.object(windows_release, 'gh', return_value=json.dumps({**run, 'event': 'push'})):
@@ -39,6 +40,14 @@ class WindowsIdentityTests(unittest.TestCase):
                 with patch.object(windows_release, 'gh', return_value=json.dumps({**run, key: value})):
                     with self.assertRaises(ValueError):
                         windows_release.preflight()
+
+    def test_stale_or_unverifiable_upstream_blocks_publication_before_artifact_checks(self):
+        import windows_release
+        with patch.object(windows_release.subprocess, 'run', side_effect=subprocess.CalledProcessError(1, ['check-upstream'])):
+            with patch.object(windows_release, 'gh') as github:
+                with self.assertRaises(subprocess.CalledProcessError):
+                    windows_release.preflight()
+                github.assert_not_called()
 
     def test_installer_has_independent_namespaces_and_cannot_download_firefox(self):
         keys = ['BrandFullNameInternal', 'BrandFullName', 'CompanyName', 'URLInfoAbout', 'HelpLink', 'URLSystemRequirements', 'URLManualDownload', 'URLStubDownloadX86', 'URLStubDownloadAMD64', 'URLStubDownloadAArch64', 'CertNameDownload', 'CertIssuerDownload']
