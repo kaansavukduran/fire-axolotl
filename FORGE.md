@@ -1,3 +1,8 @@
+# 103 dilin kurulu üründe ilk doğrulaması
+
+- Linux153.7 motoru42827574889 başarılı. İlk103dilli gerçek AppImage/deb akışı42840814021 kurulum, AppImage4, native11, restart4, entegrasyon34 ve oyun11 kontrollerini geçti. Dil testi bütün103 kaydın yerleşik ve etkin olduğunu doğruladı; Almanca native seçim gerçekleşti.
+- Ardından Aion'un ek Görünüm etiketleri için beklenen İngilizce fallback yerine Türkçe seçildiği görüldü. aion-layout.js, yalnızca Türkçe native locale için TR; diğerleri için EN kullanacak şekilde düzeltildi. Firefox'un103 dil çevirileri korunur, Aion'a özgü metinler TR/EN sınırındadır. Arapça RTL/restart ve kalan dil/ağ kontrolleri geçmeden yayın yok. Motor yeniden derlenmez; incelenebilir UI katmanı yeniden paketlenir.
+
 # Gerçek çevrimdışı Windows sürüm yükseltme testi
 
 - İlk yayımlanmış153.6 Setup SHA-256 ile sabitlenir; yeni ve ayrı test kurulum dizinine kurulur. Taze sentetik profilde native parola/Places yer imi, Türkçe, sekme/font/oyun rekoru ve normal Aion UI üzerinden konteyner/kelime/kişiselPNG oluşturulur. Gerçek kullanıcı hesabı veya parolası kullanılmaz.

@@ -20,7 +20,7 @@
     let locale, messages, localizationRequest = 0;
     async function localize() {
       const request = ++localizationRequest;
-      const language = /^en(?:-|$)/i.test(Services.locale.appLocaleAsBCP47) ? 'en' : 'tr';
+      const language = /^tr(?:-|$)/i.test(Services.locale.appLocaleAsBCP47) ? 'tr' : 'en';
       const response = await fetch(`chrome://browser/content/preferences/aion-${language}.json`);
       const translated = await response.json();
       if (request !== localizationRequest) return;
