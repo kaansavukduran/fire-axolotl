@@ -67,6 +67,8 @@ jobs:
       - name: Full integration on the installed Windows browser
         run: python tests/gecko_e2e.py
       - name: Play and configure Aion Run through the installed normal new-tab UI
+        env:
+          AION_TEST_WINDOWS_WARP: '1'
         run: python tests/native_runner.py
       - name: Switch native languages through Settings and preserve user choices across real restarts
         run: python tests/native_localization.py

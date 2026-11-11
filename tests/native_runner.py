@@ -1,8 +1,9 @@
 # SPDX-License-Identifier: MPL-2.0
 """Exercise the actual pinned Godot game inside the installed native new tab.
 
-Requires a graphical desktop (Linux CI uses xvfb-run). No injected game state,
-headless WebGL overrides, certificate exceptions or sandbox changes are used.
+Requires a graphical desktop (Linux CI uses xvfb-run). Windows hosted CI can
+explicitly select the CPU-only WARP fixture; product graphics defaults remain
+unchanged. No injected game state, certificate exceptions or sandbox changes.
 """
 import json
 import os
@@ -21,6 +22,8 @@ ROOT=Path(__file__).resolve().parents[1]
 PIN=json.loads((ROOT/'browser/game/PIN.json').read_text())
 OUT=Path(os.environ.get('AION_RUNNER_ARTIFACTS',ROOT/'work/runner-test-artifacts'));OUT.mkdir(parents=True,exist_ok=True)
 profile=tempfile.TemporaryDirectory(prefix='aion-full-game-');passed=[];driver=None
+test_warp=os.environ.get('AION_TEST_WINDOWS_WARP')=='1'
+graphics={'windows_ci_cpu_fixture':test_warp}
 
 def launch():
     options=Options();options.binary_location=os.environ['AION_NATIVE_BINARY']
@@ -28,6 +31,14 @@ def launch():
     options.accept_insecure_certs=False
     options.set_preference('remote.prefs.recommended',False)
     options.set_preference('browser.shell.checkDefaultBrowser',False)
+    if test_warp:
+        if os.name!='nt' or os.environ.get('GITHUB_ACTIONS')!='true':
+            raise RuntimeError('WARP fixture is restricted to isolated Windows CI profiles')
+        # Hosted Windows has a Basic Display adapter outside Firefox's WebGL2
+        # allowlist. Select Microsoft's CPU renderer, then allow WebGL2 only in
+        # this disposable test profile. Never enable its blocked hardware GPU.
+        options.set_preference('webgl.angle.force-warp',True)
+        options.set_preference('gfx.blacklist.webgl2',1)  # FEATURE_STATUS_OK
     return webdriver.Firefox(options=options,service=Service(os.environ['AION_GECKODRIVER'],service_args=['--allow-system-access'],log_output=str(OUT/'geckodriver.log')))
 def record(message):passed.append(message);print('PASS',message,flush=True)
 def native():driver.set_context('chrome')
@@ -65,6 +76,10 @@ try:
     record('Real new tab preserves search and waits for explicit launch; no Hide button or old miniature game')
     native();driver.execute_script('Services.io.offline=true;');content()
     canvas=enter();assert data('version')==PIN['version'] and driver.execute_script('return AION_BUILD.build')==PIN['build']
+    graphics['renderer']=driver.execute_script('const gl=document.getElementById("canvas").getContext("webgl2");const info=gl.getExtension("WEBGL_debug_renderer_info");return info?gl.getParameter(info.UNMASKED_RENDERER_WEBGL):gl.getParameter(gl.RENDERER);')
+    if test_warp:
+        assert any(word in graphics['renderer'].lower() for word in ['basic render','warp','software rasterizer']),graphics
+    print('Actual game graphics',graphics,flush=True)
     assert data('state')=='ready' and data('page')=='main'
     record('First-ever full-game launch works with the browser offline and matches the pinned production version/build')
     assert driver.execute_script('try {parent.document.body;return false;}catch(e){return e.name==="SecurityError";}')
@@ -112,7 +127,7 @@ except Exception as error:
     print('FAIL',type(error).__name__,str(error)[:500],flush=True)
     if driver:
         try:
-            print('GAME',driver.execute_script('const c=document.querySelector("canvas");return c?{state:c.dataset.state,page:c.dataset.page,character:c.dataset.character,ui:c.dataset.ui,transform:c.dataset.screenTransform,rect:c.getBoundingClientRect().toJSON()}:document.body.innerText;'),flush=True)
+            print('GAME',driver.execute_script('const c=document.querySelector("canvas");return c?{body:document.body.innerText.slice(0,1500),state:c.dataset.state,page:c.dataset.page,character:c.dataset.character,ui:c.dataset.ui,transform:c.dataset.screenTransform,rect:c.getBoundingClientRect().toJSON()}:document.body.innerText;'),flush=True)
             driver.switch_to.default_content();native();driver.save_screenshot(str(OUT/'failure.png'))
         except Exception as capture_error:print('Capture',str(capture_error)[:200],flush=True)
     raise
@@ -122,4 +137,4 @@ finally:
             native();driver.execute_script('Services.io.offline=false;')
         finally:driver.quit()
     profile.cleanup()
-    (OUT/'results.json').write_text(json.dumps({'passed':passed,'mode':'compiled-fork-normal-newtab','game_version':PIN['version'],'game_build':PIN['build'],'source_commit':PIN['source_commit'],'full_game':True,'offline_first_launch_verified':len(passed)>=2,'isolated_principal_verified':len(passed)>=3,'tls_verification':True,'limits':'Real local Godot UI and representative gameplay; not an exhaustive replay of all upstream levels.'},ensure_ascii=False,indent=2)+'\n')
+    (OUT/'results.json').write_text(json.dumps({'passed':passed,'mode':'compiled-fork-normal-newtab','game_version':PIN['version'],'game_build':PIN['build'],'source_commit':PIN['source_commit'],'full_game':True,'offline_first_launch_verified':len(passed)>=2,'isolated_principal_verified':len(passed)>=3,'graphics':graphics,'tls_verification':True,'limits':'Real local Godot UI and representative gameplay; not an exhaustive replay of all upstream levels or GPU compatibility. Windows hosted CI explicitly uses Microsoft CPU WARP in this disposable profile; shipped graphics defaults and driver blocking remain unchanged.'},ensure_ascii=False,indent=2)+'\n')

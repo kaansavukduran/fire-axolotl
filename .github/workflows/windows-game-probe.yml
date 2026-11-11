@@ -1,0 +1,46 @@
+name: Verify native Windows game CPU renderer
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  game:
+    runs-on: windows-2022
+    timeout-minutes: 15
+    env:
+      PYTHONUTF8: '1'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131
+        with:
+          name: fire-axolotl-windows-x64-native-payload
+          path: work/game-probe-inputs
+          run-id: 42828049949
+          github-token: ${{ github.token }}
+      - run: python -m pip install -r tests/requirements-gecko.txt
+      - name: Apply the reviewed game resources to the preserved compiled engine
+        run: |
+          python -c "from pathlib import Path;import zipfile;archive,=Path('work/game-probe-inputs').glob('*.win64.zip');zipfile.ZipFile(archive).extractall('work/game-probe-runtime')"
+          python scripts/runner_overlay.py work/game-probe-runtime/fire-axolotl --receipt work/game-probe-overlay.json
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $binary = (Resolve-Path 'work/game-probe-runtime/fire-axolotl/fire-axolotl.exe').Path
+          "AION_NATIVE_BINARY=$binary" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+      - run: python scripts/fetch_test_runtime.py
+      - name: Actual full-game input, isolation, offline and process-restart tests
+        env:
+          AION_TEST_WINDOWS_WARP: '1'
+        run: python tests/native_runner.py
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        if: always()
+        with:
+          name: native-windows-game-cpu-evidence
+          path: |
+            work/runner-test-artifacts/
+            work/game-probe-overlay.json
+          retention-days: 14
