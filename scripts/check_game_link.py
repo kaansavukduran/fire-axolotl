@@ -23,8 +23,23 @@ def unchanged_gameplay(compare):
         return False
     web_files = {'packaging/web_boot.js', 'packaging/web_update.js', 'packaging/web_updates.py', 'packaging/web_worker.js'}
     def non_runtime(name):
-        return name in web_files or name in {'README.md', 'FORGE.md'} or name.startswith(('docs/', 'tests/', '.github/workflows/'))
+        suffix = Path(name).suffix
+        return (name in web_files or name in {'README.md', 'FORGE.md'}
+                or name.startswith('docs/') and suffix in {'.md', '.json', '.txt', '.log', '.png', '.webm', '.svg', '.gif'}
+                or name.startswith('tests/') and suffix == '.py'
+                or name.startswith('.github/workflows/') and suffix in {'.yml', '.yaml'})
     return all(non_runtime(item['filename']) and (not item.get('previous_filename') or non_runtime(item['previous_filename'])) for item in files)
+
+
+def unchanged_engine_assets(build):
+    for name, record in PIN['files'].items():
+        if name.endswith('.pck'):
+            continue
+        live_name = name.replace('aion-' + PIN['build'] + '.', 'aion-' + build['build'] + '.', 1)
+        live = build.get('assets', {}).get(live_name, {})
+        if live.get('bytes') != record['size'] or live.get('sha256') != record['sha256']:
+            return False
+    return True
 
 
 def source_freshness(build):
@@ -32,12 +47,14 @@ def source_freshness(build):
         raise ValueError('Refresh the bundled game version before publishing')
     if build['build'] == PIN['build']:
         return {'gameplay_source_matches': True, 'mode': 'identical-production-build'}
+    if not unchanged_engine_assets(build):
+        raise ValueError('Live game engine/assets changed or cannot be verified; refresh the game snapshot')
     request = urllib.request.Request('https://api.github.com/repos/kaansavukduran/aion_endless_run/compare/' + PIN['source_commit'] + '...main', headers={'Accept': 'application/vnd.github+json', 'User-Agent': 'Fire-Axolotl-release-verification'})
     with urllib.request.urlopen(request, timeout=45) as response:
         comparison = json.load(response)
     if not unchanged_gameplay(comparison):
         raise ValueError('Game runtime source changed; refresh and verify the immutable game pin before publishing')
-    return {'gameplay_source_matches': True, 'mode': 'same-gameplay-with-new-web-host', 'compared_head': (comparison.get('commits') or [{}])[-1].get('sha', PIN['source_commit']), 'non_runtime_changes': [item['filename'] for item in comparison.get('files', [])], 'limits': 'The local wrapper replaces the web host/updater. Pinned export bytes and source commit remain explicit; a new web host build is not claimed to be the same binary export.'}
+    return {'gameplay_source_matches': True, 'engine_asset_hashes_match': True, 'mode': 'same-gameplay-with-new-web-host', 'compared_head': (comparison.get('commits') or [{}])[-1].get('sha', PIN['source_commit']), 'non_runtime_changes': [item['filename'] for item in comparison.get('files', [])], 'limits': 'The local wrapper replaces the web host/updater. Pinned export bytes and source commit remain explicit; a new web host build is not claimed to be the same binary export.'}
 
 
 def verify():

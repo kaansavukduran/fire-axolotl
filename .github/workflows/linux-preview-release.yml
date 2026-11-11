@@ -29,6 +29,8 @@ jobs:
         with:
           node-version: '22'
       - run: npm run check && npm test
+      - name: Check bundled game freshness before downloading the native engine
+        run: python3 scripts/check_game_link.py
       - name: Read the reviewed package version
         run: |
           python3 - <<'PY'

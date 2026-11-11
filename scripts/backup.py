@@ -57,7 +57,8 @@ def main():
         'refs': git('show-ref').splitlines(),
         'files': {p.name: {'bytes': p.stat().st_size, 'sha256': hashlib.sha256(p.read_bytes()).hexdigest()} for p in [source, bundle]},
         'verification': ['source ZIP CRC verified', 'git bundle verify passed', 'common credential-pattern scan of reachable text blobs passed'],
-        'limitations': 'Pattern scanning is not a guarantee that no secret exists. This backs up the fork overlay repository; the exact upstream engine source is identified by upstream.json.'
+        'pinned_dependencies': {'firefox_source': json.loads((ROOT / 'upstream.json').read_text()), 'bundled_game': json.loads((ROOT / 'browser/game/PIN.json').read_text())},
+        'limitations': 'Pattern scanning is not a guarantee that no secret exists. This backs up the complete fork overlay repository and reachable Git history. External engine/game source and compiled export bytes are identified by the recorded immutable pins and source links; they are separate release/dependency artifacts, not embedded in this source ZIP or Git bundle.'
     }
     metadata = output / f'{prefix}-metadata.json'
     metadata.write_text(json.dumps(receipt, indent=2, ensure_ascii=False) + '\n')

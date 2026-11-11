@@ -1,6 +1,7 @@
 {
   "freshness": {
     "gameplay_source_matches": true,
+    "engine_asset_hashes_match": true,
     "mode": "same-gameplay-with-new-web-host",
     "compared_head": "03fd1f4a400345847da7b0b471272ec75602a62a",
     "non_runtime_changes": [
@@ -36,6 +37,6 @@
   "version": "0.12.0",
   "build": "94f81e5a24f692c2",
   "tls_verification": true,
-  "checked_utc": "2026-11-11T00:52:06.704167+00:00",
+  "checked_utc": "2026-11-11T01:02:07.697715+00:00",
   "mode": "Full pinned game packaged locally; runtime does not contact Vercel. Live deployment observation is recorded separately."
 }
