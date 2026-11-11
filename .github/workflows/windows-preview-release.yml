@@ -28,6 +28,8 @@ jobs:
         with:
           python-version: '3.12'
       - run: python scripts/windows_release.py preflight
+      - name: Check pinned game freshness before downloading or packaging the engine
+        run: python scripts/check_game_link.py
       - uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131
         with:
           name: fire-axolotl-windows-x64-native-payload

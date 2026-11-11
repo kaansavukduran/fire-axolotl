@@ -1,0 +1,41 @@
+{
+  "freshness": {
+    "gameplay_source_matches": true,
+    "mode": "same-gameplay-with-new-web-host",
+    "compared_head": "03fd1f4a400345847da7b0b471272ec75602a62a",
+    "non_runtime_changes": [
+      ".github/workflows/build.yml",
+      "FORGE.md",
+      "docs/evidence-web-loader/README.md",
+      "docs/evidence-web-loader/chromium-results.json",
+      "docs/evidence-web-loader/firefox-landscape-game.png",
+      "docs/evidence-web-loader/firefox-portrait-landscape-game.png",
+      "docs/evidence-web-loader/firefox-repaired-offline.png",
+      "docs/evidence-web-loader/firefox-results.json",
+      "docs/evidence-web-loader/firefox-retry-screen.png",
+      "docs/evidence-web-loader/original-failure.json",
+      "docs/evidence-web-loader/original-failure.png",
+      "docs/evidence-web-loader/packaging-tests.log",
+      "docs/evidence-web-loader/same-version-upgrade-results.json",
+      "packaging/web_boot.js",
+      "packaging/web_update.js",
+      "packaging/web_updates.py",
+      "packaging/web_worker.js",
+      "tests/browser_loader.py",
+      "tests/browser_upgrade.py",
+      "tests/test_web_packaging.py"
+    ],
+    "limits": "The local wrapper replaces the web host/updater. Pinned export bytes and source commit remain explicit; a new web host build is not claimed to be the same binary export."
+  },
+  "packaged_version": "0.12.0",
+  "packaged_build": "7967f676d171a832",
+  "packaged_assets_verified": 8,
+  "source_commit": "5e74cd0bb0dd133ca14ed96712bb03c4cd9a0678",
+  "full_game": true,
+  "url": "https://aionendlessrun.vercel.app/",
+  "version": "0.12.0",
+  "build": "94f81e5a24f692c2",
+  "tls_verification": true,
+  "checked_utc": "2026-11-11T00:52:06.704167+00:00",
+  "mode": "Full pinned game packaged locally; runtime does not contact Vercel. Live deployment observation is recorded separately."
+}
