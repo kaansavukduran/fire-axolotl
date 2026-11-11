@@ -32,7 +32,7 @@ def check_source_delta(base):
     allowed.update('browser/native/aion-runner/' + name for name in ['AionToolsParent.sys.mjs', 'AionToolsChild.sys.mjs'])
     allowed.update('browser/native/aion-runner/' + name for name in ['toolbar.sys.mjs', 'aion-wallpaper.png', 'WALLPAPER-PROVENANCE.json', 'ENDLESS-RUN.json'])
     allowed.update('browser/extension/' + name for name in ['manifest.json', 'background.js', 'popup.html', 'popup.js', 'ui.css', 'image-search.js', 'container-menus.js', 'settings.html'])
-    allowed.update(str(p.relative_to(ROOT)) for p in (ROOT / 'browser/game').iterdir() if p.is_file())
+    allowed.update(p.relative_to(ROOT).as_posix() for p in (ROOT / 'browser/game').iterdir() if p.is_file())
     if set(changed) - allowed:
         raise ValueError('The compiled core differs from the reviewed build: ' + ', '.join(sorted(set(changed) - allowed)))
     old_manifest = json.loads(subprocess.check_output(['git', 'show', base + ':browser/extension/manifest.json'], cwd=ROOT))
