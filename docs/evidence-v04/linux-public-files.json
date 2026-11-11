@@ -1,0 +1,107 @@
+{
+  "release": "https://github.com/kaansavukduran/fire-axolotl/releases/tag/v0.4.0-dev.20261111-linux",
+  "packaging_commit": "45f82937e84e2de7ecebc51ae18b1cf35ca249d4",
+  "files": {
+    "fire-axolotl-0.4.0-dev.20261111.1-appimage-support-source.tar.gz": {
+      "bytes": 10884214,
+      "sha256": "3e81fd1d0bc9766a1ca5b7da558332f9e2a74ae1e857f114341aef47d1bcc93a",
+      "verification": "public download SHA256 and size verified",
+      "retained": false
+    },
+    "fire-axolotl-0.4.0-dev.20261111.1-linux-amd64.deb": {
+      "bytes": 245129754,
+      "sha256": "b911b691f8c11741015a6c71a9fb5eb8a5673d9ba7a0e9daaff65c3acac31bfe",
+      "verification": "public download SHA256 and size verified",
+      "retained": false
+    },
+    "fire-axolotl-0.4.0-dev.20261111.1-linux-x86_64.AppImage": {
+      "bytes": 267139576,
+      "sha256": "458b0ff4bfd63faa98febd460497a5398a7fd11ccc8ba8e05b9d69c0a1ee0265",
+      "verification": "public download SHA256 and size verified",
+      "retained": false
+    },
+    "fire-axolotl-0.4.0-dev.20261111.1-packaging-source.zip": {
+      "bytes": 21560746,
+      "sha256": "3717fbe8752657780cf4978ee951fcb145505f11edfbe1d3d40fbb52a8737156",
+      "verification": "public download SHA256 and size verified",
+      "retained": true
+    },
+    "fire-axolotl-153.7.0.en-US.linux-x86_64.tar.xz": {
+      "bytes": 249040692,
+      "sha256": "026908abdf1dae171d80e8b9d4b0c42a35ba49b42fd13776a82fc5b0624663e4",
+      "verification": "public download SHA256 and size verified",
+      "retained": false
+    },
+    "fire-axolotl-153.7.0.en-US.linux-x86_64.tar.xz.sha256": {
+      "bytes": 113,
+      "sha256": "8e9c7df198c0611511fa68c4a4db4d567769bd2486f4b975252ae1c41f8d3688",
+      "verification": "public download SHA256 and size verified",
+      "retained": true
+    },
+    "fire-axolotl-153.7.0.en-US.linux-x86_64.tar.xz.verification.json": {
+      "bytes": 384,
+      "sha256": "f784288b583964165cad1a9f758747fa63c81ecfab39d626d3a962a65fe2bc0a",
+      "verification": "public download SHA256 and size verified",
+      "retained": true
+    },
+    "fire-axolotl-applied-source.tar.zst": {
+      "bytes": 1028793946,
+      "sha256": "2dc62d4b108bfb35007eae9a4b3ff7b20daa5058e37482b324c4c37a8e40739c",
+      "verification": "identical to previously downloaded and verified1537 release asset"
+    },
+    "fire-axolotl-applied-source.tar.zst.sha256": {
+      "bytes": 102,
+      "sha256": "ca0185c1f8ad5892fc31a6ff3adabac7a48307fa16cb111d2b0511396c0a2a1f",
+      "verification": "identical to previously downloaded and verified1537 release asset"
+    },
+    "fire-axolotl-build.json": {
+      "bytes": 2046,
+      "sha256": "608048480edf4dc4b11ec5c5ac40b8963889ae8de515eb9193b03a0710b10bdf",
+      "verification": "identical to previously downloaded and verified1537 release asset"
+    },
+    "fire-axolotl-localization-source.zip": {
+      "bytes": 43564514,
+      "sha256": "ddfe73ea4ac25986f7d6ab3baa3156124103f538dd2e7086d4a00190361b6de0",
+      "verification": "public download SHA256 and size verified",
+      "retained": false
+    },
+    "linux-package-report.json": {
+      "bytes": 3198,
+      "sha256": "d71495f68b6d6909302a243d1d0f60eb328ec68d3f8559fe800c074d0c3ffd8e",
+      "verification": "public download SHA256 and size verified",
+      "retained": true
+    },
+    "native-ui-overlay.json": {
+      "bytes": 7495159,
+      "sha256": "e18b106d81f3ce7d46c1304a37d3f60fcd9e21711b894b43e465fcc6f8737bc5",
+      "verification": "public download SHA256 and size verified",
+      "retained": true
+    },
+    "release-manifest.json": {
+      "bytes": 59148,
+      "sha256": "931c9c9e6356a8bf9e024b0ef4c0054c2edceb4a99650c2f95a02f5a30b22c8e",
+      "verification": "public download SHA256 and size verified",
+      "retained": true
+    },
+    "RELEASE-NOTES.md": {
+      "bytes": 6212,
+      "sha256": "cd1977b69e025306e41ea340b6edb28d836d5839b5439219cf315f6cb4631c23",
+      "verification": "public download SHA256 and size verified",
+      "retained": true
+    },
+    "release-validation.json": {
+      "bytes": 5828,
+      "sha256": "3b352819119e22932f98516f78af0838a5eecdeb2b717509cabe03c6c8f2275a",
+      "verification": "public download SHA256 and size verified",
+      "retained": true
+    },
+    "SHA256SUMS": {
+      "bytes": 1700,
+      "sha256": "2945e9acdd3e823683d665c47b6e0c5b0402647ef20c1d7e9b83ff7d7c0e372d",
+      "verification": "public download SHA256 and size verified",
+      "retained": true
+    }
+  },
+  "checksum_manifest_verified": true,
+  "limits": "Unchanged assets reuse prior complete verified byte hashes; changed public assets are streamed completely. Large binaries other than Windows Setup are not retained locally."
+}

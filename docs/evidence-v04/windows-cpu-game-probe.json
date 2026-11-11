@@ -1,0 +1,30 @@
+{
+  "passed": [
+    "Real new tab preserves search and waits for explicit launch; no Hide button or old miniature game",
+    "First-ever full-game launch works with the browser offline and matches the pinned production version/build",
+    "Game has no browser-data permissions, cannot read its parent, and runs with a non-system principal",
+    "All four real character buttons select the canonical Aion, owl, sheep and wolf animation sheets",
+    "Actual keyboard Space jumps and Esc pauses the real Godot game with a frozen score",
+    "The current wolf character and real crouch/roll input work through the embedded game UI",
+    "The full in-game Settings menu switches language immediately without a browser translation substitute",
+    "An actual unmodified offline run reaches its own animated collision/result screen",
+    "Real game preferences survive a new embedded document through its own IndexedDB save",
+    "Real fullscreen control opens the full game and returning preserves the usable new-tab search",
+    "A genuine browser process restart preserves full-game preferences and supports another offline launch"
+  ],
+  "mode": "compiled-fork-normal-newtab",
+  "game_version": "0.12.0",
+  "game_build": "7967f676d171a832",
+  "source_commit": "5e74cd0bb0dd133ca14ed96712bb03c4cd9a0678",
+  "full_game": true,
+  "offline_first_launch_verified": true,
+  "isolated_principal_verified": true,
+  "graphics": {
+    "windows_ci_cpu_fixture": true,
+    "renderer": "ANGLE (Microsoft, Microsoft Basic Render Driver Direct3D11 vs_5_0 ps_5_0), or similar"
+  },
+  "tls_verification": true,
+  "limits": "Real local Godot UI and representative gameplay; not an exhaustive replay of all upstream levels or GPU compatibility. Windows hosted CI explicitly uses Microsoft CPU WARP in this disposable profile; shipped graphics defaults and driver blocking remain unchanged.",
+  "workflow_run": 42932119312,
+  "scope": "Preserved native153.7 Windows payload with reviewed game resources; separately from actual Setup installation verification"
+}

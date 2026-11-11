@@ -1,0 +1,17 @@
+{
+  "passed": [
+    "Fresh profile has top tabs, separate search, bookmarks and a movable temporary-tab toolbar button",
+    "Native new tab loads the packaged Aion wallpaper without a remote wallpaper request",
+    "Full local game has its current version, explicit launch and no upper-right hide control",
+    "Only Appearance controls visibility; the restore button recovers a previously disabled game across page reloads",
+    "Two real toolbar clicks create different temporary cookie stores while the original login stays intact",
+    "Last-tab cleanup removes only the relevant owned temporary identity and preserves other temporary and permanent identities",
+    "Real Appearance checkbox turns wallpaper off without hiding or resetting the game",
+    "New-tab game links and restore controls fit a narrow browser window",
+    "A real process restart preserves customized tabs, removed search, hidden bookmarks and wallpaper choice"
+  ],
+  "mode": "actual-compiled-fork-newtab",
+  "tls_verification": true,
+  "managed_test_proxy": false,
+  "limits": "Synthetic local cookie fixtures. Live-game step verifies actual user-initiated navigation, not every Godot gameplay feature."
+}

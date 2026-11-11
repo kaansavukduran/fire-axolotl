@@ -20,14 +20,26 @@ RESOURCE = 'resource://builtin-addons/aion-game/'
 PREFIX = 'chrome/browser/builtin-addons/aion-game/'
 
 
+def sha256(path):
+    with path.open('rb') as source:
+        return hashlib.file_digest(source, 'sha256').hexdigest()
+
+
+def matches(path, record):
+    return path.is_file() and path.stat().st_size == record['size'] and sha256(path) == record['sha256']
+
+
 def files():
+    for name in PIN['files']:
+        if '/' in name or '\\' in name or not name.startswith('aion-' + PIN['build'] + '.'):
+            raise ValueError('Unsafe game asset path')
     CACHE.mkdir(parents=True, exist_ok=True)
     result = {p.name: p for p in SOURCE.iterdir() if p.is_file()}
-    missing = any(not (CACHE / name).is_file() for name in PIN['files'])
+    missing = any(not matches(CACHE / name, record) for name, record in PIN['files'].items())
     if missing and PIN.get('bundle'):
         record = PIN['bundle']
         archive = ROOT / 'work/aion-game-assets.tar.gz'
-        if not archive.is_file() or archive.stat().st_size != record['size'] or hashlib.file_digest(archive.open('rb'), 'sha256').hexdigest() != record['sha256']:
+        if not matches(archive, record):
             temporary = archive.with_suffix('.part')
             try:
                 with urllib.request.urlopen(record['url'], timeout=120) as response, temporary.open('wb') as output:
@@ -37,7 +49,7 @@ def files():
                         if remaining < 0:
                             raise ValueError('Oversized bundled game archive')
                         output.write(chunk)
-                if temporary.stat().st_size != record['size'] or hashlib.file_digest(temporary.open('rb'), 'sha256').hexdigest() != record['sha256']:
+                if not matches(temporary, record):
                     raise ValueError('Bundled game archive hash mismatch')
                 temporary.replace(archive)
             finally:
@@ -56,17 +68,15 @@ def files():
                 try:
                     with source.extractfile(item) as input_stream, temporary.open('wb') as output:
                         shutil.copyfileobj(input_stream, output)
-                    if hashlib.file_digest(temporary.open('rb'), 'sha256').hexdigest() != expected['sha256']:
+                    if not matches(temporary, expected):
                         raise ValueError('Extracted game asset hash mismatch')
                     temporary.replace(destination)
                 finally:
                     temporary.unlink(missing_ok=True)
     for name, record in PIN['files'].items():
-        if '/' in name or '\\' in name or not name.startswith('aion-' + PIN['build'] + '.'):
-            raise ValueError('Unsafe game asset path')
         target = CACHE / name
         def valid(path):
-            return path.is_file() and path.stat().st_size == record['size'] and hashlib.file_digest(path.open('rb'), 'sha256').hexdigest() == record['sha256']
+            return matches(path, record)
         if not valid(target):
             temporary = target.with_suffix(target.suffix + '.part')
             try:
@@ -89,7 +99,7 @@ def files():
 
 
 def catalog_entry():
-    return {'addon_id': ADDON_ID, 'addon_version': PIN['version'], 'res_url': RESOURCE}
+    return {'addon_id': ADDON_ID, 'addon_version': json.loads((SOURCE / 'manifest.json').read_text())['version'], 'res_url': RESOURCE}
 
 
 def allow_game_frame(html):
