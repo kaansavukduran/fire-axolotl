@@ -51,7 +51,7 @@ def click(text=None,name=None):
     a,b,c,d,tx,ty=json.loads(data('screen-transform'))
     x=target['x']+target['w']/2;y=target['y']+target['h']/2
     size=driver.execute_script('const r=arguments[0].getBoundingClientRect();return {w:r.width,h:r.height};',canvas)
-    ActionChains(driver).move_to_element_with_offset(canvas,round(a*x+c*y+tx-size['w']/2),round(b*x+d*y+ty-size['h']/2)).click().perform()
+    ActionChains(driver).move_to_element_with_offset(canvas,round((a*x+c*y+tx)*size['w']/float(data('raw-width'))-size['w']/2),round((b*x+d*y+ty)*size['h']/float(data('raw-height'))-size['h']/2)).click().perform()
 
 def screenshot(name):
     driver.switch_to.default_content();native();driver.save_screenshot(str(OUT/name));content();driver.switch_to.frame(driver.find_element(By.ID,'fireaxolotl-runner').shadow_root.find_element(By.CSS_SELECTOR,'iframe'))
