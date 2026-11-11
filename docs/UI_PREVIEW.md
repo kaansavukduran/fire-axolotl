@@ -1,3 +1,17 @@
+# Aion 0.4 · Tam oyun yeni sekmede
+
+Gerçek Fire Axolotl 153.7 motoru ve 0.4 kaynak katmanında, son yayımlanan Aion Endless Run 0.12.0 (`7967f676d171a832`) paketi. Ekranlar Linux'ta normal grafik yolunda, internet kapalıyken çalışan tarayıcıdan alındı; arayüz maketi değildir. Üstteki çizgili adres çubuğu WebDriver otomasyon işaretidir. Veriler sentetik test verileridir. Kurulum paketlerinin ayrı denetim/yayın durumu ana sayfa ve VALIDATION.md içindedir.
+
+Yeni sekmede **Oyunu başlat** tam oyunu aynı sayfada açar; sağ üstte yalnızca **Tam ekran** vardır. **Gizle** düğmesi kaldırıldı. Arama, üst sekmeler ve mutlu arkadaşlar arka planı korunur.
+
+![Yeni sekmenin içindeki tam oyun ve karakter seçimi](screenshots/04-full-game-menu.png)
+
+Dil, ses ve hareket ayarları tam oyunun kendi menüsündedir:
+
+![Gömülü tam oyunun Türkçe ayarları](screenshots/04-full-game-settings.png)
+
+[Kullanım](QUICK_START.md) · [Paketli oyun ve sürüm pinleri](BUNDLED_GAME.md). Aşağıdaki ekranlar önceki sürümlerin tarihsel kayıtlarıdır.
+
 # 0.3.1 · Mutlu Aion ve arkadaşları
 
 Yeni varsayılan arka planda aynı orman ortamında Aion, kurt, kuzu ve baykuş birlikte, normal ve mutlu ifadelerle yer alır. Dört karakter de arama alanı ve oyun kartlarının dışında kalır. Aşağıdaki görüntü gerçek Linux tarayıcısının Türkçe yeni sekmesinden alındı; çizgili adres çubuğu otomasyon işaretidir.

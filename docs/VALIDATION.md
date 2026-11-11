@@ -94,3 +94,15 @@ Testler yerel/sentetik içerikle çalışır. Görsel arama URL'si çevrimdış�
 Signed upgrades, other platforms, complete locales, actual account/service access, live streaming adapters, external translation, all-frame support, human accessibility review and independent security review remain pending. Passing tests does not certify a browser as malware-proof.
 
 Actions sonuçlarını ilgili commit'in çalıştırmalarından kontrol et. Workflow dosyasının bulunması, başarıyla tamamlandığı anlamına gelmez.
+
+## 0.4 tam yerel oyun · 2026-11-11
+
+Küçük bağımsız runner yerine Aion Endless Run 0.12.0 tam Godot web çıktısı paketlendi. Son production build `7967f676d171a832`, Git kaynağı `5e74cd0bb0dd133ca14ed96712bb03c4cd9a0678`; Vercel production deployment metadatası bu Git commit'ini doğruladı. Önceki gözlenen build ile son build arasındaki Git değişiklikleri yalnızca belgeler/kanıtlar ve ek doğrulama testidir; oyun kodu/çizimleri değişmemiştir. Yine de son production PCK/WASM/JS dosyaları yeniden alındı ve son pakette 11 senaryo tekrar oynandı.
+
+Yerel gerçek153.7/0.4 tarayıcıda, normal güvenlik ve grafik ayarlarıyla 11 tam oyun ve9 yeni sekme senaryosu geçti: çevrimdışı ilk açılış, tam production sürüm/build, ayrı non-system principal/üst belgeye erişim engeli/boş tarayıcı veri izinleri, dört gerçek karakter düğmesi, Boşluk zıplama, Esc duraklama, kurt eğilme hareketi, gerçek ayarlarda dil geçişi, çevrimdışı animasyonlu çarpışma sonucu, IndexedDB kaydı, tam ekran ve gerçek süreç yeniden başlatması. Yeni sekme testleri Gizle düğmesinin yokluğunu, Görünümden kapatma/geri getirmeyi, dar pencereyi ve gerçek geçici konteyner temizliğini denetledi. Oyun state'i test JavaScript'iyle değiştirilmedi. Linux headless WebGL2 desteklemediği için normal Firefox, yerel sanal X ekranında çalıştırıldı; sandbox/TLS/WebGL engelleme tercihleri kapatılmadı.
+
+27 JavaScript ve47 Python kaynak/güvenlik kontrolü geçti. Yeni arşiv kontrolleri hash uyumsuzluğu, farklı çalıştırılabilir byte'lar, path traversal, simge bağlantısı, yinelenen üyeler ve beklenmeyen CSP değişikliklerini reddeder. Aynı gün önce karşılaşılan Windows allowlist yol biçimi farkı `as_posix()` ile düzeltildi.
+
+Paketli oyun bileşeni [başarılı yayımlama](https://github.com/kaansavukduran/fire-axolotl/actions/runs/42929353047) ile sabit GitHub arşivine alındı. Açık indirme bağlantısından84763969 byte'ın tamamı tekrar okunarak SHA-256 `497812edb536f80cf2ba47bfc52c8cad616534770e4528e761b6b056b7e68ba1` doğrulandı. Her arşiv üyesi ayrıca PIN.json'daki kendi boyut/hash kaydıyla denetlenir. Oyun tarayıcı çalışma sırasında Vercel'e bağlanmaz.
+
+Windows/Linux kurulum paketi doğrulamaları bu yerel sonuçlardan ayrıdır; aşağıdaki yayın sonuçları tamamlandıktan sonra eklenir. Tüm seviyeler, gerçek hesaplar veya her grafik kartı sınanmış değildir.

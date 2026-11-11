@@ -16,10 +16,11 @@ Yeni profilde sekmeler üstte, adres çubuğunun yanında ayrı arama alanı ve 
 
 Aion, kurt, kuzu ve baykuşun birlikte mutlu olduğu orman arka planı paketle gelir ve çevrimdışı açılır. **Ayarlar → Görünüm → Yeni sekmede Aion arka planını göster** kutusuyla kapatabilirsin. Firefox'un kendi duvar kağıdı seçimi varsa önceliği korunur. Dar pencerede yan widgetlar ana içeriğin altına yerleşir.
 
-- **Aion Endless Run · Güncel oyunu aç:** [Vercel'deki oyunu](https://aionendlessrun.vercel.app/) ayrı sekmede açar. İnternet ilk yüklemede gerekir; yeni sekme açılır açılmaz oyun sunucusuna bağlantı yapılmaz. Bu adres oyunun güncel yayınını izler. Oyun eski bir çevrimdışı kopya gösteriyorsa kendi **Yeni sürüm hazır · Güncelle** düğmesini kullan. Her Fire Axolotl yayını canlı oyunun sürüm dosyasını ve sayfasını doğrular.
-- **Çevrimdışı mini oyun:** Tarayıcıyla paketlenen küçük engel atlama oyunudur. **Başlat**, oyun alanında **Boşluk** veya dokunmayla zıpla, **Esc** ile duraklat. Buzda donma, ateşte çizgi film tarzı kül, sekme değiştirince duraklama ve yerel rekor vardır. Tam Godot oyununun paketlenmiş kopyası değildir.
+**0.4 sürümünde tam Aion Endless Run 0.12.0 tarayıcıya dahildir.** Yeni sekmede **Oyunu başlat** düğmesine tıkla. Oyun aynı sayfada açılır; ilk açılışta bile internet gerekmez. Oyunun kendi menüsünden karakter seç, **Boşluk** ile zıpla, **Esc** ile duraklat. **Tam ekran** düğmesi oyunu büyütür. Dil, ses, hareket ve kayıtlar oyunun kendi **Ayarlar** menüsündedir; tarayıcı Görünüm ayarındaki eski küçük oyuna ait dil/rekor kontrolleri kullanılmaz.
 
-**Mini oyunu yanlışlıkla gizlediysen:** Yeni sekmedeki **Çevrimdışı mini oyunu göster** düğmesine bas. **Ayarlar → Görünüm → Yeni sekmede Aion Koşusu'nu göster** kutusundan da açabilirsin. Aynı bölümde oyun dilini ve rekoru yönet. Başka yeni sekme eklentisi seçtiğinde onun normal yeni sekme sayfası korunur.
+Sağ üstte **Gizle** düğmesi yoktur. Daha önce yanlışlıkla gizlediysen yeni sekmede **Aion Endless Run oyununu göster** düğmesine bas; **Ayarlar → Görünüm → Yeni sekmede Aion Endless Run** kutusundan da açabilirsin. Eski küçük oyunun rekoru profilde korunur. Kalıcı oyun kayıtları için normal yeni sekme kullan; geçici konteynerlerin amacı oturumu geçici tutmaktır. Başka yeni sekme eklentisi seçtiğinde onun normal sayfası korunur.
+
+Oyun güncellemeleri Fire Axolotl paketleriyle gelir. GitHub/Vercel'deki değişiklikler tarayıcıya kendiliğinden kod indirmez. [Paketli oyun sürümü, kaynak ve çalışma gereksinimleri](BUNDLED_GAME.md).
 
 ## Tek tıklamayla yeni geçici sekme
 
