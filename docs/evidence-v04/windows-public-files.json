@@ -1,0 +1,97 @@
+{
+  "release": "https://github.com/kaansavukduran/fire-axolotl/releases/tag/v0.4.0-dev.20261111-windows",
+  "packaging_commit": "d6df3f71d9c0abe44f816d3e9a4c02d9b1a5a903",
+  "files": {
+    "fire-axolotl-0.4.0-dev.20261111.1-windows-x86_64-packaging-source.zip": {
+      "bytes": 24782688,
+      "sha256": "e3831219995a9cdc8a184bdaa1741d3db9978abaf0bd2ce28b7484de47a1eace",
+      "verification": "public download SHA256 and size verified",
+      "retained": true
+    },
+    "fire-axolotl-0.4.0-dev.20261111.1-windows-x86_64-Setup.exe": {
+      "bytes": 245315615,
+      "sha256": "c53cc4ee2f28cf2489f2b854c7fb6554e333c01fcc31672472ee2e080037c048",
+      "verification": "public download SHA256 and size verified",
+      "retained": false
+    },
+    "fire-axolotl-0.4.0-dev.20261111.1-windows-x86_64.zip": {
+      "bytes": 294498637,
+      "sha256": "32dba3c19cd9fc0ab7afaaba5e4bc00d39161f7ae517cf75a0c301d6dc22f3f9",
+      "verification": "public download SHA256 and size verified",
+      "retained": false
+    },
+    "fire-axolotl-0.4.0-dev.20261111.1-windows-x86_64.zip.sha256": {
+      "bytes": 120,
+      "sha256": "313eaf22b3fbc9c81ebe85a42ca749b60ed1030e8d86ef0a82cf790ae2282072",
+      "verification": "public download SHA256 and size verified",
+      "retained": true
+    },
+    "fire-axolotl-0.4.0-dev.20261111.1-windows-x86_64.zip.verification.json": {
+      "bytes": 399,
+      "sha256": "66776976212a471e53346442075e1d90bdb6d5e00f00a5a5586fffe5e5988acb",
+      "verification": "public download SHA256 and size verified",
+      "retained": true
+    },
+    "fire-axolotl-localization-source.zip": {
+      "bytes": 43564505,
+      "sha256": "ab5c3bb424a3684423023cdcf8016ad45e1ae718e913840175ad7917b550263f",
+      "verification": "public download SHA256 and size verified",
+      "retained": false
+    },
+    "fire-axolotl-windows-applied-source.tar.zst": {
+      "bytes": 1011676774,
+      "sha256": "cad9f7a3ad469f13477c476e581d3f2b45dafd26024326b3753c5c563931911f",
+      "verification": "identical to previously downloaded and verified1537 release asset"
+    },
+    "native-build-validation.json": {
+      "bytes": 5863,
+      "sha256": "a5b1b4098da261efeb69a320323a81aa9da37fda86eb7bc90615515c28921288",
+      "verification": "public download SHA256 and size verified",
+      "retained": true
+    },
+    "newtab-ui-overlay.json": {
+      "bytes": 7627548,
+      "sha256": "7e31a0085e668d3e8118b3b096bfb2dfc2d48fd550e0033849ca6153493775cb",
+      "verification": "public download SHA256 and size verified",
+      "retained": true
+    },
+    "release-manifest.json": {
+      "bytes": 7969533,
+      "sha256": "180bf0dfe30eff3552ba61ea87e08a6db6fcf37bcd16760523b38a30e42ab59b",
+      "verification": "public download SHA256 and size verified",
+      "retained": true
+    },
+    "RELEASE-NOTES.md": {
+      "bytes": 9199,
+      "sha256": "60598f8d65cf018f3392685f7e42c27204b371fd7a739d2d287932a1ad6077c7",
+      "verification": "public download SHA256 and size verified",
+      "retained": true
+    },
+    "SHA256SUMS": {
+      "bytes": 1510,
+      "sha256": "2d86db7ec1ba2e6c35935007763425820881cde25b512e46d6492518e6499063",
+      "verification": "public download SHA256 and size verified",
+      "retained": true
+    },
+    "windows-runtime-build.json": {
+      "bytes": 9481,
+      "sha256": "ed662ce7e2abfda3858d47dd386fad783d0cda2f63962fd7899260ad2b2c4ea8",
+      "verification": "public download SHA256 and size verified",
+      "retained": true
+    },
+    "windows-sfx-build.json": {
+      "bytes": 1507,
+      "sha256": "0484fb1c5d75c0b71c64843c18c10dc799c01290dbfe54be869ac1daeaa3e14f",
+      "verification": "public download SHA256 and size verified",
+      "retained": true
+    },
+    "windows-sfx-corresponding-source.zip": {
+      "bytes": 1108351,
+      "sha256": "d4430d9dfc1ad4e6a102aa9f660aa8bc5d67e1321f0fd4095e90b9fc850782ec",
+      "verification": "public download SHA256 and size verified",
+      "retained": false
+    }
+  },
+  "checksum_manifest_verified": true,
+  "limits": "Unchanged assets reuse prior complete verified byte hashes; changed public assets are streamed completely. Large binaries other than Windows Setup are not retained locally."
+}
