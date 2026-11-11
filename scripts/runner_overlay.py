@@ -140,6 +140,9 @@ def apply(runtime):
         with zipfile.ZipFile(temp, 'w', zipfile.ZIP_DEFLATED) as output:
             for entry in archive.infolist():
                 data = archive.read(entry.filename)
+                if entry.filename.startswith(bundled_game.PREFIX) and entry.filename not in replacements:
+                    changed[entry.filename] = {'before': sha(data), 'after': None}
+                    continue
                 updated = replacements.pop(entry.filename, data)
                 output.writestr(entry, updated)
                 if data != updated:

@@ -6,6 +6,7 @@ import zipfile
 from unittest.mock import patch
 
 from runner_overlay import apply, PREFIX
+import bundled_game
 
 
 class RunnerOverlayTests(unittest.TestCase):
@@ -19,6 +20,7 @@ class RunnerOverlayTests(unittest.TestCase):
             original = b'\x00untouched original native resource\xff'
             with zipfile.ZipFile(archive, 'w') as output:
                 output.writestr('unrelated/native.dat', original)
+                output.writestr(bundled_game.PREFIX + 'aion-obsolete.pck', b'obsolete owned game bytes')
                 output.writestr(PREFIX + 'built_in_addons.json', '{"builtins":[{"addon_id":"aion@fire-axolotl.browser","addon_version":"0.1.0","res_url":"resource://builtin-addons/aion/"}]}')
                 output.writestr('defaults/preferences/firefox-branding.js', (Path(__file__).resolve().parents[1] / 'browser/preferences/fire-axolotl.js').read_bytes())
                 output.writestr(PREFIX + 'aion-chrome.js', 'old UI')
@@ -27,6 +29,7 @@ class RunnerOverlayTests(unittest.TestCase):
                 report = apply(runtime)
             with zipfile.ZipFile(archive) as output:
                 self.assertEqual(output.read('unrelated/native.dat'), original)
+                self.assertNotIn(bundled_game.PREFIX + 'aion-obsolete.pck', output.namelist())
                 self.assertIn(b'aion-newtab-game', output.read(PREFIX + 'preferences/preferences.xhtml'))
                 self.assertIn(PREFIX + 'aion-runner/aion-runner.png', output.namelist())
             self.assertEqual(report['unchanged_member_count'], 2)
