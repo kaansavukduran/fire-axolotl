@@ -17,6 +17,7 @@ import tarfile
 import copy
 import zipfile
 from localization import overlay_resources
+import bundled_game
 
 ROOT = Path(__file__).resolve().parents[1]
 PREFIX = 'chrome/browser/content/browser/'
@@ -26,11 +27,12 @@ def check_source_delta(base):
     protected = ['browser', 'branding', 'components.json', 'upstream.json', 'localization.json', 'scripts/localization.py', 'scripts/prepare_source.py', 'scripts/package_extension.py', 'scripts/fetch_components.py']
     changed = subprocess.check_output(['git', 'diff', '--name-only', base, 'HEAD', '--', *protected], cwd=ROOT, text=True).splitlines()
     allowed = {'branding/PROVENANCE.md', 'browser/native/aion-chrome.js', 'browser/native/aion-layout.js', 'browser/native/aion-layout.inc.xhtml', 'scripts/prepare_source.py', 'browser/extension/_locales/tr/messages.json', 'browser/extension/_locales/en/messages.json'}
-    allowed.update('browser/native/aion-runner/' + name for name in ['AionRunnerParent.sys.mjs', 'AionRunnerChild.sys.mjs', 'card.sys.mjs', 'world.sys.mjs', 'aion-runner.png', 'PROVENANCE.json'])
+    allowed.update('browser/native/aion-runner/' + name for name in ['AionRunnerParent.sys.mjs', 'AionRunnerChild.sys.mjs', 'card.sys.mjs', 'world.sys.mjs', 'game.sys.mjs', 'aion-runner.png', 'PROVENANCE.json'])
     allowed.update(['localization.json', 'scripts/localization.py', 'browser/preferences/fire-axolotl.js'])
     allowed.update('browser/native/aion-runner/' + name for name in ['AionToolsParent.sys.mjs', 'AionToolsChild.sys.mjs'])
     allowed.update('browser/native/aion-runner/' + name for name in ['toolbar.sys.mjs', 'aion-wallpaper.png', 'WALLPAPER-PROVENANCE.json', 'ENDLESS-RUN.json'])
     allowed.update('browser/extension/' + name for name in ['manifest.json', 'background.js', 'popup.html', 'popup.js', 'ui.css', 'image-search.js', 'container-menus.js', 'settings.html'])
+    allowed.update(str(p.relative_to(ROOT)) for p in (ROOT / 'browser/game').iterdir() if p.is_file())
     if set(changed) - allowed:
         raise ValueError('The compiled core differs from the reviewed build: ' + ', '.join(sorted(set(changed) - allowed)))
     old_manifest = json.loads(subprocess.check_output(['git', 'show', base + ':browser/extension/manifest.json'], cwd=ROOT))
@@ -55,6 +57,9 @@ def check_source_delta(base):
         before = before.replace('    ublock = embed_ublock(source)', "    localizations = embed_localizations(source, branding / 'locales/en-US')\n    ublock = embed_ublock(source)")
         anchor = "    (source / 'fire-axolotl-build.json').write_text(json.dumps(receipt, indent=2) + '\\n')"
         before = before.replace(anchor, "    receipt['localizations'] = localizations\n" + anchor)
+    if 'from bundled_game import prepare as prepare_bundled_game' not in before:
+        before = before.replace('from localization import embed as embed_localizations', 'from localization import embed as embed_localizations\nfrom bundled_game import prepare as prepare_bundled_game')
+        before = before.replace('    ublock = embed_ublock(source)', '    prepare_bundled_game(source)\n    ublock = embed_ublock(source)')
     if before != (ROOT / 'scripts/prepare_source.py').read_text():
         raise ValueError('Only the reviewed resource-copy additions to source preparation are allowed')
     old_preferences = subprocess.check_output(['git', 'show', base + ':browser/preferences/fire-axolotl.js'], cwd=ROOT).decode()
@@ -104,6 +109,14 @@ def apply(runtime):
         if len(own) != 1 or own[0]['res_url'] != 'resource://builtin-addons/aion/':
             raise ValueError('Expected our existing independent built-in Aion identity')
         own[0]['addon_version'] = json.loads((aion / 'manifest.json').read_text())['version']
+        game = bundled_game.files()
+        for name, file in game.items():
+            replacements[bundled_game.PREFIX + name] = file.read_bytes()
+        catalog['builtins'] = [item for item in catalog['builtins'] if item['addon_id'] != bundled_game.ADDON_ID]
+        catalog['builtins'].append(bundled_game.catalog_entry())
+        for name in archive.namelist():
+            if name.endswith(('/activity-stream.html', '/activity-stream-debug.html', '/activity-stream-noscripts.html')):
+                replacements[name] = bundled_game.allow_game_frame(archive.read(name).decode()).encode()
         replacements[catalog_path] = (json.dumps(catalog, ensure_ascii=False) + '\n').encode()
         pref_path = 'defaults/preferences/firefox-branding.js'
         preferences = archive.read(pref_path).decode().replace('\r\n', '\n')

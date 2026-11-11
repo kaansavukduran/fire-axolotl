@@ -82,7 +82,7 @@ jobs:
         run: python tests/native_network.py
       - name: Uninstall while preserving profiles and default-browser choice
         run: ./scripts/windows_install.ps1 Uninstall
-      - name: Upgrade the previous153.7 Setup and verify Aion0.3.0 to0.3.1 with data preservation
+      - name: Upgrade the previous153.7 Setup and verify Aion0.3.1 to0.4.0 with data preservation
         run: python tests/windows_upgrade.py
       - run: python scripts/windows_release.py assemble
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9

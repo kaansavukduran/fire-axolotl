@@ -92,7 +92,7 @@ jobs:
       - name: New-tab game on the installed Linux browser
         env:
           AION_NATIVE_BINARY: /usr/lib/fire-axolotl-preview/fire-axolotl
-        run: python3 tests/native_runner.py
+        run: xvfb-run -a python3 tests/native_runner.py
       - name: Native languages and user choices across installed-browser restarts
         env:
           AION_NATIVE_BINARY: /usr/lib/fire-axolotl-preview/fire-axolotl

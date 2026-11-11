@@ -12,6 +12,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from package_extension import package
 from fetch_components import fetch_all, PIN as UBLOCK_PIN, CACHE as COMPONENT_CACHE, sha256
 from localization import embed as embed_localizations
+from bundled_game import prepare as prepare_bundled_game
 
 ROOT = Path(__file__).resolve().parents[1]
 MARKER = '# Fire Axolotl built-in companion\nDIRS += ["aion"]\n'
@@ -257,6 +258,7 @@ def prepare(source):
     if package_rule not in package_manifest.read_text():
         package_manifest.write_text(package_manifest.read_text() + package_rule)
     localizations = embed_localizations(source, branding / 'locales/en-US')
+    prepare_bundled_game(source)
     ublock = embed_ublock(source)
     receipt = {'upstream': pinned, 'overlay_commit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(), 'overlay_dirty': bool(subprocess.check_output(['git', 'status', '--porcelain'], cwd=ROOT, text=True).strip()), 'companion_sha256': hashlib.sha256((extension_dir / 'aion@fire-axolotl.browser.xpi').read_bytes()).hexdigest(), 'components': {'ublock-origin': ublock}, 'status': 'source-prepared-not-built'}
     receipt['localizations'] = localizations

@@ -36,7 +36,7 @@ def main():
     checks['network'] = json.loads((ROOT / 'work/network-test-artifacts/results.json').read_text())
     if not checks['network']['passed'] or not checks['network']['log_canary_verified'] or checks['network']['forbidden_hosts']:
         raise ValueError('Installed default-network sampling failed or lacked a real local HTTP canary')
-    if checks['integration']['mode'] != 'compiled-fork' or len(checks['integration']['passed']) < 34 or checks['game']['mode'] != 'compiled-fork-normal-newtab' or len(checks['game']['passed']) < 11 or checks['languages']['mode'] != 'compiled-fork-native-languages' or len(checks['languages']['passed']) < 10:
+    if checks['integration']['mode'] != 'compiled-fork' or len(checks['integration']['passed']) < 34 or checks['game']['mode'] != 'compiled-fork-normal-newtab' or len(checks['game']['passed']) < 11 or not checks['game'].get('full_game') or not checks['game'].get('offline_first_launch_verified') or not checks['game'].get('isolated_principal_verified') or checks['languages']['mode'] != 'compiled-fork-native-languages' or len(checks['languages']['passed']) < 10:
         raise ValueError('Installed integration, game or native-language validation is incomplete')
     checks['tools_workspace'] = json.loads((ROOT / 'work/tools-test-artifacts/results.json').read_text(encoding='utf-8'))
     checks['native_translation'] = json.loads((ROOT / 'work/translation-test-artifacts/results.json').read_text(encoding='utf-8'))
@@ -47,12 +47,12 @@ def main():
     if len(checks['newtab_workspace']['passed']) < 9 or checks['external_game']['url'] != 'https://aionendlessrun.vercel.app/' or not checks['external_game']['tls_verification']:
         raise ValueError('New-tab UX and current official game link must pass')
     (DIST / 'release-manifest.json').write_text(json.dumps(evidence, indent=2) + '\n')
-    notes = f'''Fire Axolotl 0.3.1 geliştirici önizlemesi / developer preview
+    notes = f'''Fire Axolotl 0.4.0 geliştirici önizlemesi / developer preview
 
 **Bu kararlı günlük kullanım sürümü değildir. Otomatik güncellemeler kapalıdır.**
 **Not a stable daily-use release. Automatic updates are disabled.**
 
-Aion0.3: Mutlu Aion ve arkadaşları arka planı, oyun geri getirme, tek tıklamalı geçici sekme düğmesi ve yeni profilde üst sekmeler/ayrı arama/yer imleri. Güncel Aion Endless Run tıklamayla Vercel’de açılır; küçük çevrimdışı oyun ayrı korunur. Her yayın canlı oyun build.json/HTML doğrulamasından geçer.
+Aion0.4: Aion Endless Run 0.12.0 tam oyun tarayıcının içindedir (Vercel build f0ac1be6a4a4f4f8). Oyunu başlat’a tıkla; ilk açılışta bile internet gerekmez. Oyunun kendi menüsü, dört karakteri, ayarları ve kayıtları vardır. Gizle düğmesi kaldırıldı; Görünüm tercihi ve geri getirme seçeneği korundu. Tam ekran düğmesi var. Oyun tarayıcı verisi izni olmayan ayrı bir yerleşik bileşende çalışır ve güncellemeleri tarayıcı paketleriyle gelir.
 
 Önceki0.2:760px araç paneli, üç görev bölümü ve tam sekmede çalışma alanı; oturumluk metin taslağı; sağ tık konteyner/çeviri seçenekleri. Firefox'un yerel çeviri aracını açan düğme; gerçek EN→TR çeviri ve model yüklendikten sonra çevrimdışı tekrar doğrulandı. Ayrı sohbet modeli veya önceden indirilmiş çeviri modeli paketlenmez.
 
@@ -95,7 +95,7 @@ Başarı kontrolü: pencere Fire Axolotl adıyla açılmalı; yeni profilde sekm
 
 Verify that Fire Axolotl opens with top tabs and a working Aion toolbar action. Use a new Fire Axolotl profile; do not point this preview at a personal Firefox profile. Close open work before manually changing packages. Package checksums provide integrity information; a project-signed automatic update channel is not implemented.
 
-Yeni sekmede Aion Koşusu: Başlat, Boşluk/dokunma ile zıpla, Esc ile duraklat. Buz ve ateş engelleri, çizilmiş piksel animasyonları, çevrimdışı yerel rekor, Görünüm ayarlarından gizleme/dil/rekor sıfırlama vardır. Native Settings and the game passed installed-browser tests; no temporary add-on is required.
+Yeni sekmede tam Aion Endless Run: Oyunu başlat, sonra oyunun kendi menüsünü kullan. Dil/ses/hareket/kayıtlar oyunun ayarlarından yönetilir. Eski mini oyun rekoru profilde silinmeden saklanır. Native Settings and the game passed installed-browser tests; no temporary add-on is required.
 
 ### Kaynaklar ve doğrulama / Source and validation
 

@@ -1,0 +1,15 @@
+# Yerleşik Aion Endless Run
+
+0.4 kaynak katmanı, önceki bağımsız küçük oyunun yerine **Aion Endless Run 0.12.0** tam Godot web oyununu paketler. Snapshot: Vercel production build `f0ac1be6a4a4f4f8`, GitHub commit `1532cb787fe034760ef41bf37771c085c97b282b`, deployment `dpl_9XYgUHCbC7KCsDF632RUuB71sNzb`. Bu üçlü Vercel'in production deployment kaydından doğrulandı. Yeni oyun çıktığında bu pinler açıkça güncellenir; tarayıcı çalışma sırasında oyun kodu indirmez.
+
+Yeni sekmede **Oyunu başlat** düğmesine tıkla. Tam oyun aynı sayfada açılır; karakter, dil, ses ve hareket seçenekleri oyunun kendi menüsündedir. **Tam ekran** düğmesi oyunu büyütür. Kartın sağ üstünde **Gizle** düğmesi yoktur. Görünüm ayarındaki görünürlük tercihi korunur; önceden yanlışlıkla gizlenen oyun yeni sekmedeki **Aion Endless Run oyununu göster** düğmesiyle geri gelir.
+
+`browser/game/PIN.json` dosyaları boyut ve SHA-256 ile sabitler. `scripts/bundled_game.py` derleme sırasında bunları doğrular ve `browser/omni.ja` içine paketler. PCK, WASM, motor JavaScript'i, çalışma modülleri ve görseller production çıktısıyla byte düzeyinde aynıdır. Yalnızca HTML/bootstrap uyarlanır: satır içi scriptler dış dosyaya taşınır, PWA güncelleyicisi çıkarılır, kendiliğinden odak alma kapatılır. Oyun güncellemeleri yeni Fire Axolotl paketleriyle gelir. Browser güncellemesi, GitHub/Vercel değişikliklerini kullanıcıya haber vermeden çalıştırmaz.
+
+Oyun `aion-game@fire-axolotl.browser` kimlikli ayrı bir yerleşik bileşendir. Sekme, çerez, geçmiş, depolama veya host izni yoktur; arka plan scripti yoktur. Sayfası ayrı `moz-extension:` principal ile çalışır, sistem principal kullanmaz, üst yeni sekmenin içeriğini okuyamaz ve Aion araçlarının yerel köprüsüne dahil değildir. `connect-src 'self'` yalnızca yerel paketli varlıkları yüklemeye izin verir. Godot JavaScriptBridge için gereken eval izni yalnızca oyun origin'ine aittir; Aion araçlarının CSP'si ve tarayıcının güvenlik ayarları değiştirilmez. Yeni sekme CSP'sine yalnızca `frame-src moz-extension:` eklenir; script/connect kuralları korunur.
+
+Kayıtlar oyunun kendi IndexedDB alanındadır; önceki mini oyunun tercih kaydı silinmez, yeni oyuna uydurma skor olarak aktarılmaz. Geçici konteynerler geçici oturumlar içindir; kalıcı oyun ilerlemesi için normal yeni sekme kullanılır. IndexedDB kaydının saklanması disk/özel gezinme/temizleme tercihlerine tabidir.
+
+Tam oyun WebGL2 gerektirir. Çalışmayan grafik desteğinde oyunun özgün hata ekranı gösterilir; güvenlik veya grafik engelleme tercihleri zorla kaldırılmaz. Linux otomatik oyun testi sanal X ekranında normal Firefox grafik yolunu kullanır; headless WebGL varsayımlarına dayanmaz. Bu test, gerçek klavye/fare girdisi, çevrimdışı ilk açılış, izinler/origin, ayarlar ve yeniden başlatmayı denetler; tüm seviyeleri baştan sona oynadığı iddiasında bulunmaz.
+
+Oyun MPL-2.0, Godot MIT, Lexend OFL bildirimleri ve tam kaynak bağlantısı yerleşik bileşene dahildir. `browser/game/SOURCE.md` ve `THIRD_PARTY_NOTICES.md` ayrıntıları korur.

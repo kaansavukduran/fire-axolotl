@@ -1,6 +1,6 @@
 {
   "name": "fire-axolotl",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "private": true,
   "description": "Aion companion and reproducible Firefox fork build layer",
   "license": "MPL-2.0",

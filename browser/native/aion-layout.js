@@ -39,7 +39,6 @@
       document.getElementById('aion-website-theme').value = Services.prefs.getIntPref(prefs[2], 2);
       document.getElementById('aion-browser-font').value = Services.prefs.getStringPref(prefs[3], 'system');
       document.getElementById('aion-newtab-game').checked = Services.prefs.getBoolPref(prefs[4], true);
-      document.getElementById('aion-game-language').value = Services.prefs.getStringPref(prefs[5], locale);
       document.getElementById('aion-newtab-wallpaper').checked = Services.prefs.getBoolPref(prefs[6], true);
     }
     select.addEventListener('change', () => {
@@ -75,14 +74,6 @@
     });
     document.getElementById('aion-apply-layout').addEventListener('click', () => {
       ChromeUtils.importESModule('chrome://browser/content/aion-runner/toolbar.sys.mjs').applyLayout(Services.wm.getMostRecentWindow('navigator:browser'));
-      document.getElementById('aion-layout-status').textContent = messages.saved.message;
-    });
-    document.getElementById('aion-game-language').addEventListener('change', event => {
-      if (['tr', 'en'].includes(event.target.value)) Services.prefs.setStringPref(prefs[5], event.target.value);
-      document.getElementById('aion-layout-status').textContent = messages.saved.message;
-    });
-    document.getElementById('aion-game-reset').addEventListener('click', () => {
-      Services.prefs.clearUserPref('fireaxolotl.newtabGame.best');
       document.getElementById('aion-layout-status').textContent = messages.saved.message;
     });
     const observer = {observe: sync};

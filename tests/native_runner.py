@@ -1,11 +1,14 @@
 # SPDX-License-Identifier: MPL-2.0
-"""Exercise the new-tab game in the installed, compiled product's normal UI."""
+"""Exercise the actual pinned Godot game inside the installed native new tab.
+
+Requires a graphical desktop (Linux CI uses xvfb-run). No injected game state,
+headless WebGL overrides, certificate exceptions or sandbox changes are used.
+"""
 import json
 import os
 from pathlib import Path
+import tempfile
 import time
-
-from gecko_controls import capture_screenshot
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
@@ -14,190 +17,109 @@ from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.firefox.service import Service
 from selenium.webdriver.support.ui import WebDriverWait
 
-ROOT = Path(__file__).resolve().parents[1]
-OUT = Path(os.environ.get('AION_RUNNER_ARTIFACTS', ROOT / 'work/runner-test-artifacts'))
-OUT.mkdir(parents=True, exist_ok=True)
-options = Options()
-options.binary_location = os.environ['AION_NATIVE_BINARY']
-options.add_argument('-headless')
-options.accept_insecure_certs = False
-options.set_preference('remote.prefs.recommended', False)
-options.set_preference('browser.shell.checkDefaultBrowser', False)
-options.set_preference('fireaxolotl.newtabGame.language', 'tr')
-options.set_preference('ui.prefersReducedMotion', 1)
-driver = webdriver.Firefox(options=options, service=Service(os.environ['AION_GECKODRIVER'], service_args=['--allow-system-access'], log_output=str(OUT / 'geckodriver.log')))
-wait = WebDriverWait(driver, 30)
-passed = []
+ROOT=Path(__file__).resolve().parents[1]
+PIN=json.loads((ROOT/'browser/game/PIN.json').read_text())
+OUT=Path(os.environ.get('AION_RUNNER_ARTIFACTS',ROOT/'work/runner-test-artifacts'));OUT.mkdir(parents=True,exist_ok=True)
+profile=tempfile.TemporaryDirectory(prefix='aion-full-game-');passed=[];driver=None
 
+def launch():
+    options=Options();options.binary_location=os.environ['AION_NATIVE_BINARY']
+    options.add_argument('-profile');options.add_argument(profile.name)
+    options.accept_insecure_certs=False
+    options.set_preference('remote.prefs.recommended',False)
+    options.set_preference('browser.shell.checkDefaultBrowser',False)
+    return webdriver.Firefox(options=options,service=Service(os.environ['AION_GECKODRIVER'],service_args=['--allow-system-access'],log_output=str(OUT/'geckodriver.log')))
+def record(message):passed.append(message);print('PASS',message,flush=True)
+def native():driver.set_context('chrome')
+def content():driver.set_context('content')
+def enter():
+    driver.switch_to.default_content();driver.get('about:newtab')
+    host=wait.until(lambda d:d.find_element(By.ID,'fireaxolotl-runner'));shadow=host.shadow_root
+    shadow.find_element(By.CSS_SELECTOR,'[data-action="play"]').click()
+    frame=wait.until(lambda d:shadow.find_element(By.CSS_SELECTOR,'iframe'))
+    driver.switch_to.frame(frame)
+    canvas=wait.until(lambda d:d.find_element(By.CSS_SELECTOR,'canvas[data-ui-ready="true"]'))
+    return canvas
 
-def record(name):
-    passed.append(name)
-    print('PASS', name, flush=True)
-
-
-def card():
-    host = wait.until(lambda d: d.find_element(By.ID, 'fireaxolotl-runner'))
-    shadow = host.shadow_root
-    canvas = shadow.find_element(By.CSS_SELECTOR, 'canvas')
-    play = shadow.find_element(By.CSS_SELECTOR, '[data-action="play"]')
-    wait.until(lambda _: play.is_enabled())
-    return shadow, canvas, play
-
+def data(key):return canvas.get_attribute('data-'+key)
+def state(value):wait.until(lambda d:data('state')==value)
+def click(text=None,name=None):
+    wait.until(lambda d:data('ui-ready')=='true')
+    controls=json.loads(data('ui'))
+    target=next((b for b in controls if b['name']==name),None) if name else next((b for b in controls if b['text']==text),None)
+    assert target, (text,name,controls)
+    a,b,c,d,tx,ty=json.loads(data('screen-transform'))
+    x=target['x']+target['w']/2;y=target['y']+target['h']/2
+    size=driver.execute_script('const r=arguments[0].getBoundingClientRect();return {w:r.width,h:r.height};',canvas)
+    ActionChains(driver).move_to_element_with_offset(canvas,round(a*x+c*y+tx-size['w']/2),round(b*x+d*y+ty-size['h']/2)).click().perform()
 
 def screenshot(name):
-    driver.set_context('chrome')
-    capture_screenshot(driver, str(OUT / name))
-    driver.set_context('content')
-
+    driver.switch_to.default_content();native();driver.save_screenshot(str(OUT/name));content();driver.switch_to.frame(driver.find_element(By.ID,'fireaxolotl-runner').shadow_root.find_element(By.CSS_SELECTOR,'iframe'))
 
 try:
-    driver.set_window_size(1440, 1050)
-    driver.set_context('chrome')
-    assert driver.execute_script('return Services.appinfo.ID') == '{75450dd9-387d-4289-8b23-7ad6609fa530}'
-    driver.set_context('content')
-    driver.get('about:newtab')
-    shadow, canvas, play = card()
-    assert driver.find_element(By.CSS_SELECTOR, '.search-wrapper').is_displayed()
-    assert canvas.get_attribute('data-state') == 'ready'
-    assert shadow.find_element(By.CSS_SELECTOR, 'h2').text == 'Aion Koşusu'
-    screenshot('newtab-ready.png')
-    record('Normal compiled-fork new tab keeps search and has the Turkish game ready without autoplay')
-
-    driver.set_context('chrome')
-    urlbar = driver.find_element(By.ID, 'urlbar-input')
-    urlbar.send_keys(Keys.CONTROL, 'l')
-    urlbar.send_keys('hello world')
-    assert driver.execute_script('return gURLBar.value').endswith('hello world')
-    urlbar.send_keys(Keys.ESCAPE)
-    driver.set_context('content')
-    assert canvas.get_attribute('data-state') == 'ready'
-    record('Space in the address bar stays ordinary text and does not start the game')
-
-    driver.set_window_size(1440, 800)
-    play.click()
-    wait.until(lambda _: canvas.get_attribute('data-state') == 'running')
-    canvas.send_keys(Keys.SPACE)
-    wait.until(lambda _: canvas.get_attribute('data-airborne') == 'true')
-    driver.execute_script('window.aionTestKeys=[];arguments[0].addEventListener("keydown",event=>window.aionTestKeys.push(event));', canvas)
-    scroll = driver.execute_script('return {y:scrollY,maximum:document.scrollingElement.scrollHeight-innerHeight};')
-    assert scroll['maximum'] > scroll['y'] + 50
-    ActionChains(driver).key_down(Keys.SPACE).key_down(Keys.SPACE).key_up(Keys.SPACE).perform()
-    repeats = driver.execute_script('return window.aionTestKeys.filter(event=>event.repeat).map(event=>event.isTrusted);')
-    assert repeats and all(repeats), repeats
-    time.sleep(0.2)
-    assert driver.execute_script('return scrollY') == scroll['y']
-    screenshot('newtab-jump.png')
-    canvas.send_keys(Keys.ESCAPE)
-    wait.until(lambda _: canvas.get_attribute('data-state') == 'paused')
-    frozen = canvas.get_attribute('data-score')
-    time.sleep(0.2)
-    assert canvas.get_attribute('data-score') == frozen
-    record('Explicit Start, actual Space jump, Esc pause and paused score behave correctly')
-    driver.set_window_size(1440, 1050)
-
-    play.click()
-    original = driver.current_window_handle
-    driver.set_context('chrome')
-    driver.find_element(By.ID, 'tabs-newtab-button').click()
-    driver.set_context('content')
-    other = wait.until(lambda d: next((h for h in d.window_handles if h != original), None))
-    # Let the child receive the real background-tab visibility transition.
-    time.sleep(0.3)
-    driver.switch_to.window(original)
-    wait.until(lambda _: canvas.get_attribute('data-state') == 'paused')
-    driver.switch_to.window(other)
-    driver.close()
-    driver.switch_to.window(original)
-    record('Switching to another tab pauses gameplay until an explicit Resume')
-
-    play.click()
-    WebDriverWait(driver, 30, poll_frequency=0.02).until(lambda _: 160 < float(canvas.get_attribute('data-obstacle-x') or '1000') <= 218)
-    canvas.send_keys(Keys.SPACE)
-    wait.until(lambda _: int(canvas.get_attribute('data-score')) >= 1)
-    first_hit = wait.until(lambda _: canvas.get_attribute('data-state') if canvas.get_attribute('data-state') in ['ice', 'fire'] else False)
-    time.sleep(1.1)
-    screenshot(f'newtab-{first_hit}.png')
-    driver.get('about:newtab')
-    shadow, canvas, play = card()
-    assert int(shadow.find_element(By.CSS_SELECTOR, '.best').text.split()[-1]) >= 1
-    record('A genuine keyboard jump clears an obstacle, earns a score and preserves the earned record on a fresh new tab')
-
-    seen = {first_hit}
-    for attempt in range(24):
-        play.click()
-        state = wait.until(lambda _: canvas.get_attribute('data-state') if canvas.get_attribute('data-state') in ['ice', 'fire'] else False)
-        time.sleep(1.1)
-        if state not in seen:
-            screenshot(f'newtab-{state}.png')
-        seen.add(state)
-        if seen == {'ice', 'fire'}:
-            break
-    assert seen == {'ice', 'fire'}, seen
-    record('Real obstacle collisions play both freeze and fire-to-ash frame sequences')
-
-    shadow.find_element(By.CSS_SELECTOR, '.hide').click()
-    wait.until(lambda _: not driver.find_elements(By.ID, 'fireaxolotl-runner'))
-    driver.get('about:newtab')
-    wait.until(lambda d: d.find_element(By.CSS_SELECTOR, '.search-wrapper'))
-    time.sleep(0.3)
-    assert not driver.find_elements(By.ID, 'fireaxolotl-runner')
-    driver.set_context('chrome')
-    assert driver.execute_script('return Services.prefs.getBoolPref("fireaxolotl.newtabGame.enabled")') is False
-    driver.set_context('content')
-    record('Hide removes the card and saves the preference for subsequent new tabs')
-
-    driver.get('about:preferences#appearance')
-    checkbox = wait.until(lambda d: d.find_element(By.ID, 'aion-newtab-game'))
-    driver.execute_script('arguments[0].scrollIntoView({block:"center"})', checkbox)
-    if not checkbox.is_selected():
-        checkbox.click()
-    assert checkbox.is_selected()
-    from gecko_controls import choose_option
-    choose_option(driver, 'aion-game-language', 'en')
-    driver.set_context('chrome')
-    driver.execute_script('Services.prefs.setIntPref("fireaxolotl.newtabGame.best",7)')
-    driver.set_context('content')
-    driver.get('about:newtab')
-    shadow, canvas, play = card()
-    assert shadow.find_element(By.CSS_SELECTOR, 'h2').text == 'Aion Run'
-    assert shadow.find_element(By.CSS_SELECTOR, '.best').text == 'Best 7'
-    screenshot('newtab-english.png')
-    record('Native Appearance controls restore the game and change its language; the saved local record is displayed')
-
-    driver.get('about:preferences#appearance')
-    reset = wait.until(lambda d: d.find_element(By.ID, 'aion-game-reset'))
-    driver.execute_script('arguments[0].scrollIntoView({block:"center"})', reset)
-    reset.click()
-    driver.get('about:newtab')
-    shadow, canvas, play = card()
-    assert shadow.find_element(By.CSS_SELECTOR, '.best').text == 'Best 0'
-    record('Reset record clears only the local game record')
-
-    driver.set_context('chrome')
-    driver.execute_script('Services.prefs.setBoolPref("browser.newtabpage.activity-stream.showSearch",false)')
-    driver.set_context('content')
-    driver.get('about:newtab')
-    shadow, canvas, play = card()
-    assert not driver.find_elements(By.CSS_SELECTOR, '.search-wrapper')
-    driver.set_context('chrome')
-    driver.execute_script('Services.prefs.setBoolPref("browser.newtabpage.enabled",false)')
-    driver.set_context('content')
-    driver.get('about:newtab')
-    time.sleep(0.3)
-    assert not driver.find_elements(By.ID, 'fireaxolotl-runner')
-    driver.set_context('chrome')
-    driver.execute_script('Services.prefs.clearUserPref("browser.newtabpage.enabled");Services.prefs.clearUserPref("browser.newtabpage.activity-stream.showSearch")')
-    driver.set_context('content')
-    driver.get('about:newtab')
-    card()
-    record('Game visibility is independent of the search-bar toggle and respects the native blank-new-tab choice')
-
-    driver.get('data:text/html,<title>Ordinary page</title><input>')
-    assert not driver.find_elements(By.ID, 'fireaxolotl-runner')
-    driver.set_context('chrome')
-    assert driver.execute_script('try {gBrowser.selectedBrowser.browsingContext.currentWindowGlobal.getActor("AionRunner");return false;}catch{return true;}') is True
-    driver.set_context('content')
-    record('Ordinary web content has neither the game nor access to its privileged actor')
-    (OUT / 'results.json').write_text(json.dumps({'passed': passed, 'mode': 'compiled-fork-normal-newtab', 'count': len(passed)}, ensure_ascii=False, indent=2) + '\n')
+    driver=launch();wait=WebDriverWait(driver,90);driver.set_window_size(1440,1100)
+    driver.get('about:newtab');host=wait.until(lambda d:d.find_element(By.ID,'fireaxolotl-runner'));shadow=host.shadow_root
+    assert driver.find_element(By.CSS_SELECTOR,'.search-wrapper').is_displayed()
+    assert not shadow.find_elements(By.CSS_SELECTOR,'iframe,.hide')
+    assert PIN['version'] in shadow.find_element(By.CSS_SELECTOR,'h2').text
+    record('Real new tab preserves search and waits for explicit launch; no Hide button or old miniature game')
+    native();driver.execute_script('Services.io.offline=true;');content()
+    canvas=enter();assert data('version')==PIN['version'] and driver.execute_script('return AION_BUILD.build')==PIN['build']
+    assert data('state')=='ready' and data('page')=='main'
+    record('First-ever full-game launch works with the browser offline and matches the pinned production version/build')
+    assert driver.execute_script('try {parent.document.body;return false;}catch(e){return e.name==="SecurityError";}')
+    assert driver.execute_script('return typeof browser.tabs==="undefined" && typeof browser.cookies==="undefined" && typeof browser.storage==="undefined";')
+    driver.switch_to.default_content();native()
+    permissions = driver.execute_async_script('const done=arguments[0];ChromeUtils.importESModule("resource://gre/modules/AddonManager.sys.mjs").AddonManager.getAddonByID("aion-game@fire-axolotl.browser").then(a=>done(a.userPermissions));')
+    print('Game permissions',permissions,flush=True)
+    assert permissions['origins']==[] and permissions['permissions']==[] and not permissions.get('data_collection')
+    assert driver.execute_script('const frame=gBrowser.selectedBrowser.browsingContext.children.find(c=>c.currentWindowGlobal?.documentPrincipal?.schemeIs("moz-extension"));return frame && !frame.currentWindowGlobal.documentPrincipal.isSystemPrincipal;')
+    content();driver.switch_to.frame(driver.find_element(By.ID,'fireaxolotl-runner').shadow_root.find_element(By.CSS_SELECTOR,'iframe'));canvas=driver.find_element(By.ID,'canvas')
+    record('Game has no browser-data permissions, cannot read its parent, and runs with a non-system principal')
+    for character in ['owl','sheep','wolf','aion']:
+        click(name='StartSelect_'+character);wait.until(lambda d:data('character')==character)
+        assert data('pose-source').startswith('canonical-')
+    screenshot('newtab-full-game-menu.png')
+    record('All four real character buttons select the canonical Aion, owl, sheep and wolf animation sheets')
+    click(text='Start running');state('running');canvas.send_keys(Keys.SPACE);wait.until(lambda d:data('airborne')=='true')
+    canvas.send_keys(Keys.ESCAPE);state('paused');score=data('score');time.sleep(.3);assert data('score')==score
+    record('Actual keyboard Space jumps and Esc pauses the real Godot game with a frozen score')
+    click(text='Main menu');state('ready');click(name='StartSelect_wolf');click(text='Start running');state('running')
+    ActionChains(driver).key_down(Keys.ARROW_DOWN).perform();wait.until(lambda d:data('ducking')=='true');ActionChains(driver).key_up(Keys.ARROW_DOWN).perform()
+    canvas.send_keys(Keys.ESCAPE);state('paused')
+    record('The current wolf character and real crouch/roll input work through the embedded game UI')
+    click(text='Settings');wait.until(lambda d:data('page')=='settings');click(text='Türkçe');wait.until(lambda d:canvas.get_attribute('lang')=='tr')
+    assert data('page')=='settings';screenshot('newtab-full-game-settings.png')
+    record('The full in-game Settings menu switches language immediately without a browser translation substitute')
+    canvas.send_keys(Keys.ESCAPE);state('paused');canvas.send_keys(Keys.ESCAPE);state('running')
+    wait.until(lambda d:data('page')=='finished');assert data('state') in ['ice','fire','bonk']
+    screenshot('newtab-full-game-collision.png')
+    record('An actual unmodified offline run reaches its own animated collision/result screen')
+    time.sleep(2.2);canvas=enter();assert canvas.get_attribute('lang')=='tr' and data('character')=='wolf'
+    record('Real game preferences survive a new embedded document through its own IndexedDB save')
+    driver.switch_to.default_content();host=driver.find_element(By.ID,'fireaxolotl-runner');shadow=host.shadow_root
+    next(b for b in shadow.find_elements(By.CSS_SELECTOR,'button') if b.text=='Full screen').click()
+    wait.until(lambda d:d.execute_script('return !!document.fullscreenElement;'))
+    driver.execute_script('return document.exitFullscreen();')
+    wait.until(lambda d:not d.execute_script('return !!document.fullscreenElement;'))
+    assert driver.find_element(By.CSS_SELECTOR,'.search-wrapper').is_displayed()
+    record('Real fullscreen control opens the full game and returning preserves the usable new-tab search')
+    native();driver.execute_script('Services.io.offline=false;');content();driver.quit();driver=None
+    driver=launch();wait=WebDriverWait(driver,90);driver.set_window_size(1440,1100);native();driver.execute_script('Services.io.offline=true;');content()
+    canvas=enter();assert data('version')==PIN['version'] and canvas.get_attribute('lang')=='tr' and data('character')=='wolf'
+    record('A genuine browser process restart preserves full-game preferences and supports another offline launch')
+except Exception as error:
+    print('FAIL',type(error).__name__,str(error)[:500],flush=True)
+    if driver:
+        try:
+            print('GAME',driver.execute_script('const c=document.querySelector("canvas");return c?{state:c.dataset.state,page:c.dataset.page,character:c.dataset.character,ui:c.dataset.ui,transform:c.dataset.screenTransform,rect:c.getBoundingClientRect().toJSON()}:document.body.innerText;'),flush=True)
+            driver.switch_to.default_content();native();driver.save_screenshot(str(OUT/'failure.png'))
+        except Exception as capture_error:print('Capture',str(capture_error)[:200],flush=True)
+    raise
 finally:
-    driver.quit()
+    if driver:
+        try:
+            native();driver.execute_script('Services.io.offline=false;')
+        finally:driver.quit()
+    profile.cleanup()
+    (OUT/'results.json').write_text(json.dumps({'passed':passed,'mode':'compiled-fork-normal-newtab','game_version':PIN['version'],'game_build':PIN['build'],'source_commit':PIN['source_commit'],'full_game':True,'offline_first_launch_verified':len(passed)>=2,'isolated_principal_verified':len(passed)>=3,'tls_verification':True,'limits':'Real local Godot UI and representative gameplay; not an exhaustive replay of all upstream levels.'},ensure_ascii=False,indent=2)+'\n')

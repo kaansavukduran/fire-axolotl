@@ -546,10 +546,10 @@
     "message": "The 8-character limit is reached. Export and remove one before adding another."
   },
   "newtabGame": {
-    "message": "Show Aion Run on new tabs"
+    "message": "Aion Endless Run on new tabs"
   },
   "newtabGameHelp": {
-    "message": "A small offline game. Starts only when you press Start. Hide it at any time; search and shortcuts stay available. Changes apply to new tabs."
+    "message": "The full game is included. Click Launch game to play offline."
   },
   "newtabGameLanguage": {
     "message": "New-tab game language"
@@ -640,5 +640,8 @@
   },
   "newtabWallpaper": {
     "message": "Show Aion wallpaper on new tabs"
+  },
+  "newtabGameSettings": {
+    "message": "Use Settings inside the game for language, sound, motion and game records."
   }
 }

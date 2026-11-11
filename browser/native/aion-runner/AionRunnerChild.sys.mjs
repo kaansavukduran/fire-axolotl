@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: MPL-2.0 */
-import {AionRunnerCard} from 'chrome://browser/content/aion-runner/card.sys.mjs';
+import {BundledGameCard} from 'chrome://browser/content/aion-runner/game.sys.mjs';
 
 export class AionRunnerChild extends JSWindowActorChild {
   handleEvent() {
@@ -30,15 +30,11 @@ export class AionRunnerChild extends JSWindowActorChild {
       this.tools = this.document.createElement('section');
       this.tools.id = 'fireaxolotl-newtab-tools';
       this.tools.lang = tr ? 'tr' : 'en';
-      const latest = this.document.createElement('button');
-      latest.id = 'aion-latest-game';
-      latest.textContent = tr ? 'Aion Endless Run · Güncel oyunu aç' : 'Aion Endless Run · Open latest game';
-      latest.addEventListener('click', () => this.sendAsyncMessage('Aion:OpenGame'));
       const help = this.document.createElement('small');
-      help.textContent = tr ? 'Vercel’de açılır · ilk yükleme internet ister' : 'Opens on Vercel · internet needed for first load';
+      help.textContent = tr ? 'Tam oyun tarayıcıya dahildir; internet gerektirmez.' : 'Full game is included in the browser; no internet required.';
       this.restore = this.document.createElement('button');
       this.restore.id = 'aion-restore-game';
-      this.restore.textContent = tr ? 'Çevrimdışı mini oyunu göster' : 'Show offline mini game';
+      this.restore.textContent = tr ? 'Aion Endless Run oyununu göster' : 'Show Aion Endless Run';
       this.restore.hidden = config.enabled;
       this.restore.addEventListener('click', async () => {
         this.restore.disabled = true;
@@ -46,7 +42,7 @@ export class AionRunnerChild extends JSWindowActorChild {
         catch {help.textContent = tr ? 'Oyun açılamadı. Tekrar dene.' : 'Could not show the game. Try again.';}
         finally {this.restore.disabled = false;}
       });
-      this.tools.append(latest, this.restore, help);
+      this.tools.append(this.restore, help);
       if (config.enabled) this.mount(config);
       this.place = () => {
         if (!this.tools.isConnected) {
@@ -64,10 +60,7 @@ export class AionRunnerChild extends JSWindowActorChild {
   mount(config) {
     this.card?.destroy();
     this.card?.host.remove();
-    this.card = new AionRunnerCard(this.document, config, {
-      saveBest: score => this.sendAsyncMessage('Aion:Best', score),
-      hide: () => {this.sendAsyncMessage('Aion:Hide'); this.restore.hidden = false;}
-    });
+    this.card = new BundledGameCard(this.document, config);
     this.restore.hidden = true;
   }
   didDestroy() {

@@ -546,10 +546,10 @@
     "message": "8 özel karakter sınırına ulaşıldı. Birini dışa aktarıp kaldırabilir, sonra yenisini ekleyebilirsin."
   },
   "newtabGame": {
-    "message": "Yeni sekmede Aion Koşusu’nu göster"
+    "message": "Yeni sekmede Aion Endless Run"
   },
   "newtabGameHelp": {
-    "message": "Çevrimdışı mini oyun. Yalnızca Başlat’a basınca çalışır. İstediğin zaman gizleyebilirsin; arama ve kısayollar kullanılabilir. Değişiklikler yeni sekmelere uygulanır."
+    "message": "Tam oyun tarayıcıya dahildir. Başlat düğmesine tıkladığında çevrimdışı açılır."
   },
   "newtabGameLanguage": {
     "message": "Yeni sekme oyununun dili"
@@ -640,5 +640,8 @@
   },
   "newtabWallpaper": {
     "message": "Yeni sekmede Aion arka planını göster"
+  },
+  "newtabGameSettings": {
+    "message": "Dil, ses, hareket ve oyun kayıtları için oyunun kendi Ayarlar menüsünü kullan."
   }
 }

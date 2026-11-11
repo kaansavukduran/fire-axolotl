@@ -53,3 +53,7 @@ uBlock Origin 1.76.0, Copyright Raymond Hill and contributors, GPL-3.0-or-later.
 The owner explicitly authorized using their existing custom Aion ChatGPT Pet and generating matching cartoon companions for this browser. The Aion PNG is unchanged; the lamb, wolf and owl frames were generated from the owner's character references, then registered and encoded without drawing procedural bodies. Source/packaged hashes and transformations are in `browser/extension/characters/PROVENANCE.json`. Built-in ChatGPT pet artwork such as Dot is not bundled. The artwork licensing limits described above also apply to these generated frames.
 
 Future reused components require a recorded source version, license compatibility review, retained notices and appropriate source availability. Free download alone does not establish redistribution rights.
+
+## Bundled Aion Endless Run (0.4 source layer)
+
+The full owner-authorized game is pinned in browser/game/PIN.json, with the exact public game source commit, production asset SHA-256 values, game MPL-2.0 license, Godot MIT/component notices and Lexend OFL license. Game artwork/engine export bytes are unchanged. Only the web host/bootstrap is adapted for isolated local playback, with no PWA updater. See docs/BUNDLED_GAME.md and browser/game/SOURCE.md.

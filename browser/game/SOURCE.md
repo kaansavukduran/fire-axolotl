@@ -1,0 +1,3 @@
+Aion Endless Run source: https://github.com/kaansavukduran/aion_endless_run/tree/1532cb787fe034760ef41bf37771c085c97b282b
+
+Game source is MPL-2.0. Godot web runtime is MIT; full engine/component notices and the Lexend OFL license accompany these files. PIN.json records original production file hashes. Fire Axolotl changes only the HTML bootstrap: scripts are external, the web updater is removed and automatic canvas focus is disabled. The game PCK, WASM, JavaScript engine and artwork bytes are unchanged. The bundled game is updated with Fire Axolotl releases, with no server connection at runtime.
