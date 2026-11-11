@@ -52,7 +52,7 @@ def main():
 **Bu kararlı günlük kullanım sürümü değildir. Otomatik güncellemeler kapalıdır.**
 **Not a stable daily-use release. Automatic updates are disabled.**
 
-Aion0.4: Aion Endless Run 0.12.0 tam oyun tarayıcının içindedir (Vercel build f0ac1be6a4a4f4f8). Oyunu başlat’a tıkla; ilk açılışta bile internet gerekmez. Oyunun kendi menüsü, dört karakteri, ayarları ve kayıtları vardır. Gizle düğmesi kaldırıldı; Görünüm tercihi ve geri getirme seçeneği korundu. Tam ekran düğmesi var. Oyun tarayıcı verisi izni olmayan ayrı bir yerleşik bileşende çalışır ve güncellemeleri tarayıcı paketleriyle gelir.
+Aion0.4: Aion Endless Run 0.12.0 tam oyun tarayıcının içindedir (Vercel build 7967f676d171a832). Oyunu başlat’a tıkla; ilk açılışta bile internet gerekmez. Oyunun kendi menüsü, dört karakteri, ayarları ve kayıtları vardır. Gizle düğmesi kaldırıldı; Görünüm tercihi ve geri getirme seçeneği korundu. Tam ekran düğmesi var. Oyun tarayıcı verisi izni olmayan ayrı bir yerleşik bileşende çalışır ve güncellemeleri tarayıcı paketleriyle gelir.
 
 Önceki0.2:760px araç paneli, üç görev bölümü ve tam sekmede çalışma alanı; oturumluk metin taslağı; sağ tık konteyner/çeviri seçenekleri. Firefox'un yerel çeviri aracını açan düğme; gerçek EN→TR çeviri ve model yüklendikten sonra çevrimdışı tekrar doğrulandı. Ayrı sohbet modeli veya önceden indirilmiş çeviri modeli paketlenmez.
 

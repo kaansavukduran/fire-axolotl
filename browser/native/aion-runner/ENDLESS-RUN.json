@@ -1,8 +1,8 @@
 {
   "repository": "https://github.com/kaansavukduran/aion_endless_run",
   "url": "https://aionendlessrun.vercel.app/",
-  "source_commit": "1532cb787fe034760ef41bf37771c085c97b282b",
+  "source_commit": "5e74cd0bb0dd133ca14ed96712bb03c4cd9a0678",
   "packaged_version": "0.12.0",
-  "packaged_build": "f0ac1be6a4a4f4f8",
+  "packaged_build": "7967f676d171a832",
   "mode": "Locally packaged full Godot game; no remote updates or game network requests"
 }

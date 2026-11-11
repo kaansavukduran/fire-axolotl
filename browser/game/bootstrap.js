@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: MIT; Godot web bootstrap, see GODOT-LICENSE.txt */
-window.AION_BUILD={"version": "0.12.0", "build": "f0ac1be6a4a4f4f8"};
-const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":false,"executable":"aion-f0ac1be6a4a4f4f8","experimentalVK":false,"fileSizes":{"aion-f0ac1be6a4a4f4f8.pck":78298084,"aion-f0ac1be6a4a4f4f8.wasm":37700666},"focusCanvas":false,"gdextensionLibs":[],"godotPoolSize":4,"serviceWorker":""};
+window.AION_BUILD={"version": "0.12.0", "build": "7967f676d171a832"};
+const GODOT_CONFIG = {"args":[],"canvasResizePolicy":2,"emscriptenPoolSize":8,"ensureCrossOriginIsolationHeaders":false,"executable":"aion-7967f676d171a832","experimentalVK":false,"fileSizes":{"aion-7967f676d171a832.pck":78299044,"aion-7967f676d171a832.wasm":37700666},"focusCanvas":false,"gdextensionLibs":[],"godotPoolSize":4,"serviceWorker":""};
 const GODOT_THREADS_ENABLED = false;
 const engine = new Engine(GODOT_CONFIG);
 

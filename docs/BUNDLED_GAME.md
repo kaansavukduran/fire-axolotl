@@ -1,6 +1,6 @@
 # Yerleşik Aion Endless Run
 
-0.4 kaynak katmanı, önceki bağımsız küçük oyunun yerine **Aion Endless Run 0.12.0** tam Godot web oyununu paketler. Snapshot: Vercel production build `f0ac1be6a4a4f4f8`, GitHub commit `1532cb787fe034760ef41bf37771c085c97b282b`, deployment `dpl_9XYgUHCbC7KCsDF632RUuB71sNzb`. Bu üçlü Vercel'in production deployment kaydından doğrulandı. Yeni oyun çıktığında bu pinler açıkça güncellenir; tarayıcı çalışma sırasında oyun kodu indirmez.
+0.4 kaynak katmanı, önceki bağımsız küçük oyunun yerine **Aion Endless Run 0.12.0** tam Godot web oyununu paketler. Snapshot: Vercel production build `7967f676d171a832`, GitHub commit `5e74cd0bb0dd133ca14ed96712bb03c4cd9a0678`, deployment `dpl_FcbpGqucCq9g6dtmgccz8hUkp8Uo`. Bu üçlü Vercel'in production deployment kaydından doğrulandı. Yeni oyun çıktığında bu pinler açıkça güncellenir; tarayıcı çalışma sırasında oyun kodu indirmez.
 
 Yeni sekmede **Oyunu başlat** düğmesine tıkla. Tam oyun aynı sayfada açılır; karakter, dil, ses ve hareket seçenekleri oyunun kendi menüsündedir. **Tam ekran** düğmesi oyunu büyütür. Kartın sağ üstünde **Gizle** düğmesi yoktur. Görünüm ayarındaki görünürlük tercihi korunur; önceden yanlışlıkla gizlenen oyun yeni sekmedeki **Aion Endless Run oyununu göster** düğmesiyle geri gelir.
 
